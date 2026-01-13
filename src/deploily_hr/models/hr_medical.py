@@ -12,3 +12,4 @@ class HrMedical(models.Model):
     date_event = fields.Date(string="Date")
     description = fields.Text(string="Description / Diagnostic")
     is_covered = fields.Boolean(string="Prise en charge CNAS", default=False)
+    attachment = fields.One2many('ir.attachment','res_id', string="Pièce Jointe")

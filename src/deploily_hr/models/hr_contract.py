@@ -9,5 +9,5 @@ class HrContract(models.Model):
         ('cdd', 'CDD (Déterminé)')
     ], string="Type de Contrat", default='cdi')
     trial_period_end = fields.Date(string="Fin de période d'essai")
-    attachment = fields.Binary(string="Copie du contrat (PDF)")
+    attachment = fields.One2many("ir.attachment", "res_id", string="Copie du contrat (PDF)")
     

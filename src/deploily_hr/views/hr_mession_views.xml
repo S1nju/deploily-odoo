@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- HR Mission Views -->
+        <record model="ir.ui.view" id="view_hr_mession_tree">
+            <field name="name">hr.mession.list</field>
+            <field name="model">hr.mession</field>
+            <field name="arch" type="xml">
+                <list string="Missions" sample="1">
+                    <field name="name"/>
+                    <field name="employee_id"/>
+                    <field name="destination"/>
+                    <field name="date_start"/>
+                    <field name="date_end"/>
+                    <field name="mission_type"/>
+                    <field name="state"/>
+                </list>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_hr_mession_form">
+            <field name="name">hr.mession.form</field>
+            <field name="model">hr.mession</field>
+            <field name="arch" type="xml">
+                <form string="Mission">
+                    <header>
+                        <button name="action_reset_draft" type="object" string="Reset to Draft" class="btn-secondary"
+                                modifiers='{"invisible": ["not", ["state", "in", ["approved", "rejected", "done"]]]}'/>
+                        <button name="action_approve" type="object" string="Approve" class="btn-primary"
+                                modifiers='{"invisible": ["not", ["state", "in", ["draft", "rejected"]]]}'/>
+                        <button name="action_reject" type="object" string="Reject" class="btn-danger"
+                                modifiers='{"invisible": ["not", ["state", "in", ["draft", "approved"]]]}'/>
+                        <button name="action_mark_done" type="object" string="Mark Done" class="btn-success"
+                                modifiers='{"invisible": ["not", ["state", "=", "approved"]]}'/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,approved,rejected,done"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="employee_id"/>
+                                <field name="destination"/>
+                                <field name="mission_type"/>
+                                <field name="mission_scale_id"/>
+                            </group>
+                            <group>
+                                <field name="date_start"/>
+                                <field name="date_end"/>
+                                <field name="fee_amount"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_hr_mession_view">
+            <field name="name">Missions</field>
+            <field name="res_model">hr.mession</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a Mission
+                </p>
+                <p>Manage employee missions and travel assignments.</p>
+            </field>
+        </record>
+    </data>
+</odoo>

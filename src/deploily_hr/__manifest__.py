@@ -17,8 +17,17 @@
          
          "security/ir.model.access.csv",
         
-        "views/menus.xml",
-        "views/hr_models_views.xml",
+        "views/hr_mission_scale_views.xml",
+        "views/hr_education_views.xml",
+        "views/hr_discipline_views.xml",
+        "views/hr_evaluation_views.xml",
+        "views/hr_medical_views.xml",
+        "views/hr_mession_views.xml",
+        "views/hr_promotion_views.xml",
+        "views/hr_employee_views.xml",
+        "views/hr_contract_views.xml",
+        "views/hr_leave_views.xml",
+        "views/hr_menus.xml",
        
 
       

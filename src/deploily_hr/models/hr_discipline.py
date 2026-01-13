@@ -13,11 +13,10 @@ class HrDiscipline(models.Model):
         ('licenciement', 'Licenciement')
     ], string="Type de Sanction")
     date_incident = fields.Date(string="Date de l'incident")
-    document_joint = fields.Binary(string="Procès Verbal (PV)")
-    attachment2 = fields.One2many(
+    document_joint = fields.One2many(
         'ir.attachment',
         'res_id',
-        string="Attachments",
+        string="Documents joints",
         
     )
 
