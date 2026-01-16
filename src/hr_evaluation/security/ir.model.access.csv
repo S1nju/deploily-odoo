@@ -1,0 +1,5 @@
+INSERT INTO ir_model_access (name, model_id, group_id, perm_read, perm_write, perm_create, perm_unlink) VALUES
+('access_hr_evaluation_user', (SELECT id FROM ir_model WHERE model = 'hr.evaluation'), (SELECT id FROM res_groups WHERE name = 'Employee'), true, true, true, false),
+('access_hr_evaluation_manager', (SELECT id FROM ir_model WHERE model = 'hr.evaluation'), (SELECT id FROM res_groups WHERE name = 'Manager'), true, true, true, true),
+('access_hr_evaluation_line_user', (SELECT id FROM ir_model WHERE model = 'hr.evaluation.line'), (SELECT id FROM res_groups WHERE name = 'Employee'), true, true, true, false),
+('access_hr_evaluation_line_manager', (SELECT id FROM ir_model WHERE model = 'hr.evaluation.line'), (SELECT id FROM res_groups WHERE name = 'Manager'), true, true, true, true);

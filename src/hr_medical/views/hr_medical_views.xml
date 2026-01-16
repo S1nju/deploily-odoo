@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- HR Medical Views -->
+        <record model="ir.ui.view" id="view_hr_medical_form">
+            <field name="name">hr.medical.form</field>
+            <field name="model">hr.medical</field>
+            <field name="arch" type="xml">
+                <form string="Medical Record">
+                    <sheet>
+                        <group>
+                            <field name="employee_id"/>
+                            <field name="visit_date"/>
+                            <field name="doctor"/>
+                            <field name="clinic"/>
+                            <field name="next_visit"/>
+                        </group>
+                        <group string="Medical Details">
+                            <field name="diagnosis"/>
+                            <field name="treatment"/>
+                            <field name="notes"/>
+                            <field name="attachment_ids" widget="many2many_binary"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_hr_medical_list">
+            <field name="name">hr.medical.list</field>
+            <field name="model">hr.medical</field>
+            <field name="arch" type="xml">
+                <list string="Medical Records">
+                    <field name="employee_id"/>
+                    <field name="visit_date"/>
+                    <field name="doctor"/>
+                    <field name="clinic"/>
+                    <field name="next_visit"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- HR Medical Action -->
+        <record model="ir.actions.act_window" id="action_hr_medical">
+            <field name="name">Medical Records</field>
+            <field name="res_model">hr.medical</field>
+            <field name="view_mode">list,form</field>
+        </record>
+    </data>
+</odoo>

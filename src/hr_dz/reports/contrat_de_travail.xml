@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+    <!-- Contract report action -->
+    <record id="action_report_contrat_de_travail" model="ir.actions.report">
+      <field name="name">Contrat de Travail (ملحق)</field>
+      <field name="model">hr.contract</field>
+      <field name="report_type">qweb-pdf</field>
+      <field name="report_name">hr_dz.report_contrat_de_travail_document</field>
+      <field name="binding_model_id" ref="hr.model_hr_contract"/>
+      <field name="binding_type">report</field>
+      <!-- report_file and print_report_name removed for compatibility -->
+    </record>
+
+    <!-- QWeb template -->
+    <template id="report_contrat_de_travail_document">
+      <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="doc">
+          <t t-call="web.external_layout">
+            <div class="page" style="font-family: Arial, sans-serif; direction: rtl; text-align: right;">
+              <div style="text-align: center; margin-bottom: 10px;">
+                <h2>ملحق) عقد عمل لمدة محددة</h2>
+                <h3>Contrat de Travail (Fixed-term)</h3>
+              </div>
+
+              <p>رقم: <span t-esc="doc.name or '...'"/> /20...</p>
+
+              <p>ما بين الطرفان الموقعان أسفله:</p>
+              <p>الشركة: <span t-esc="doc.company_id and doc.company_id.name or ''"/></p>
+              <p>ممثلة ب: <span t-esc="doc.company_id and doc.company_id.partner_id and doc.company_id.partner_id.name or ''"/></p>
+              <p>الكائن مقرها بـ: <span t-esc="doc.company_id and doc.company_id.partner_id and doc.company_id.partner_id.contact_address or ''"/></p>
+
+              <hr/>
+
+              <p>بصفته المستخدم من جهة و</p>
+              <p>السيدة: <span t-esc="doc.employee_id and doc.employee_id.name or ''"/></p>
+              <p>المولود في: <span t-esc="doc.employee_id and doc.employee_id.birthday or ''"/> بـ: ...</p>
+              <p>الساكنة ب: <span t-esc="doc.employee_id and (doc.employee_id.address_home_id and doc.employee_id.address_home_id.city or '') or ''"/></p>
+              <p>حمل بطاقة التعريف الوطنية رقم: <span t-esc="doc.employee_id and doc.employee_id.identification_id or ''"/></p>
+
+              <hr/>
+
+              <p>المؤهل الدراسي: <span t-esc="doc.employee_id and doc.employee_id.education or ''"/> شعبة: ... تخصص: ...</p>
+              <p>رقم التسجيل بالضمان الإجتماعي: <span t-esc="doc.employee_id and doc.employee_id.ssnid or ''"/></p>
+              <p>رقم الحساب البنكي: <span t-esc="doc.employee_id and doc.employee_id.ccp_number or ''"/> وكالة: ...</p>
+
+              <div style="margin-top:20px;">
+                <h4>قد تم الاتفاق بين الطرفان على ما يلي:</h4>
+                <h5>المادة الأولى:</h5>
+                <p>...</p>
+                <h5>المادة الثانية: مدة عقد العمل</h5>
+                <p>...</p>
+                <h5>المادة السادسة: دخول العقد حيز التنفيذ</h5>
+                <p>...</p>
+              </div>
+
+              <div style="margin-top:30px;">
+                <p>يحرر هذا العقد في نسختين ويمضى من الطرفين.</p>
+                <p>حرر في: ... بتاريخ: ...</p>
+                <table style="width:100%; margin-top:20px;">
+                  <tr>
+                    <td style="width:50%; text-align:center;">توقيع وتأشيرة المستخدم</td>
+                    <td style="width:50%; text-align:center;">توقيع وبصمة الأجير<br/>تسبق بعبارة "تمت القراءة والموافقة"</td>
+                  </tr>
+                </table>
+              </div>
+
+              <div style="margin-top:30px; font-size:10px;">
+                <p>+طرانسفورماتاك - شركة ذات مسؤولية محدودة رأس مالها 1.250.000 دج - رقم 21، مدخل 03، حي 220 مسكن ترقوي، عين تموشنت</p>
+                <p>SARL TRANSFORMATEK - RC : 20B0843079-00/46 RIB : 032002022528271208</p>
+              </div>
+
+            </div>
+          </t>
+        </t>
+      </t>
+    </template>
+  </data>
+</odoo>
