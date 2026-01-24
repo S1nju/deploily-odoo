@@ -2,16 +2,16 @@
 <odoo>
   <data>
     <!-- Contract report action -->
-    <record id="action_report_contrat_de_travail" model="ir.actions.report">
-      <field name="name">Contrat de Travail (ملحق)</field>
-      <field name="model">hr.contract</field>
-      <field name="report_type">qweb-pdf</field>
-      <field name="report_name">hr_dz.report_contrat_de_travail_document</field>
-      <field name="binding_model_id" ref="hr.model_hr_contract"/>
-      <field name="binding_type">report</field>
-      <!-- report_file and print_report_name removed for compatibility -->
-    </record>
-
+      <record id="action_report_contrat_de_travail" model="ir.actions.report">
+            <field name="name">Contrat de Travail (ملحق)</field>
+            <field name="model">hr.contract</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">hr_dz.report_contrat_de_travail_document</field>
+            <field name="report_file">hr_dz.report_contrat_de_travail_document</field>
+            <field name="binding_model_id" ref="model_hr_contract"/>
+            <field name="binding_type">report</field>
+            <field name="print_report_name">'Contrat de Travail - %s' % (object.name)</field>
+        </record>
     <!-- QWeb template -->
     <template id="report_contrat_de_travail_document">
       <t t-call="web.html_container">
@@ -19,44 +19,84 @@
           <t t-call="web.external_layout">
             <div class="page" style="font-family: Arial, sans-serif; direction: rtl; text-align: right;">
               <div style="text-align: center; margin-bottom: 10px;">
-                <h2>ملحق) عقد عمل لمدة محددة</h2>
-                <h3>Contrat de Travail (Fixed-term)</h3>
+                  <t t-set="contracts" t-value="doc.employee_id.contract_ids.sorted(lambda c: c.date_start) if doc.employee_id else []"/>
+                  <t t-set="first_contract" t-value="contracts[0] if contracts else False"/>
+                  <t t-set="is_first_contract" t-value="len(contracts) == 0 or (first_contract and first_contract.id == doc.id)"/>
+                  <t t-set="contract_type" t-value="doc.sudo().contract_type_id.name.lower() if doc.sudo().contract_type_id else ''"/>
+                  <t t-set="is_fixed" t-value="'cdd' in contract_type or 'محدد' in contract_type or 'fixed' in contract_type or 'déterminé' in contract_type"/>
+                  <t t-set="is_indef" t-value="'cdi' in contract_type or 'غير محدد' in contract_type or 'indefinite' in contract_type or 'indéterminé' in contract_type"/>
+                  <t t-set="printable" t-value="is_fixed or is_indef"/>
+
+                  <t t-if="printable">
+                    <h2>
+                      <t t-if="is_fixed">
+                        <t t-if="is_first_contract">عقد عمل لمدة محددة</t>
+                        <t t-else="">ملحق عمل لمدة محددة</t>
+                      </t>
+                      <t t-else="">عقد عمل لمدة غير محددة</t>
+                    </h2>
+                    <h3>
+                      <t t-if="is_fixed">
+                        <t t-if="is_first_contract">Contrat de Travail (Fixed-term)</t>
+                        <t t-else="">Contrat de Travail (ملحق)</t>
+                      </t>
+                      <t t-else="">Contrat de Travail (Durée indéterminée)</t>
+                    </h3>
+                  </t>
+                  <t t-if="not printable">
+                    <h3>نوع العقد غير مدعوم للطباعة</h3>
+                    <p>Type: <span t-esc="doc.sudo().contract_type_id.name if doc.sudo().contract_type_id else 'Non défini'"/></p>
+                  </t>
               </div>
 
               <p>رقم: <span t-esc="doc.name or '...'"/> /20...</p>
 
               <p>ما بين الطرفان الموقعان أسفله:</p>
-              <p>الشركة: <span t-esc="doc.company_id and doc.company_id.name or ''"/></p>
-              <p>ممثلة ب: <span t-esc="doc.company_id and doc.company_id.partner_id and doc.company_id.partner_id.name or ''"/></p>
-              <p>الكائن مقرها بـ: <span t-esc="doc.company_id and doc.company_id.partner_id and doc.company_id.partner_id.contact_address or ''"/></p>
+              <p>الشركة: <t t-if="doc.company_id"><span t-esc="doc.company_id.name"/></t><t t-if="not doc.company_id"> </t></p>
+              <p>ممثلة ب: <t t-if="doc.company_id and doc.company_id.partner_id"><span t-esc="doc.company_id.partner_id.name"/></t></p>
+              <p> مقرها بـ: <t t-if="doc.company_id and doc.company_id.partner_id"><span t-esc="doc.company_id.partner_id.contact_address"/></t></p>
 
               <hr/>
 
               <p>بصفته المستخدم من جهة و</p>
-              <p>السيدة: <span t-esc="doc.employee_id and doc.employee_id.name or ''"/></p>
-              <p>المولود في: <span t-esc="doc.employee_id and doc.employee_id.birthday or ''"/> بـ: ...</p>
-              <p>الساكنة ب: <span t-esc="doc.employee_id and (doc.employee_id.address_home_id and doc.employee_id.address_home_id.city or '') or ''"/></p>
-              <p>حمل بطاقة التعريف الوطنية رقم: <span t-esc="doc.employee_id and doc.employee_id.identification_id or ''"/></p>
+              <p>السيد(ة): <t t-if="doc.employee_id"><span t-esc="doc.employee_id.name"/></t></p>
+              <p>المولود(ة) في: <t t-if="doc.employee_id and 'birthday' in doc.employee_id._fields"><span t-esc="doc.employee_id.birthday"/></t> بـ: ...</p>
+              <p>الساكن(ة) ب: <t t-if="doc.employee_id and doc.employee_id._fields.get('address_home_id') and doc.employee_id.address_home_id"><span t-esc="doc.employee_id.address_home_id.city"/></t></p>
+              <p> بطاقة التعريف الوطنية رقم: <t t-if="doc.employee_id and 'identification_id' in doc.employee_id._fields"><span t-esc="doc.employee_id.identification_id"/></t></p>
 
               <hr/>
 
-              <p>المؤهل الدراسي: <span t-esc="doc.employee_id and doc.employee_id.education or ''"/> شعبة: ... تخصص: ...</p>
-              <p>رقم التسجيل بالضمان الإجتماعي: <span t-esc="doc.employee_id and doc.employee_id.ssnid or ''"/></p>
-              <p>رقم الحساب البنكي: <span t-esc="doc.employee_id and doc.employee_id.ccp_number or ''"/> وكالة: ...</p>
+              <p>المؤهل الدراسي: <t t-if="doc.employee_id and 'education' in doc.employee_id._fields"><span t-esc="doc.employee_id.education"/></t> شعبة: ... تخصص: ...</p>
+              <p>رقم التسجيل بالضمان الإجتماعي: <t t-if="doc.employee_id and 'ssnid' in doc.employee_id._fields"><span t-esc="doc.employee_id.ssnid"/></t></p>
+              <p>رقم الحساب البنكي: <t t-if="doc.employee_id and 'ccp_number' in doc.employee_id._fields"><span t-esc="doc.employee_id.ccp_number"/></t> وكالة: ...</p>
 
               <div style="margin-top:20px;">
                 <h4>قد تم الاتفاق بين الطرفان على ما يلي:</h4>
-                <h5>المادة الأولى:</h5>
-                <p>...</p>
-                <h5>المادة الثانية: مدة عقد العمل</h5>
-                <p>...</p>
-                <h5>المادة السادسة: دخول العقد حيز التنفيذ</h5>
-                <p>...</p>
+                <!-- Prefer contract articles; if none (draft/unsaved), fallback to template articles -->
+                <t t-if="doc.article_ids">
+                  <t t-foreach="doc.article_ids.sorted('sequence')" t-as="article">
+                    <h5>
+                      المادة <span t-esc="article.sequence or 0"/>: <span t-esc="article.name"/>
+                    </h5>
+                    <p t-esc="article.content"/>
+                  </t>
+                </t>
+                <t t-elif="doc.template_id and doc.template_id.article_ids">
+                  <t t-foreach="doc.template_id.article_ids.sorted('sequence')" t-as="article">
+                    <h5>
+                      المادة <span t-esc="article.sequence or 0"/>: <span t-esc="article.name"/>
+                    </h5>
+                    <p t-esc="article.content"/>
+                  </t>
+                </t>
+                <t t-else="">
+                  <p>لا توجد مواد محددة في هذا العقد.</p>
+                </t>
               </div>
 
               <div style="margin-top:30px;">
                 <p>يحرر هذا العقد في نسختين ويمضى من الطرفين.</p>
-                <p>حرر في: ... بتاريخ: ...</p>
+                <p>حرر في: ... بتاريخ: <span t-esc="time.strftime('%Y-%m-%d')"/></p>
                 <table style="width:100%; margin-top:20px;">
                   <tr>
                     <td style="width:50%; text-align:center;">توقيع وتأشيرة المستخدم</td>
@@ -65,10 +105,7 @@
                 </table>
               </div>
 
-              <div style="margin-top:30px; font-size:10px;">
-                <p>+طرانسفورماتاك - شركة ذات مسؤولية محدودة رأس مالها 1.250.000 دج - رقم 21، مدخل 03، حي 220 مسكن ترقوي، عين تموشنت</p>
-                <p>SARL TRANSFORMATEK - RC : 20B0843079-00/46 RIB : 032002022528271208</p>
-              </div>
+          
 
             </div>
           </t>

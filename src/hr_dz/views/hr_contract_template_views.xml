@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+
+    <!-- ========================= -->
+    <!-- Contract Template Views -->
+    <!-- ========================= -->
+
+    <record id="view_hr_contract_template_list" model="ir.ui.view">
+      <field name="name">hr.contract.template.list</field>
+      <field name="model">hr.contract.template</field>
+      <field name="arch" type="xml">
+        <list>
+          <field name="name"/>
+          <field name="note"/>
+        </list>
+      </field>
+    </record>
+
+    <record id="view_hr_contract_template_form" model="ir.ui.view">
+      <field name="name">hr.contract.template.form</field>
+      <field name="model">hr.contract.template</field>
+      <field name="arch" type="xml">
+        <form string="Contract Template">
+          <sheet>
+            <group>
+              <field name="name"/>
+              <field name="note"/>
+            </group>
+
+            <group string="Articles">
+              <field name="article_ids">
+                <list editable="bottom">
+                  <field name="sequence"/>
+                  <field name="name"/>
+                  <field name="content"/>
+                </list>
+              </field>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <!-- ========================= -->
+    <!-- Contract Template Action -->
+    <!-- ========================= -->
+
+    <record id="action_hr_contract_template" model="ir.actions.act_window">
+      <field name="name">Contract Templates</field>
+      <field name="res_model">hr.contract.template</field>
+      <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- ========================= -->
+    <!-- Menus -->
+    <!-- ========================= -->
+
+    <menuitem
+      id="menu_hr_contract_template_root"
+      name="Contract Templates"
+      parent="hr.menu_hr_root"
+      sequence="120"/>
+
+    <menuitem
+      id="menu_hr_contract_template_action"
+      name="Templates"
+      parent="menu_hr_contract_template_root"
+      action="action_hr_contract_template"/>
+
+    <!-- ========================= -->
+    <!-- Articles Views -->
+    <!-- ========================= -->
+
+    <record id="view_hr_contract_article_list" model="ir.ui.view">
+      <field name="name">hr.contract.article.list</field>
+      <field name="model">hr.contract.article</field>
+      <field name="arch" type="xml">
+        <list>
+          <field name="sequence"/>
+          <field name="name"/>
+          <field name="template_id"/>
+        </list>
+      </field>
+    </record>
+
+    <record id="view_hr_contract_article_form" model="ir.ui.view">
+      <field name="name">hr.contract.article.form</field>
+      <field name="model">hr.contract.article</field>
+      <field name="arch" type="xml">
+        <form string="Contract Article">
+          <sheet>
+            <group>
+              <field name="sequence"/>
+              <field name="name"/>
+              <field name="template_id"/>
+            </group>
+            <group>
+              <field name="content"/>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record id="action_hr_contract_article" model="ir.actions.act_window">
+      <field name="name">Articles</field>
+      <field name="res_model">hr.contract.article</field>
+      <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem
+      id="menu_hr_contract_articles"
+      name="Articles"
+      parent="menu_hr_contract_template_root"
+      action="action_hr_contract_article"/>
+
+    <!-- ======================================= -->
+    <!-- Contract Form Inheritance (CRITICAL) -->
+    <!-- ======================================= -->
+
+   <record id="view_hr_contract_form_inherit_template" model="ir.ui.view">
+  <field name="name">hr.contract.form.inherit.template</field>
+  <field name="model">hr.contract</field>
+  <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+  <field name="arch" type="xml">
+    <xpath expr="//sheet" position="inside">
+      <group string="Template">
+        <field name="template_id"/>
+      </group>
+    </xpath>
+  </field>
+</record>
+
+
+  </data>
+</odoo>

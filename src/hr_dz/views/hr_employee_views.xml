@@ -7,6 +7,13 @@
             <field name="model">hr.employee</field>
             <field name="inherit_id" ref="hr.view_employee_form"/>
             <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_open_contract']" position="after">
+                    <button name="action_open_missions" type="object" string="Missions" icon="fa-plane" 
+                            class="btn-info" groups="hr.group_hr_manager"/>
+                </xpath>
+                <xpath expr="//field[@name='work_phone']" position="before">
+                    <field name="in_mission" widget="boolean_toggle" readonly="1"/>
+                </xpath>
                 <xpath expr="//field[@name='work_phone']" position="after">
                     <field name="category"/>
                     

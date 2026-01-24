@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Menu item for Leave Decision Report -->
+        <menuitem id="menu_hr_leave_decision" name="Leave Decisions" parent="hr_holidays.menu_hr_holidays_root"/>
+    </data>
+</odoo>
