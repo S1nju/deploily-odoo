@@ -81,6 +81,11 @@
                     <t t-if="partner.nis">
                         <strong>N.I.S:</strong>
                         <span t-esc="partner.nis"/>
+                        <br/>
+                    </t>
+                    <t t-if="partner.ai">
+                        <strong>Article d'imposition:</strong>
+                        <span t-esc="partner.ai"/>
                     </t>
                 </div>
             </t>
