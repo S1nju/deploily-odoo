@@ -18,7 +18,7 @@ class CibEPayApi:
         user_name,
         password,
         json_params,
-        state="test",
+        is_satim_test=False,
         language="fr",
         currency="012",
     ):
@@ -26,13 +26,12 @@ class CibEPayApi:
         self.password = password
         self.language = language
         self.currency = currency
-        self.state = state
+        self.is_satim_test = is_satim_test
         self.json_params = json_params
 
-    def get_cibepay_urls(self, state="test"):
+    def get_cibepay_urls(self):
         """CIB IPay URLs"""
-        # environment = "test2" if state == "test" else "epg"
-        environment = "test2"
+        environment = "test2" if self.is_satim_test else "epg"
 
         return {
             "cibepay_register_url": f"https://{environment}.satim.dz/payment/rest/register.do?",
@@ -72,7 +71,7 @@ class CibEPayApi:
         self, order_id, order_total, confirm_url, fail_url, description=""
     ):
 
-        base_url = self.get_cibepay_urls(self.state)["cibepay_register_url"]
+        base_url = self.get_cibepay_urls()["cibepay_register_url"]
 
         params = {
             "userName": self.user_name,
@@ -167,7 +166,7 @@ class CibEPayApi:
 
     def SendConfirmOrder(self, order_id):
 
-        base_url = self.get_cibepay_urls(self.state)[
+        base_url = self.get_cibepay_urls()[
             "cibepay_confirm_order_url"
         ]
 
@@ -207,7 +206,7 @@ class CibEPayApi:
 
     def SendRefundOrder(self, order_id, amount):
 
-        base_url = self.get_cibepay_urls(self.state)["cibepay_refund_url"]
+        base_url = self.get_cibepay_urls()["cibepay_refund_url"]
 
         params = {
             "userName": self.user_name,

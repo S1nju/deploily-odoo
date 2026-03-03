@@ -7,13 +7,15 @@ msgstr ""
 "Project-Id-Version: Odoo Server 18.0-20251008\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-12-25 12:04+0000\n"
-"PO-Revision-Date: 2025-12-25 12:04+0000\n"
+"PO-Revision-Date: 2026-03-04 00:03+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
+"Language: en_GB\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Plural-Forms: \n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.8\n"
 
 #. module: payment_satim
 #: model_terms:ir.ui.view,arch_db:payment_satim.cibepay_report_saleorder_document
@@ -28,35 +30,43 @@ msgid ""
 msgstr ""
 "<i class=\"fa fa-envelope\"/>\n"
 "                                            <span> Send </span>"
+
 #. module: payment_satim
 #: model_terms:ir.ui.view,arch_db:payment_satim.cibepay_confirmation
 msgid "<i class=\"fa fa-envelope\"/> Send mail"
-msgstr ""
+msgstr "<i class=\"fa fa-envelope\"/> Send mail"
 
 #. module: payment_satim
 #: model_terms:ir.ui.view,arch_db:payment_satim.cibepay_confirmation
 msgid ""
-"<span> En cas de problème de paiement, veuillez contacter le numéro vert de la SATIM\n"
+"<span> En cas de problème de paiement, veuillez contacter le numéro vert de "
+"la SATIM\n"
 "                        </span>"
-msgstr "<span> In case of payment issues, please contact the SATIM toll-free number\n                    </span>"
-
+msgstr ""
+"<span> In case of payment issues, please contact the SATIM toll-free "
+"number\n"
+"                    </span>"
 
 #. module: payment_satim
 #: model_terms:ir.ui.view,arch_db:payment_satim.cibepay_report_saleorder_document
 msgid ""
-"<span> En cas de problème de paiement, veuillez contacter le numéro vert de la SATIM\n"
+"<span> En cas de problème de paiement, veuillez contacter le numéro vert de "
+"la SATIM\n"
 "                    </span>"
-msgstr "<span> In case of payment issues, please contact the SATIM toll-free number\n                    </span>"
+msgstr ""
+"<span> In case of payment issues, please contact the SATIM toll-free "
+"number\n"
+"                    </span>"
 
 #. module: payment_satim
 #: model_terms:ir.ui.view,arch_db:payment_satim.cibepay_payment_method_form
 msgid "<span> J'accepte les </span>"
-msgstr ""
+msgstr "<span> I accept the </span>"
 
 #. module: payment_satim
 #: model_terms:ir.ui.view,arch_db:payment_satim.payment_cibepay_sale_confirmation_sendmail
 msgid "<span> Un mail a été transmis à l'adresse suivant : </span>"
-msgstr "<span> An email has been sent to the following address: </span>"
+msgstr "<span> A email has been sent to the following address: </span>"
 
 #. module: payment_satim
 #: model_terms:ir.ui.view,arch_db:payment_satim.cibepay_confirmation
@@ -75,13 +85,18 @@ msgstr ""
 
 #. module: payment_satim
 #: model_terms:ir.ui.view,arch_db:payment_satim.cibepay_confirmation
-msgid "<strong class=\"text-black-50\">Response code</strong>"
-msgstr ""
+msgid "<strong class=\"text-black-50\">Status</strong>"
+msgstr "<strong class=\"text-black-50\">Status</strong>"
 
 #. module: payment_satim
 #: model_terms:ir.ui.view,arch_db:payment_satim.cibepay_confirmation
-msgid "<strong class=\"text-black-50\">Satim order id</strong>"
-msgstr ""
+msgid "<strong class=\"text-black-50\">Order ID</strong>"
+msgstr "<strong class=\"text-black-50\">Numéro de commande</strong>"
+
+#. module: payment_satim
+#: model_terms:ir.ui.view,arch_db:payment_satim.cibepay_confirmation
+msgid "<strong class=\"text-black-50\">Transaction ID</strong>"
+msgstr "<strong class=\"text-black-50\">Transaction ID</strong>"
 
 #. module: payment_satim
 #: model_terms:ir.ui.view,arch_db:payment_satim.cibepay_confirmation
@@ -130,7 +145,7 @@ msgstr ""
 
 #. module: payment_satim
 #: model_terms:ir.ui.view,arch_db:payment_satim.cibepay_report_saleorder_document
-msgid "<strong>Satim order id</strong>"
+msgid "<strong>Transaction ID</strong>"
 msgstr ""
 
 #. module: payment_satim
@@ -199,7 +214,7 @@ msgstr "Action code"
 #. module: payment_satim
 #: model:ir.model.fields,field_description:payment_satim.field_payment_transaction__cibepay_error_code
 msgid "Code d'erreur"
-msgstr "Error cod"
+msgstr "Error code"
 
 #. module: payment_satim
 #: model:ir.model.fields,field_description:payment_satim.field_payment_transaction__cibepay_approval_code
@@ -230,7 +245,7 @@ msgstr ""
 #. module: payment_satim
 #: model:ir.model.fields,field_description:payment_satim.field_payment_provider__cibepay_currency
 msgid "Curency"
-msgstr ""
+msgstr "Currency"
 
 #. module: payment_satim
 #: model:ir.model.fields,field_description:payment_satim.field_payment_transaction__cibepay_resp_code_desc
@@ -280,11 +295,11 @@ msgstr ""
 #. module: payment_satim
 #: model:ir.model.fields,field_description:payment_satim.field_payment_transaction__cibepay_error_message
 msgid "Message d'erreur"
-msgstr ""
+msgstr "Error message"
 
 #. module: payment_satim
 #: model_terms:ir.ui.view,arch_db:payment_satim.cibepay_report_saleorder_document
-msgid "Mitchell Admin"
+msgid "Admin"
 msgstr ""
 
 #. module: payment_satim
@@ -349,17 +364,13 @@ msgstr "SVFE response"
 
 #. module: payment_satim
 #: model:ir.model.fields,field_description:payment_satim.field_payment_transaction__cibepay_mdorder
-msgid "SATIM order ID"
+#: model_terms:ir.ui.view,arch_db:payment_satim.cibepay_payment_status
+msgid "Transaction ID"
 msgstr ""
 
 #. module: payment_satim
 #: model_terms:ir.ui.view,arch_db:payment_satim.cibepay_report_saleorder_document
 msgid "SO0000"
-msgstr ""
-
-#. module: payment_satim
-#: model_terms:ir.ui.view,arch_db:payment_satim.cibepay_payment_status
-msgid "Satim order id"
 msgstr ""
 
 #. module: payment_satim
@@ -440,7 +451,8 @@ msgstr "Your payment has been cancelled."
 #: model_terms:payment.provider,pending_msg:payment_satim.payment_provider_cibepay
 msgid ""
 "Votre paiement a été traité avec succès mais est en attente de validation."
-msgstr "Your payment has been successfully processed but is pending validation."
+msgstr ""
+"Your payment has been successfully processed but is pending validation."
 
 #. module: payment_satim
 #: model_terms:payment.provider,done_msg:payment_satim.payment_provider_cibepay
@@ -455,7 +467,6 @@ msgid ""
 "Votre transaction a été rejetée/ Your transaction was rejected/ تم رفض "
 "معاملتك"
 msgstr "Your transaction was rejected./ تم رفض معاملتك"
-
 
 #. module: payment_satim
 #: model:ir.model.fields,field_description:payment_satim.field_payment_transaction__cibepay_auth_code
