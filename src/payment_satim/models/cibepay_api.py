@@ -31,7 +31,8 @@ class CibEPayApi:
 
     def get_cibepay_urls(self, state="test"):
         """CIB IPay URLs"""
-        environment = "test2" if state == "test" else "epg"
+        # environment = "test2" if state == "test" else "epg"
+        environment = "test2"
 
         return {
             "cibepay_register_url": f"https://{environment}.satim.dz/payment/rest/register.do?",
