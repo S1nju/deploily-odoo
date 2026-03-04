@@ -151,31 +151,50 @@
 
         <xpath expr="//div[@class='d-flex justify-content-between align-items-center']" position="inside">
             <t t-if="tx_sudo.provider_id.code == 'cibepay'">
-                <button type="button" class="d-none d-md-inline-block btn btn-primary ms-auto"
-                    data-bs-toggle="modal" data-bs-target="#input_email_box">
-                    <i class="fa fa-envelope"></i> Send mail </button>
-                <div id="input_email_box" class="modal fade" tabindex="-1" role="dialog">
+
+                <!-- Trigger Button -->
+                <button type="button"
+                    class="d-none d-md-inline-block btn btn-primary ms-auto"
+                    data-bs-toggle="modal"
+                    data-bs-target="#cibepay_input_email_box">
+                    <i class="fa fa-envelope" /> Send mail </button>
+
+                <!-- Modal -->
+                <div id="cibepay_input_email_box" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="emailModalTitle" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
+
                             <div class="modal-header">
-                                <h5 class="modal-title"> Envoyer par mail </h5>
+                                <h5 class="modal-title" id="emailModalTitle">Envoyer par mail</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" />
                             </div>
+
                             <div class="modal-body">
-                                <!-- TODO avoid openning a new window -->
-                                <form role="form" method="GET" action="/shop/cibepay/sendbymail" target="_blank">
-                                    <div class="form-group">
-                                        <label for="receiver_mail"> Email de destination </label>
-                                        <input class="form-control" id="receiver_mail" name="receiver_mail"
-                                            placeholder="Email de destination" required='1' />
-                                    </div>
-                                    <div class="form-group mt-2">
-                                        <button type="submit" class="btn btn-primary d-none d-md-inline-block">
-                                            <i class="fa fa-envelope"></i>
-                                            <span> Envoyer </span>
-                                        </button>
-                                    </div>
-                                </form>
+                                <div class="form-group">
+                                    <label for="cibepay_receiver_mail">Email de destination</label>
+                                    <input class="form-control mt-1"
+                                        id="cibepay_receiver_mail"
+                                        name="cibepay_receiver_mail"
+                                        type="email"
+                                        placeholder="exemple@domaine.com"
+                                        required="1" />
+                                    <!-- Feedback messages -->
+                                    <div id="cibepay_mail_feedback" class="mt-2" style="display:none;" />
+                                </div>
                             </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                    Annuler
+                                </button>
+                                <button type="button"
+                                    id="cibepay_send_mail_btn"
+                                    class="btn btn-primary">
+                                    <i class="fa fa-envelope me-1" />
+                                    <span>Envoyer</span>
+                                </button>
+                            </div>
+
                         </div>
                     </div>
                 </div>
