@@ -152,7 +152,7 @@ class CibEPayApi:
                 params["udf2"] if "udf2" in params.keys() else ""
             )
             payment_status["params-udf3"] = (
-                params["udf3"] if "udf2" in params.keys() else ""
+                params["udf3"] if "udf3" in params.keys() else ""
             )
             payment_status["params-udf4"] = (
                 params["udf4"] if "udf4" in params.keys() else ""
