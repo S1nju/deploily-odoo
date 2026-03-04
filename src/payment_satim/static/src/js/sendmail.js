@@ -5,7 +5,11 @@
     'use strict';
 
     const modalEl = document.getElementById('cibepay_input_email_box');
+    if (!modalEl) return;
+
     const sendBtn = document.getElementById('cibepay_send_mail_btn');
+    if (!sendBtn) return;
+
     const emailInput = document.getElementById('cibepay_receiver_mail');
     const feedback = document.getElementById('cibepay_mail_feedback');
 
