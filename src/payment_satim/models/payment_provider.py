@@ -45,21 +45,15 @@ class CibepaymentProvider(models.Model):
 
     def _get_cibepay_api(self):
 
-        json_params = (
-            '{"force_terminal_id":"'
-            + self.cibepay_terminal_id
-            + '", "udf1":"'
-            + self.cibepay_udf1
-            + '", "udf2":"'
-            + self.cibepay_udf2
-            + '", "udf3":"'
-            + self.cibepay_udf3
-            + '", "udf4":"'
-            + self.cibepay_udf4
-            + '", "udf5":"'
-            + self.cibepay_udf5
-            + '"}'
-        )
+       
+        json_params = json.dumps({
+            "force_terminal_id": self.cibepay_terminal_id,
+            "udf1": self.cibepay_udf1,
+            "udf2": self.cibepay_udf2,
+            "udf3": self.cibepay_udf3,
+            "udf4": self.cibepay_udf4,
+            "udf5": self.cibepay_udf5,
+        })
 
         return CibEPayApi(
             self.cibepay_username,

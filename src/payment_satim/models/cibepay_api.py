@@ -2,7 +2,6 @@
 
 
 import json
-from urllib.parse import quote
 import requests
 from datetime import datetime
 import pytz
@@ -223,7 +222,8 @@ class CibEPayApi:
     # Utility function to manage HTTP server requests
     #
     def SendReq(self, url, params):
-
+        if (self.is_satim_test):
+            _logger.info(f"Sending request to CibEpay API at {url} with data:\n{json.dumps(params, indent=2)}")
         try:
             response = requests.get(url, params=params)
             response.raise_for_status()
