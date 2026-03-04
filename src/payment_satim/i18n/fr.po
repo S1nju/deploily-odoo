@@ -72,6 +72,11 @@ msgstr "Numéro de commande"
 
 #. module: payment_satim
 #: model_terms:ir.ui.view,arch_db:payment_satim.cibepay_confirmation
+msgid "<strong class=\"text-black-50\">Order ID</strong>"
+msgstr "<strong class=\"text-black-50\">Numéro de commande</strong>"
+
+#. module: payment_satim
+#: model_terms:ir.ui.view,arch_db:payment_satim.cibepay_confirmation
 msgid "<strong class=\"text-black-50\">Payment method</strong>"
 msgstr "Mode de paiement"
 
