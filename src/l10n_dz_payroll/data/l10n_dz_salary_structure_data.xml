@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- Structure de paie principale - Algérie -->
+    <record id="structure_dz_base" model="hr.payroll.structure">
+        <field name="name">Structure Paie Algérienne</field>
+        <field name="code">DZ_BASE</field>
+    </record>
+
+</odoo>

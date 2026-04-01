@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_report_bulletin_paie" model="ir.actions.report">
+        <field name="name">Bulletin de Paie</field>
+        <field name="model">cdc.bulletin.paie</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">cdc_paie.report_bulletin_paie_template</field>
+        <field name="report_file">cdc_paie.report_bulletin_paie_template</field>
+        <field name="binding_model_id" ref="model_cdc_bulletin_paie"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="base.paperformat_euro"/>
+    </record>
+
+</odoo>

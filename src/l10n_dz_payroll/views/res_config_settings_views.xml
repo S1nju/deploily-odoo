@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_dz" model="ir.ui.view">
+        <field name="name">res.config.settings.form.inherit.dz</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="payroll.res_config_settings_view_form"/>
+        <field name="priority" eval="50"/>
+        <field name="arch" type="xml">
+            <xpath expr="//app[@name='payroll']" position="inside">
+                <block title="Taux Légaux" id="dz_legal_rates">
+                    <setting
+                        string="Taux légaux actifs"
+                        help="Sélectionnez les taux légaux (CNAS, IRG, IEP) à appliquer."
+                    >
+                        <field name="l10n_dz_payroll_rate_id"/>
+                    </setting>
+                </block>
+            </xpath>
+        </field>
+    </record>
+</odoo>

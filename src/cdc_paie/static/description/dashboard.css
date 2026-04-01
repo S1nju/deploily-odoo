@@ -1,0 +1,24 @@
+/* CDC Paie Dashboard Styles */
+.cdc_paie_dashboard .o_kanban_record {
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.cdc_paie_kpi_card {
+    background: linear-gradient(135deg, #2c3e50, #34495e);
+    color: white;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 8px;
+    text-align: center;
+}
+
+.cdc_paie_kpi_card .kpi_value {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.cdc_paie_kpi_card .kpi_label {
+    font-size: 13px;
+    opacity: 0.85;
+}

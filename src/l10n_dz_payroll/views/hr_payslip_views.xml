@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Formulaire : ajout des champs algériens -->
+    <record id="hr_payslip_view_form_dz" model="ir.ui.view">
+        <field name="name">hr.payslip.form.inherit.dz</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id" ref="payroll.hr_payslip_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='paid']" position="after">
+                <field name="type_bulletin"/>
+                <field name="moyen_paiement"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Liste : ajout des colonnes algériennes -->
+    <record id="hr_payslip_view_list_dz" model="ir.ui.view">
+        <field name="name">hr.payslip.list.inherit.dz</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id" ref="payroll.hr_payslip_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='state']" position="before">
+                <field name="montant_brut" optional="show"/>
+                <field name="cotisation_cnas_salariale" optional="show"/>
+                <field name="montant_irg" optional="show"/>
+                <field name="net_a_payer" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

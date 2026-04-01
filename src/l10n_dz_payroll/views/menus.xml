@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Menu Configuration > Taux Légaux Algériens -->
+    <menuitem
+        id="menu_l10n_dz_payroll_config"
+        name="Paramétrage Algérien"
+parent="payroll.menu_payroll_global_settings"
+        sequence="50"
+    />
+
+    <menuitem
+        id="menu_l10n_dz_payroll_rate"
+        name="Taux Légaux (CNAS / IRG / IEP)"
+        parent="menu_l10n_dz_payroll_config"
+        action="action_l10n_dz_hr_payroll_rate"
+        sequence="10"
+    />
+
+</odoo>

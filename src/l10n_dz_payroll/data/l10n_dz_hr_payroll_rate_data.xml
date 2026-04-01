@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- Taux légaux algériens 2024 -->
+    <record id="l10n_dz_payroll_rate_2024" model="l10n.dz.hr.payroll.rate">
+        <field name="name">Taux légaux Algérie 2024</field>
+        <field name="date_from">2024-01-01</field>
+        <field name="smig">20000.0</field>
+        <!-- CNAS -->
+        <field name="cnas_salarial_rate">9.0</field>
+        <field name="cnas_patronal_rate">26.0</field>
+        <field name="cnas_plafond">120000.0</field>
+        <!-- IRG -->
+        <field name="irg_abattement_rate">40.0</field>
+        <field name="irg_abattement_min">12000.0</field>
+        <field name="irg_abattement_max">18000.0</field>
+        <field name="irg_deduction_conjoint">1000.0</field>
+        <field name="irg_deduction_enfant">600.0</field>
+        <!-- IEP -->
+        <field name="iep_rate_per_year">1.0</field>
+        <field name="iep_max_rate">25.0</field>
+        <!-- Indemnités -->
+        <field name="indemnite_transport">3000.0</field>
+        <field name="indemnite_panier">120.0</field>
+        <!-- Allocations familiales -->
+        <field name="allocation_familiale_rate">2.0</field>
+    </record>
+
+    <!-- Tranches IRG 2024 (barème progressif annuel) -->
+    <record id="irg_bracket_1_2024" model="l10n.dz.hr.payroll.irg.bracket">
+        <field name="rate_id" ref="l10n_dz_payroll_rate_2024"/>
+        <field name="min_amount">0</field>
+        <field name="max_amount">120000</field>
+        <field name="rate">0</field>
+        <field name="description">Exonéré</field>
+    </record>
+    <record id="irg_bracket_2_2024" model="l10n.dz.hr.payroll.irg.bracket">
+        <field name="rate_id" ref="l10n_dz_payroll_rate_2024"/>
+        <field name="min_amount">120000</field>
+        <field name="max_amount">360000</field>
+        <field name="rate">20</field>
+        <field name="description">Tranche 20%</field>
+    </record>
+    <record id="irg_bracket_3_2024" model="l10n.dz.hr.payroll.irg.bracket">
+        <field name="rate_id" ref="l10n_dz_payroll_rate_2024"/>
+        <field name="min_amount">360000</field>
+        <field name="max_amount">1200000</field>
+        <field name="rate">30</field>
+        <field name="description">Tranche 30%</field>
+    </record>
+    <record id="irg_bracket_4_2024" model="l10n.dz.hr.payroll.irg.bracket">
+        <field name="rate_id" ref="l10n_dz_payroll_rate_2024"/>
+        <field name="min_amount">1200000</field>
+        <field name="max_amount">3600000</field>
+        <field name="rate">33</field>
+        <field name="description">Tranche 33%</field>
+    </record>
+    <record id="irg_bracket_5_2024" model="l10n.dz.hr.payroll.irg.bracket">
+        <field name="rate_id" ref="l10n_dz_payroll_rate_2024"/>
+        <field name="min_amount">3600000</field>
+        <field name="max_amount">0</field>
+        <field name="rate">35</field>
+        <field name="description">Tranche 35% (supérieure)</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Inherit hr.employee to add payroll tab -->
+    <record id="view_employee_paie_inherit" model="ir.ui.view">
+        <field name="name">hr.employee.paie.cdc</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <notebook position="inside">
+                <page string="Paie / RH" name="cdc_paie">
+                    <group>
+                        <group string="Identification Paie">
+                            <field name="matricule"/>
+                            <field name="num_cnas"/>
+                            <field name="num_securite_sociale"/>
+                            <field name="num_ccp"/>
+                            <field name="num_compte_bancaire"/>
+                        </group>
+                        <group string="Classification">
+                            <field name="grade"/>
+                            <field name="categorie_sociopro"/>
+                            <field name="type_contrat"/>
+                            <field name="date_recrutement"/>
+                            <field name="poste_occupe"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Rémunération">
+                            <field name="salaire_base"/>
+                            <field name="salaire_poste"/>
+                            <field name="taux_iep"/>
+                            <field name="iep"/>
+                            <field name="prime_responsabilite"/>
+                            <field name="prime_sujetion"/>
+                            <field name="prime_ifsp"/>
+                            <field name="indemnites_variables"/>
+                        </group>
+                        <group string="Paiement / Famille">
+                            <field name="moyen_paiement"/>
+                            <field name="nbre_enfants"/>
+                        </group>
+                    </group>
+                    <group string="Bulletins de Paie">
+                        <button name="action_view_bulletins"
+                                type="object"
+                                class="btn-secondary"
+                                string="Voir les Bulletins"
+                                icon="fa-file-text"/>
+                        <field name="bulletin_count" readonly="1"/>
+                    </group>
+                    <separator string="Historique des Contrats"/>
+                    <field name="historique_contrat_ids">
+                        <list editable="bottom">
+                            <field name="type_contrat"/>
+                            <field name="date_debut"/>
+                            <field name="date_fin"/>
+                            <field name="salaire_base"/>
+                            <field name="grade"/>
+                            <field name="poste"/>
+                            <field name="notes"/>
+                        </list>
+                    </field>
+                </page>
+            </notebook>
+        </field>
+    </record>
+
+    <!-- Rubrique Plan de Paie - standalone form/list -->
+</odoo>

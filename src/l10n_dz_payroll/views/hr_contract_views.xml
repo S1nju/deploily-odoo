@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="hr_contract_view_form_dz" model="ir.ui.view">
+        <field name="name">hr.contract.form.inherit.dz</field>
+        <field name="model">hr.contract</field>
+        <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Identification algérienne : après le groupe salary -->
+            <xpath expr="//group[@name='salary']" position="after">
+                <group string="Identification Algérienne" name="dz_identification">
+                    <group>
+                        <field name="matricule"/>
+                        <field name="numero_cnas"/>
+                        <field name="numero_compte_bancaire"/>
+                        <field name="date_recrutement"/>
+                    </group>
+                    <group>
+                        <field name="grade"/>
+                        <field name="categorie_professionnelle"/>
+                        <field name="poste_occupe"/>
+                        <field name="jours_ouvrables"/>
+                    </group>
+                </group>
+            </xpath>
+
+            <!-- Salaire de poste : après le champ wage -->
+            <xpath expr="//field[@name='wage']" position="after">
+                <field name="salaire_de_poste"/>
+            </xpath>
+
+            <!-- Primes et indemnités : nouvelle page à la fin du notebook -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Primes et Indemnités (DZ)" name="dz_primes">
+                    <group>
+                        <group string="Primes">
+                            <field name="prime_rendement"/>
+                            <field name="prime_astreinte"/>
+                        </group>
+                        <group string="Indemnités">
+                            <field name="indemnite_nuisance"/>
+                            <field name="prime_panier_contractuelle"
+                                   help="Si vide, le taux légal sera utilisé"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>

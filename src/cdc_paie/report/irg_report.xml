@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_report_irg" model="ir.actions.report">
+        <field name="name">Déclaration IRG</field>
+        <field name="model">cdc.declaration.irg</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">cdc_paie.report_irg_template</field>
+        <field name="report_file">cdc_paie.report_irg_template</field>
+        <field name="binding_model_id" ref="model_cdc_declaration_irg"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="base.paperformat_euro"/>
+    </record>
+
+    <template id="report_irg_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page" style="font-family:Arial,sans-serif; font-size:11px;">
+                        <h2 style="text-align:center; color:#2c3e50;">
+                            DÉCLARATION IRG —
+                            <t t-out="dict(o._fields['type_declaration'].selection).get(o.type_declaration,'')"/>
+                        </h2>
+                        <table width="100%" style="margin-bottom:8px;">
+                            <tr>
+                                <td><strong>Référence :</strong> <t t-out="o.name"/></td>
+                                <td><strong>Année :</strong> <t t-out="o.annee"/></td>
+                                <t t-if="o.mois">
+                                    <td><strong>Mois :</strong>
+                                        <t t-out="dict(o._fields['mois'].selection).get(o.mois,'')"/>
+                                    </td>
+                                </t>
+                            </tr>
+                        </table>
+                        <table width="100%" style="border-collapse:collapse;">
+                            <thead>
+                                <tr style="background:#2c3e50; color:white;">
+                                    <th style="padding:4px 6px; border:1px solid #bdc3c7;">#</th>
+                                    <th style="padding:4px 6px; border:1px solid #bdc3c7;">Employé</th>
+                                    <th style="padding:4px 6px; border:1px solid #bdc3c7;">Matricule</th>
+                                    <th style="padding:4px 6px; border:1px solid #bdc3c7;">Mois</th>
+                                    <th style="padding:4px 6px; border:1px solid #bdc3c7; text-align:right;">Salaire Brut</th>
+                                    <th style="padding:4px 6px; border:1px solid #bdc3c7; text-align:right;">Base IRG</th>
+                                    <th style="padding:4px 6px; border:1px solid #bdc3c7; text-align:right;">IRG</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="o.ligne_ids" t-as="l">
+                                    <tr t-att-style="'background:#ecf0f1;' if l_index % 2 == 0 else ''">
+                                        <td style="padding:3px 6px; border:1px solid #bdc3c7; text-align:center;"><t t-out="l_index + 1"/></td>
+                                        <td style="padding:3px 6px; border:1px solid #bdc3c7;"><t t-out="l.employe_id.name"/></td>
+                                        <td style="padding:3px 6px; border:1px solid #bdc3c7;"><t t-out="l.matricule or ''"/></td>
+                                        <td style="padding:3px 6px; border:1px solid #bdc3c7;">
+                                            <t t-out="dict(l._fields['mois'].selection).get(l.mois,'') if l.mois else ''"/>
+                                        </td>
+                                        <td style="padding:3px 6px; border:1px solid #bdc3c7; text-align:right;"><t t-out="'%,.2f' % l.salaire_brut"/></td>
+                                        <td style="padding:3px 6px; border:1px solid #bdc3c7; text-align:right;"><t t-out="'%,.2f' % l.base_irg"/></td>
+                                        <td style="padding:3px 6px; border:1px solid #bdc3c7; text-align:right;"><t t-out="'%,.2f' % l.irg"/></td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                            <tfoot>
+                                <tr style="background:#2c3e50; color:white; font-weight:bold;">
+                                    <td colspan="4" style="padding:4px 6px; border:1px solid #1a252f;">
+                                        TOTAL — Effectif : <t t-out="o.effectif"/>
+                                    </td>
+                                    <td style="padding:4px 6px; border:1px solid #1a252f;"></td>
+                                    <td style="padding:4px 6px; border:1px solid #1a252f; text-align:right;"><t t-out="'%,.2f' % o.total_base_irg"/></td>
+                                    <td style="padding:4px 6px; border:1px solid #1a252f; text-align:right;"><t t-out="'%,.2f' % o.total_irg"/></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

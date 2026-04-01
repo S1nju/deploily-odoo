@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_rubrique_paie_form" model="ir.ui.view">
+        <field name="name">cdc.rubrique.paie.form</field>
+        <field name="model">cdc.rubrique.paie</field>
+        <field name="arch" type="xml">
+            <form string="Rubrique de Paie">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="code" string="Code"/>
+                        <h1><field name="code"/></h1>
+                        <label for="name" string="Libellé"/>
+                        <h2><field name="name"/></h2>
+                    </div>
+                    <group>
+                        <group string="Paramètres">
+                            <field name="type_rubrique"/>
+                            <field name="mode_calcul"/>
+                            <field name="sequence"/>
+                            <field name="active"/>
+                        </group>
+                        <group string="Calcul">
+                            <field name="montant_fixe"
+                                   invisible="mode_calcul != 'fixe'"/>
+                            <field name="taux"
+                                   invisible="mode_calcul not in ('taux_salaire','taux_brut','cnas')"/>
+                            <field name="plafond_cnas"
+                                   invisible="mode_calcul != 'cnas'"/>
+                        </group>
+                    </group>
+                    <group string="Options Fiscales / Sociales">
+                        <field name="apparait_bulletin"/>
+                        <field name="imposable"/>
+                        <field name="cotisable_cnas"/>
+                    </group>
+                    <group invisible="mode_calcul != 'formule'" string="Formule Personnalisée">
+                        <field name="formule" widget="ace" options="{'mode': 'python'}"/>
+                    </group>
+                    <group string="Notes">
+                        <field name="notes" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_rubrique_paie_list" model="ir.ui.view">
+        <field name="name">cdc.rubrique.paie.list</field>
+        <field name="model">cdc.rubrique.paie</field>
+        <field name="arch" type="xml">
+            <list string="Plan de Rubriques">
+                <field name="sequence" widget="handle"/>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="type_rubrique" widget="badge"/>
+                <field name="mode_calcul"/>
+                <field name="montant_fixe"/>
+                <field name="taux"/>
+                <field name="imposable"/>
+                <field name="cotisable_cnas"/>
+                <field name="apparait_bulletin"/>
+                <field name="active" column_invisible="True"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_rubrique_paie" model="ir.actions.act_window">
+        <field name="name">Plan de Rubriques</field>
+        <field name="res_model">cdc.rubrique.paie</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

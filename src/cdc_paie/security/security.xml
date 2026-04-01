@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- ── Module Category ─────────────────────────────────────────── -->
+        <record id="module_category_cdc_paie" model="ir.module.category">
+            <field name="name">CDC Paie</field>
+            <field name="description">Gestion de la Paie - CDC ERP 026-2025</field>
+            <field name="sequence">20</field>
+        </record>
+
+        <!-- ── Groups ──────────────────────────────────────────────────── -->
+
+        <!-- Utilisateur standard Paie -->
+        <record id="group_paie_user" model="res.groups">
+            <field name="name">Utilisateur Paie</field>
+            <field name="category_id" ref="module_category_cdc_paie"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="comment">
+                Accès en lecture aux bulletins. Saisie des opérations de base.
+            </field>
+        </record>
+
+        <!-- Chef de Service Paie -->
+        <record id="group_paie_chef" model="res.groups">
+            <field name="name">Chef de Service Paie</field>
+            <field name="category_id" ref="module_category_cdc_paie"/>
+            <field name="implied_ids" eval="[(4, ref('group_paie_user'))]"/>
+            <field name="comment">
+                Génération des bulletins de paie individuels.
+            </field>
+        </record>
+
+        <!-- Administrateur Paie -->
+        <record id="group_paie_admin" model="res.groups">
+            <field name="name">Administrateur Paie</field>
+            <field name="category_id" ref="module_category_cdc_paie"/>
+            <field name="implied_ids" eval="[(4, ref('group_paie_chef'))]"/>
+            <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+            <field name="comment">
+                Gestion complète : paramétrage, validation, exports, déclarations CNAS/IRG.
+            </field>
+        </record>
+
+    </data>
+</odoo>

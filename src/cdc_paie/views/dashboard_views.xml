@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Dashboard action using client action -->
+    <record id="action_paie_dashboard" model="ir.actions.client">
+        <field name="name">Tableau de Bord Paie</field>
+        <field name="tag">cdc_paie_dashboard</field>
+    </record>
+
+    <!-- Quick Stats view on bulletin list -->
+    <record id="view_bulletin_paie_pivot" model="ir.ui.view">
+        <field name="name">cdc.bulletin.paie.pivot</field>
+        <field name="model">cdc.bulletin.paie</field>
+        <field name="arch" type="xml">
+            <pivot string="Analyse de la Paie">
+                <field name="direction_id" type="row"/>
+                <field name="categorie" type="row"/>
+                <field name="mois" type="col"/>
+                <field name="salaire_brut" type="measure"/>
+                <field name="cnas_salarie" type="measure"/>
+                <field name="irg" type="measure"/>
+                <field name="salaire_net" type="measure"/>
+                <field name="charge_patronale" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_bulletin_paie_graph" model="ir.ui.view">
+        <field name="name">cdc.bulletin.paie.graph</field>
+        <field name="model">cdc.bulletin.paie</field>
+        <field name="arch" type="xml">
+            <graph string="Masse Salariale" type="bar">
+                <field name="mois" type="col"/>
+                <field name="direction_id" type="row"/>
+                <field name="salaire_brut" type="measure"/>
+                <field name="salaire_net" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="action_bulletin_paie_analyse" model="ir.actions.act_window">
+        <field name="name">Analyse de la Paie</field>
+        <field name="res_model">cdc.bulletin.paie</field>
+        <field name="view_mode">pivot,graph,list</field>
+    </record>
+
+</odoo>

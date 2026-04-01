@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Ajoute le champ écriture CNAS patronale sur le bulletin de paie -->
+    <record id="hr_payslip_view_form_account_dz" model="ir.ui.view">
+        <field name="name">hr.payslip.form.inherit.account.dz</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id" ref="payroll_account.hr_payslip_view_form"/>
+        <field name="arch" type="xml">
+            <field name="move_id" position="after">
+                <field name="move_cnas_patronale_id" readonly="1"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- Ajoute les comptes DZ dans la page Accounting de la règle salariale -->
+    <!-- (déjà gérée par payroll_account — pas besoin de surcharge) -->
+
+    <!-- Vue récapitulatif journal de paie mensuel -->
+    <record id="hr_payslip_run_view_form_dz" model="ir.ui.view">
+        <field name="name">hr.payslip.run.form.inherit.dz</field>
+        <field name="model">hr.payslip.run</field>
+        <field name="inherit_id" ref="payroll_account.hr_payslip_run_view_form"/>
+        <field name="arch" type="xml">
+            <field name="journal_id" position="after">
+                <!-- Pas de champ supplémentaire ici, la surcharge
+                     confirme simplement l'héritage de payroll_account -->
+            </field>
+        </field>
+    </record>
+
+</odoo>

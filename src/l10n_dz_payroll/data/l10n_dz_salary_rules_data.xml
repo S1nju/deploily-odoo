@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- ================================================================== -->
+    <!-- RÈGLES SALARIALES ALGÉRIENNES                                       -->
+    <!-- Toutes les règles utilisent les méthodes de hr.payslip héritées.    -->
+    <!-- ================================================================== -->
+
+    <!-- 1. SALAIRE DE BASE -->
+    <record id="rule_dz_salaire_base" model="hr.salary.rule">
+        <field name="name">Salaire de Base</field>
+        <field name="code">SB</field>
+        <field name="sequence">10</field>
+        <field name="category_id" ref="category_base_dz"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+# Salaire de base = salaire contractuel (wage)
+result = contract.wage
+        </field>
+    </record>
+
+    <!-- 2. SALAIRE DE POSTE -->
+    <record id="rule_dz_salaire_poste" model="hr.salary.rule">
+        <field name="name">Salaire de Poste</field>
+        <field name="code">SP</field>
+        <field name="sequence">12</field>
+        <field name="category_id" ref="category_base_dz"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.salaire_de_poste or 0.0
+        </field>
+    </record>
+
+    <!-- 3. IEP – Indemnité d'Expérience Professionnelle -->
+    <record id="rule_dz_iep" model="hr.salary.rule">
+        <field name="name">Indemnité d'Expérience Professionnelle (IEP)</field>
+        <field name="code">IEP</field>
+        <field name="sequence">15</field>
+        <field name="category_id" ref="category_primes_dz"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+# IEP = salaire_base * min(ancienneté * 1%, 25%)
+result = payslip.compute_iep(contract.wage)
+        </field>
+    </record>
+
+    <!-- 4. INDEMNITÉ DE PANIER -->
+    <record id="rule_dz_indemnite_panier" model="hr.salary.rule">
+        <field name="name">Indemnité de Panier</field>
+        <field name="code">PANIER</field>
+        <field name="sequence">20</field>
+        <field name="category_id" ref="category_primes_dz"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+# Indemnité panier = taux_journalier * jours_travaillés
+# Utilise la valeur contractuelle si définie, sinon le taux légal
+rates = payslip._get_dz_rates()
+jours = worked_days.WORK100.number_of_days if worked_days.WORK100 else 0
+taux_panier = contract.prime_panier_contractuelle or (rates.indemnite_panier if rates else 120.0)
+result = taux_panier * jours
+        </field>
+    </record>
+
+    <!-- 5. INDEMNITÉ DE TRANSPORT -->
+    <record id="rule_dz_indemnite_transport" model="hr.salary.rule">
+        <field name="name">Indemnité de Transport</field>
+        <field name="code">TRANSPORT</field>
+        <field name="sequence">22</field>
+        <field name="category_id" ref="category_primes_dz"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+rates = payslip._get_dz_rates()
+result = rates.indemnite_transport if rates else 3000.0
+        </field>
+    </record>
+
+    <!-- 6. PRIME DE RENDEMENT -->
+    <record id="rule_dz_prime_rendement" model="hr.salary.rule">
+        <field name="name">Prime de Rendement</field>
+        <field name="code">PRI_RDT</field>
+        <field name="sequence">25</field>
+        <field name="category_id" ref="category_primes_dz"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.prime_rendement or 0.0
+        </field>
+    </record>
+
+    <!-- 7. ALLOCATIONS FAMILIALES -->
+    <record id="rule_dz_allocations_familiales" model="hr.salary.rule">
+        <field name="name">Allocations Familiales</field>
+        <field name="code">AF</field>
+        <field name="sequence">30</field>
+        <field name="category_id" ref="category_primes_dz"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = payslip.compute_allocations_familiales()
+        </field>
+    </record>
+
+    <!-- 8. SALAIRE UNIQUE -->
+    <record id="rule_dz_salaire_unique" model="hr.salary.rule">
+        <field name="name">Salaire Unique</field>
+        <field name="code">SU</field>
+        <field name="sequence">32</field>
+        <field name="category_id" ref="category_primes_dz"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="amount_select">code</field>
+        <field name="condition_select">python</field>
+        <field name="condition_python">
+# Applicable si conjoint ne travaille pas et marié(e)
+result = (
+    employee.situation_familiale == 'marie'
+    and not employee.conjoint_travaille
+)
+        </field>
+        <field name="amount_python_compute">
+# Salaire unique = 0.5 * SMIG
+rates = payslip._get_dz_rates()
+result = (rates.smig * 0.5) if rates else 0.0
+        </field>
+    </record>
+
+    <!-- 9. SALAIRE BRUT (total des gains) -->
+    <record id="rule_dz_brut" model="hr.salary.rule">
+        <field name="name">Salaire Brut</field>
+        <field name="code">BRUT</field>
+        <field name="sequence">100</field>
+        <field name="category_id" ref="category_brut_dz"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = categories.BRUT
+        </field>
+    </record>
+
+    <!-- 10. COTISATION CNAS SALARIALE -->
+    <record id="rule_dz_cnas_sal" model="hr.salary.rule">
+        <field name="name">Cotisation CNAS Salariale (9%)</field>
+        <field name="code">CNAS_SAL</field>
+        <field name="sequence">110</field>
+        <field name="category_id" ref="category_cotisations_dz"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+# CNAS salariale = 9% du brut plafonné
+result = -payslip.compute_cnas_salariale(categories.BRUT)
+        </field>
+    </record>
+
+    <!-- 11. IRG – Impôt sur le Revenu Global -->
+    <record id="rule_dz_irg" model="hr.salary.rule">
+        <field name="name">IRG (Impôt sur le Revenu Global)</field>
+        <field name="code">IRG</field>
+        <field name="sequence">120</field>
+        <field name="category_id" ref="category_cotisations_dz"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+# Base IRG = Brut - CNAS salariale
+brut_imposable = categories.BRUT + categories.COTISATIONS
+result = -payslip.compute_irg(brut_imposable)
+        </field>
+    </record>
+
+    <!-- 12. NET À PAYER -->
+    <record id="rule_dz_net" model="hr.salary.rule">
+        <field name="name">Net à Payer</field>
+        <field name="code">NET</field>
+        <field name="sequence">200</field>
+        <field name="category_id" ref="category_net_dz"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = categories.BRUT + categories.COTISATIONS
+        </field>
+    </record>
+
+    <!-- 13. COTISATION CNAS PATRONALE (hors bulletin salarié, pour reporting) -->
+    <record id="rule_dz_cnas_pat" model="hr.salary.rule">
+        <field name="name">Charge Patronale CNAS (26%)</field>
+        <field name="code">CNAS_PAT</field>
+        <field name="sequence">210</field>
+        <field name="category_id" ref="category_charges_pat_dz"/>
+        <field name="appears_on_payslip">False</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+# Charge patronale = 26% du brut plafonné (non déduit du salarié)
+result = payslip.compute_cnas_patronale(categories.BRUT)
+        </field>
+    </record>
+
+
+    <!-- ================================================================== -->
+    <!-- LIAISON DES RÈGLES À LA STRUCTURE (Many2many)                       -->
+    <!-- Cette section doit rester en dernier, après la création des règles. -->
+    <!-- ================================================================== -->
+    <record id="structure_dz_base" model="hr.payroll.structure">
+        <field name="rule_ids" eval="[
+            Command.link(ref('l10n_dz_payroll.rule_dz_salaire_base')),
+            Command.link(ref('l10n_dz_payroll.rule_dz_salaire_poste')),
+            Command.link(ref('l10n_dz_payroll.rule_dz_iep')),
+            Command.link(ref('l10n_dz_payroll.rule_dz_indemnite_panier')),
+            Command.link(ref('l10n_dz_payroll.rule_dz_indemnite_transport')),
+            Command.link(ref('l10n_dz_payroll.rule_dz_prime_rendement')),
+            Command.link(ref('l10n_dz_payroll.rule_dz_allocations_familiales')),
+            Command.link(ref('l10n_dz_payroll.rule_dz_salaire_unique')),
+            Command.link(ref('l10n_dz_payroll.rule_dz_brut')),
+            Command.link(ref('l10n_dz_payroll.rule_dz_cnas_sal')),
+            Command.link(ref('l10n_dz_payroll.rule_dz_irg')),
+            Command.link(ref('l10n_dz_payroll.rule_dz_net')),
+            Command.link(ref('l10n_dz_payroll.rule_dz_cnas_pat')),
+        ]"/>
+    </record>
+
+</odoo>

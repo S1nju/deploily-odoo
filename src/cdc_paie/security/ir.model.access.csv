@@ -1,0 +1,33 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_parametrage_admin,cdc.parametrage.paie admin,model_cdc_parametrage_paie,cdc_paie.group_paie_admin,1,1,1,1
+access_parametrage_user,cdc.parametrage.paie user,model_cdc_parametrage_paie,cdc_paie.group_paie_user,1,0,0,0
+access_tranche_irg_admin,cdc.tranche.irg admin,model_cdc_tranche_irg,cdc_paie.group_paie_admin,1,1,1,1
+access_tranche_irg_user,cdc.tranche.irg user,model_cdc_tranche_irg,cdc_paie.group_paie_user,1,0,0,0
+access_calendrier_admin,cdc.calendrier.paie admin,model_cdc_calendrier_paie,cdc_paie.group_paie_admin,1,1,1,1
+access_calendrier_user,cdc.calendrier.paie user,model_cdc_calendrier_paie,cdc_paie.group_paie_user,1,0,0,0
+access_rubrique_admin,cdc.rubrique.paie admin,model_cdc_rubrique_paie,cdc_paie.group_paie_admin,1,1,1,1
+access_rubrique_user,cdc.rubrique.paie user,model_cdc_rubrique_paie,cdc_paie.group_paie_user,1,0,0,0
+access_bulletin_admin,cdc.bulletin.paie admin,model_cdc_bulletin_paie,cdc_paie.group_paie_admin,1,1,1,1
+access_bulletin_chef,cdc.bulletin.paie chef,model_cdc_bulletin_paie,cdc_paie.group_paie_chef,1,1,1,0
+access_bulletin_user,cdc.bulletin.paie user,model_cdc_bulletin_paie,cdc_paie.group_paie_user,1,0,0,0
+access_ligne_bulletin_admin,cdc.ligne.bulletin admin,model_cdc_ligne_bulletin,cdc_paie.group_paie_admin,1,1,1,1
+access_ligne_bulletin_chef,cdc.ligne.bulletin chef,model_cdc_ligne_bulletin,cdc_paie.group_paie_chef,1,1,1,0
+access_ligne_bulletin_user,cdc.ligne.bulletin user,model_cdc_ligne_bulletin,cdc_paie.group_paie_user,1,0,0,0
+access_declaration_cnas_admin,cdc.declaration.cnas admin,model_cdc_declaration_cnas,cdc_paie.group_paie_admin,1,1,1,1
+access_declaration_cnas_user,cdc.declaration.cnas user,model_cdc_declaration_cnas,cdc_paie.group_paie_user,1,0,0,0
+access_ligne_declaration_cnas_admin,cdc.ligne.declaration.cnas admin,model_cdc_ligne_declaration_cnas,cdc_paie.group_paie_admin,1,1,1,1
+access_declaration_irg_admin,cdc.declaration.irg admin,model_cdc_declaration_irg,cdc_paie.group_paie_admin,1,1,1,1
+access_declaration_irg_user,cdc.declaration.irg user,model_cdc_declaration_irg,cdc_paie.group_paie_user,1,0,0,0
+access_ligne_declaration_irg_admin,cdc.ligne.declaration.irg admin,model_cdc_ligne_declaration_irg,cdc_paie.group_paie_admin,1,1,1,1
+access_etat_paie_admin,cdc.etat.paie admin,model_cdc_etat_paie,cdc_paie.group_paie_admin,1,1,1,1
+access_etat_paie_chef,cdc.etat.paie chef,model_cdc_etat_paie,cdc_paie.group_paie_chef,1,1,1,0
+access_etat_paie_user,cdc.etat.paie user,model_cdc_etat_paie,cdc_paie.group_paie_user,1,0,0,0
+access_ligne_etat_paie_admin,cdc.ligne.etat.paie admin,model_cdc_ligne_etat_paie,cdc_paie.group_paie_admin,1,1,1,1
+access_ligne_etat_paie_user,cdc.ligne.etat.paie user,model_cdc_ligne_etat_paie,cdc_paie.group_paie_user,1,0,0,0
+access_historique_contrat_admin,cdc.historique.contrat admin,model_cdc_historique_contrat,cdc_paie.group_paie_admin,1,1,1,1
+access_historique_contrat_user,cdc.historique.contrat user,model_cdc_historique_contrat,cdc_paie.group_paie_user,1,0,0,0
+access_hr_employee_chef,hr.employee chef,hr.model_hr_employee,cdc_paie.group_paie_chef,1,0,0,0
+access_hr_employee_user,hr.employee user,hr.model_hr_employee,cdc_paie.group_paie_user,1,0,0,0
+access_hr_contract_chef,hr.contract chef,hr_contract.model_hr_contract,cdc_paie.group_paie_chef,1,0,0,0
+access_hr_contract_user,hr.contract user,hr_contract.model_hr_contract,cdc_paie.group_paie_user,1,0,0,0
+
