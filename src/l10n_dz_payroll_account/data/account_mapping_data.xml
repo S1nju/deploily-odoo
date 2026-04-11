@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Account mapping is handled by post_migrate_hook in __init__.py -->
+</odoo>

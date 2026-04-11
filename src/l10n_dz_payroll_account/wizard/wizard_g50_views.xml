@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_wizard_g50_form" model="ir.ui.view">
+        <field name="name">l10n.dz.payroll.wizard.g50.form</field>
+        <field name="model">l10n.dz.payroll.wizard.g50</field>
+        <field name="arch" type="xml">
+            <form string="Declaration G50">
+                <group>
+                    <field name="company_id"/>
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                </group>
+                <footer>
+                    <button name="action_print_g50" string="Imprimer G50"
+                            type="object" class="btn-primary"/>
+                    <button string="Annuler" class="btn-secondary"
+                            special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

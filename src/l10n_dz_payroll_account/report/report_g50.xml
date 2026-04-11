@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_g50" model="ir.actions.report">
+        <field name="name">Declaration G50</field>
+        <field name="model">l10n.dz.payroll.wizard.g50</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">l10n_dz_payroll_account.report_g50_template</field>
+        <field name="report_file">l10n_dz_payroll_account.report_g50_template</field>
+    </record>
+</odoo>

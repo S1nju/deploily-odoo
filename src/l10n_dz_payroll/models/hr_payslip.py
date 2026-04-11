@@ -154,11 +154,9 @@ class HrPayslip(models.Model):
 
     def compute_irg(self, salaire_brut_imposable):
         """
-        Calcule l'IRG selon le barème progressif algérien.
-        1. Calcul abattement : 40% du brut, plafonné entre min et max annuels
-        2. Revenu net imposable annuel = (brut - abattement - déductions) * 12
-        3. Application du barème progressif
-        4. Retour du montant mensuel
+        Calcule l'IRG mensuel algérien.
+        Base = Brut imposable - Abattement 40% (min/max mensuels)
+        Application directe du barème mensuel.
         """
         self.ensure_one()
         rates = self._get_dz_rates()
@@ -167,83 +165,72 @@ class HrPayslip(models.Model):
 
         employee = self.employee_id
 
-        # 1. Abattement forfaitaire
-        abattement_annuel = salaire_brut_imposable * 12 * rates.irg_abattement_rate / 100.0
-        abattement_annuel = max(
+        # 1. Abattement mensuel 40%
+        abattement = salaire_brut_imposable * rates.irg_abattement_rate / 100.0
+        abattement = max(
             rates.irg_abattement_min,
-            min(abattement_annuel, rates.irg_abattement_max),
+            min(abattement, rates.irg_abattement_max),
         )
 
-        # 2. Déductions pour charges de famille
+        # 2. Déductions famille mensuelles
         deduction_conjoint = (
             0.0
             if employee.conjoint_travaille or employee.situation_familiale == "celibataire"
-            else rates.irg_deduction_conjoint * 12
+            else rates.irg_deduction_conjoint
         )
-        deduction_enfants = employee.nombre_enfants * rates.irg_deduction_enfant * 12
+        deduction_enfants = employee.nombre_enfants * rates.irg_deduction_enfant
 
-        # 3. Revenu net imposable annuel
-        revenu_annuel = (salaire_brut_imposable * 12) - abattement_annuel
-        revenu_net_annuel = max(0.0, revenu_annuel - deduction_conjoint - deduction_enfants)
+        # 3. Revenu net imposable mensuel
+        revenu_net = max(0.0, salaire_brut_imposable - abattement - deduction_conjoint - deduction_enfants)
 
-        # 4. Application barème progressif
-        irg_annuel = self._apply_irg_bareme(revenu_net_annuel, rates)
+        # 4. Application barème progressif mensuel - pas de division par 12
+        return self._apply_irg_bareme(revenu_net, rates)
 
-        # 5. Retour mensuel
-        return irg_annuel / 12.0
-
-    def _apply_irg_bareme(self, revenu_annuel, rates):
+    def _apply_irg_bareme(self, revenu_mensuel, rates):
         """
-        Applique le barème progressif IRG sur le revenu annuel.
-        Si des tranches sont configurées, les utilise. Sinon utilise le barème légal.
+        Applique le barème progressif IRG mensuel tranche par tranche.
         """
         brackets = rates.irg_bracket_ids.sorted("min_amount")
-        if brackets:
-            irg = 0.0
-            remaining = revenu_annuel
-            for bracket in brackets:
-                if remaining <= 0:
-                    break
-                lower = bracket.min_amount
-                upper = bracket.max_amount if bracket.max_amount > 0 else float("inf")
-                taxable_in_bracket = min(remaining, upper - lower)
-                if taxable_in_bracket > 0 and revenu_annuel > lower:
-                    taxable = min(revenu_annuel, upper) - lower
-                    irg += max(0, taxable) * bracket.rate / 100.0
-            return irg
-        else:
-            # Barème légal par défaut (2023 - Article 104 du Code des Impôts directs)
-            return self._irg_bareme_legal_default(revenu_annuel)
+        if not brackets:
+            return self._irg_bareme_legal_default(revenu_mensuel)
+
+        irg = 0.0
+        for bracket in brackets:
+            lower = bracket.min_amount
+            upper = bracket.max_amount if bracket.max_amount > 0 else float("inf")
+            if revenu_mensuel <= lower:
+                break
+            taxable = min(revenu_mensuel, upper) - lower
+            if taxable > 0:
+                irg += taxable * bracket.rate / 100.0
+        return irg
 
     @staticmethod
-    def _irg_bareme_legal_default(revenu_annuel):
+    def _irg_bareme_legal_default(revenu_mensuel):
         """
-        Barème IRG légal algérien par défaut (tranches annuelles en DA).
-        Source : Code des Impôts Directs et Taxes Assimilées - Art. 104
+        Barème IRG mensuel légal algérien par défaut.
         """
-        if revenu_annuel <= 120000:
+        if revenu_mensuel <= 20000:
             return 0.0
-        elif revenu_annuel <= 360000:
-            return (revenu_annuel - 120000) * 0.20
-        elif revenu_annuel <= 1200000:
-            return 48000 + (revenu_annuel - 360000) * 0.30
-        elif revenu_annuel <= 3600000:
-            return 300000 + (revenu_annuel - 1200000) * 0.33
+        elif revenu_mensuel <= 40000:
+            return (revenu_mensuel - 20000) * 0.20
+        elif revenu_mensuel <= 80000:
+            return 4000 + (revenu_mensuel - 40000) * 0.25
         else:
-            return 1092000 + (revenu_annuel - 3600000) * 0.35
-
+            return 14000 + (revenu_mensuel - 80000) * 0.30
+        
     def compute_allocations_familiales(self):
-        """
-        Calcule les allocations familiales.
-        Base = SMIG * taux * nombre d'enfants
-        """
-        self.ensure_one()
-        rates = self._get_dz_rates()
-        if not rates:
-            return 0.0
-        return (
-            rates.smig
-            * rates.allocation_familiale_rate
-            / 100.0
-            * self.employee_id.nombre_enfants
-        )
+            """
+            Calcule les allocations familiales.
+            Base = SMIG * taux * nombre d'enfants
+            """
+            self.ensure_one()
+            rates = self._get_dz_rates()
+            if not rates:
+                return 0.0
+            return (
+                rates.smig
+                * rates.allocation_familiale_rate
+                / 100.0
+                * self.employee_id.nombre_enfants
+            )
