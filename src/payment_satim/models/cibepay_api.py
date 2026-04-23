@@ -2,7 +2,6 @@
 
 
 import json
-from urllib.parse import quote
 import requests
 from datetime import datetime
 import pytz
@@ -18,7 +17,7 @@ class CibEPayApi:
         user_name,
         password,
         json_params,
-        state="test",
+        is_satim_test=False,
         language="fr",
         currency="012",
     ):
@@ -26,12 +25,12 @@ class CibEPayApi:
         self.password = password
         self.language = language
         self.currency = currency
-        self.state = state
+        self.is_satim_test = is_satim_test
         self.json_params = json_params
 
-    def get_cibepay_urls(self, state="test"):
+    def get_cibepay_urls(self):
         """CIB IPay URLs"""
-        environment = "test2" if state == "test" else "epg"
+        environment = "test2" if self.is_satim_test else "epg"
 
         return {
             "cibepay_register_url": f"https://{environment}.satim.dz/payment/rest/register.do?",
@@ -71,7 +70,7 @@ class CibEPayApi:
         self, order_id, order_total, confirm_url, fail_url, description=""
     ):
 
-        base_url = self.get_cibepay_urls(self.state)["cibepay_register_url"]
+        base_url = self.get_cibepay_urls()["cibepay_register_url"]
 
         params = {
             "userName": self.user_name,
@@ -153,7 +152,7 @@ class CibEPayApi:
                 params["udf2"] if "udf2" in params.keys() else ""
             )
             payment_status["params-udf3"] = (
-                params["udf3"] if "udf2" in params.keys() else ""
+                params["udf3"] if "udf3" in params.keys() else ""
             )
             payment_status["params-udf4"] = (
                 params["udf4"] if "udf4" in params.keys() else ""
@@ -166,7 +165,7 @@ class CibEPayApi:
 
     def SendConfirmOrder(self, order_id):
 
-        base_url = self.get_cibepay_urls(self.state)[
+        base_url = self.get_cibepay_urls()[
             "cibepay_confirm_order_url"
         ]
 
@@ -206,7 +205,7 @@ class CibEPayApi:
 
     def SendRefundOrder(self, order_id, amount):
 
-        base_url = self.get_cibepay_urls(self.state)["cibepay_refund_url"]
+        base_url = self.get_cibepay_urls()["cibepay_refund_url"]
 
         params = {
             "userName": self.user_name,
@@ -223,7 +222,8 @@ class CibEPayApi:
     # Utility function to manage HTTP server requests
     #
     def SendReq(self, url, params):
-
+        if (self.is_satim_test):
+            _logger.info(f"Sending request to CibEpay API at {url} with data:\n{json.dumps(params, indent=2)}")
         try:
             response = requests.get(url, params=params)
             response.raise_for_status()

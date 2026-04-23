@@ -9,7 +9,7 @@
 
                     <t t-call="payment.summary_item">
                         <t t-set="name" t-value="'cibepay_mdorder'" />
-                        <t t-set="label">Satim order id </t>
+                        <t t-set="label">Order ID</t>
                         <t t-set="value" t-value="tx.cibepay_mdorder" />
                         <t t-set="include_separator" t-value="True" />
                     </t>
@@ -40,7 +40,6 @@
 
                 </t>
                 <t t-else="">
-
                     <t t-if="tx.cibepay_resp_code=='00' and tx.cibepay_error_code=='0' and tx.cibepay_order_status==3">
                         <div class="alert alert-danger" role="alert">
                             Votre transaction a été rejetée/ Your transaction was rejected/ تم رفض معاملتك
@@ -94,7 +93,15 @@
                 </tr>
                 <tr>
                     <td colspan="2" class="ps-0">
-                        <strong class="text-black-50">Satim order id</strong>
+                        <strong class="text-black-50">Order ID</strong>
+                    </td>
+                    <td class="text-end pe-0" width="100">
+                        <t t-esc="order.name" />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="ps-0">
+                        <strong class="text-black-50">Transaction ID</strong>
                     </td>
                     <td class="text-end pe-0" width="100">
                         <t t-esc="tx_sudo.cibepay_mdorder" />
@@ -113,21 +120,20 @@
                         <strong class="text-black-50">Transaction date and time</strong>
                     </td>
                     <td class="text-end pe-0" width="100">
-                        <t t-esc="tx_sudo.create_date" />
+                        <t t-esc="tx_sudo.create_date" t-options='{"widget": "datetime"}' />
                     </td>
                 </tr>
                 <tr>
                     <td colspan="2" class="ps-0">
-                        <strong class="text-black-50">Response code</strong>
+                        <strong class="text-black-50">Status</strong>
                     </td>
                     <td class="text-end pe-0" width="100">
                         <t t-esc="tx_sudo.cibepay_resp_code_desc" />
                     </td>
                 </tr>
-
-
             </t>
         </xpath>
+
         <xpath expr="//div[contains(@id, 'oe_structure_website_sale_confirmation_2' )]" position="before">
             <div t-if="tx_sudo.provider_id.code == 'cibepay'" class="card mt-3">
                 <div class="card-body">
@@ -142,45 +148,82 @@
                 </div>
             </div>
         </xpath>
-        <xpath expr="//div[@class='d-flex justify-content-between align-items-center']" position="inside">
 
-            <t t-if="tx_sudo.provider_id.code == 'cibepay'">
-                <button type="button" class="d-none d-md-inline-block btn btn-primary ms-auto"
-                    data-bs-toggle="modal" data-bs-target="#input_email_box">
-                    <i class="fa fa-envelope"></i> Send mail </button>
+        <xpath expr="//div[@class='d-flex justify-content-between align-items-center']" position="replace">
+            <div t-if="tx_sudo.state in ['pending', 'done']" class="d-flex justify-content-between align-items-center mb-2">
+                <div class="d-flex flex-column align-items-center">
+                    <h3>Thank you for your order.</h3>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a role="button" class="btn btn-primary me-2" href="/shop/print" target="_blank" aria-label="Print" title="Print"><i
+                                class="fa fa-print me-2"></i>Print</a>
+                        <t t-if="tx_sudo.provider_id.code == 'cibepay'">
+                            <a role="button"
+                                class="btn btn-primary ms-auto me-2"
+                                href="/shop/print"
+                                t-attf-download="{{ order.name }}.pdf"
+                                aria-label="Download"
+                                title="Download">
+                                <i class="fa fa-download me-2" /> Download </a>
+                            <!-- Trigger Button -->
+                            <button type="button"
+                                class="btn btn-primary ms-auto"
+                                data-bs-toggle="modal"
+                                data-bs-target="#cibepay_input_email_box">
+                                <i class="fa fa-envelope" /> Send mail </button>
 
-                <div id="input_email_box" class="modal fade" tabindex="-1" role="dialog">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title"> Envoyer par mail </h5>
-                            </div>
-                            <div class="modal-body">
-                                <form role="form" method="GET" action="/shop/cibepay/sendbymail" target="_blank">
-                                    <div class="form-group">
-                                        <label for="receiver_mail"> Email de destination </label>
-                                        <input class="form-control" id="receiver_mail" name="receiver_mail"
-                                            placeholder="Email de destination" required='1' />
+                            <!-- Modal -->
+                            <div id="cibepay_input_email_box" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="emailModalTitle" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="emailModalTitle">Envoyer par mail</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" />
+                                        </div>
+
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <label for="cibepay_receiver_mail">Email de destination</label>
+                                                <input class="form-control mt-1"
+                                                    id="cibepay_receiver_mail"
+                                                    name="cibepay_receiver_mail"
+                                                    type="email"
+                                                    placeholder="exemple@domaine.com"
+                                                    required="1" />
+                                                <!-- Feedback messages -->
+                                                <div id="cibepay_mail_feedback" class="mt-2" style="display:none;" />
+                                            </div>
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                Annuler
+                                            </button>
+                                            <button type="button"
+                                                id="cibepay_send_mail_btn"
+                                                class="btn btn-primary">
+                                                <i class="fa fa-envelope me-1" />
+                                                <span>Envoyer</span>
+                                            </button>
+                                        </div>
+
                                     </div>
-                                    <div class="form-group mt-2">
-                                        <button type="submit" class="btn btn-primary d-none d-md-inline-block">
-                                            <i class="fa fa-envelope"></i>
-                                            <span> Envoyer </span>
-                                        </button>
-                                    </div>
-                                </form>
+                                </div>
                             </div>
-                        </div>
+                        </t>
                     </div>
                 </div>
-            </t>
+            </div>
 
         </xpath>
     </template>
+
     <template id="cibepay_payment_confirmation_status" inherit_id="website_sale.payment_confirmation_status">
         <xpath expr="//t[contains(@t-if, 'done' )]" position="replace">
             <t t-if="tx_sudo.state== 'done' and tx_sudo.provider_id.code=='cibepay'">
-                <span t-if='tx_sudo.cibepay_action_code_description' t-out="tx_sudo.cibepay_action_code_description" />
+                <div class="alert alert-success" role="alert">
+                    <span t-if='tx_sudo.cibepay_action_code_description' t-out="tx_sudo.cibepay_action_code_description" />
+                </div>
             </t>
         </xpath>
         <xpath expr="//t[contains(@t-if, 'error')]" position="replace">

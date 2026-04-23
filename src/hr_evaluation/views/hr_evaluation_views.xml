@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <data>
+
+
+    
+
         <!-- HR Evaluation Views -->
         <record model="ir.ui.view" id="view_hr_evaluation_form">
             <field name="name">hr.evaluation.form</field>
@@ -20,13 +24,7 @@
                             <field name="rating"/>
                         </group>
                         <field name="comments"/>
-                        <field name="line_ids">
-                            <tree editable="bottom">
-                                <field name="criteria"/>
-                                <field name="rating"/>
-                                <field name="comment"/>
-                            </tree>
-                        </field>
+                  
                     </sheet>
                 </form>
             </field>

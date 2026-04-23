@@ -9,8 +9,8 @@
     "depends": ["hr"],
     "data": [
         "security/ir.model.access.csv",
-        "views/hr_medical_menus.xml",
         "views/hr_medical_views.xml",
+        "views/hr_medical_menus.xml",
     ],
     "license": "Other proprietary",
     "application": True,

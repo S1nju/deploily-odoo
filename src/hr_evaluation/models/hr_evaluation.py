@@ -24,3 +24,11 @@ class HrEvaluation(models.Model):
         ('reviewed', 'Reviewed'),
         ('archived', 'Archived')
     ], string="State", default='draft')
+
+    def action_submit(self):
+        for record in self:
+            record.state = 'submitted'
+
+    def action_review(self):
+        for record in self:
+            record.state = 'reviewed'

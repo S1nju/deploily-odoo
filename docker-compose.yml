@@ -6,7 +6,7 @@ services:
     volumes:
       - db-data:/var/lib/postgresql/data/pgdata
     ports:
-      - 5433:5433/tcp
+      - 5432:5432/tcp
     environment:
       - POSTGRES_PASSWORD=odoo
       - POSTGRES_USER=odoo

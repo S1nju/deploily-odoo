@@ -8,6 +8,7 @@
         <field name="arch" type="xml">
             <group name="provider_credentials" position='inside'>
                 <group invisible="code != 'cibepay'">
+                    <field name="cibepay_is_satim_test" widget="boolean_toggle" />
                     <field name="cibepay_username"
                         required="code == 'cibepay' and state != 'disabled'" />
                     <field name="cibepay_password"
@@ -28,7 +29,8 @@
                 <div invisible="code != 'cibepay' or not capture_manually"
                     class="alert alert-warning"
                     role="alert">
-                    <strong>Warning:</strong> To capture the amount manually, you also need to set the Capture Delay to manual on your New Adyen account settings. <widget name="documentation_link" path="/applications/finance/payment_providers/adyen.html#place-a-hold-on-a-card" label="Learn More" />
+                    <strong>Warning:</strong> To capture the amount manually, you also need to set the Capture Delay to manual on your New Adyen account settings. <widget
+                        name="documentation_link" path="/applications/finance/payment_providers/adyen.html#place-a-hold-on-a-card" label="Learn More" />
                 </div>
             </group>
         </field>

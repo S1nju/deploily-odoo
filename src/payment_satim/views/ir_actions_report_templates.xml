@@ -35,7 +35,7 @@
                     <div class="col-4">
                         <strong>Salesperson</strong>
                     </div>
-                    <div class="col-4" t-field="doc.user_id">Mitchell Admin</div>
+                    <div class="col-4" t-field="doc.user_id">Admin</div>
                 </div>
 
                 <t t-set="tx" t-value="([t for t in doc.transaction_ids if t.state== 'done'] or [None])[0]"></t>
@@ -48,7 +48,7 @@
                     </div>
                     <div t-if="tx.cibepay_mdorder" class="row">
                         <div class="col-4">
-                            <strong>Satim order id</strong>
+                            <strong>Transaction ID</strong>
                         </div>
                         <div class="col-4" t-field="tx.cibepay_mdorder"></div>
                     </div>

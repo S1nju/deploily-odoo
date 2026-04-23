@@ -60,7 +60,7 @@ class PaymentTransactionCibIPay(models.Model):
         # Initiate the payment and retrieve the payment link data.
         base_url = self.provider_id.get_base_url()
         cibepay = self.provider_id._get_cibepay_api()
-        url = cibepay.get_cibepay_urls(cibepay.state)["cibepay_register_url"]
+        url = cibepay.get_cibepay_urls()["cibepay_register_url"]
         amount = float_repr(float_round(self.amount, 2) * 100, 0)
         return_url = (
             base_url + CibEpayController._return_url[1:]
@@ -196,7 +196,7 @@ class PaymentTransactionCibIPay(models.Model):
             }
         )
         if (
-            result["errorCode"] == "2"
+            result["errorCode"] == "0"
             and result["orderStatus"] == 2
             and result["respCode"] == "00"
         ):

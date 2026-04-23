@@ -24,11 +24,11 @@ class CibepaymentProvider(models.Model):
     cibepay_username = fields.Char("User name")
     cibepay_password = fields.Char("Password")
     cibepay_terminal_id = fields.Char("Terminal ID")
-    cibepay_udf1 = fields.Char("User defined value 1", default="")
+    cibepay_udf1 = fields.Char("User defined value 1", default="20181053013461234567")
     cibepay_udf2 = fields.Char("User defined value 2", default="")
     cibepay_udf3 = fields.Char("User defined value 3", default="")
     cibepay_udf4 = fields.Char("User defined value 4", default="")
-    cibepay_udf5 = fields.Char("User defined value 5", default="")
+    cibepay_udf5 = fields.Char("User defined value 5", default="ggsf85s42524s5uhgsf")
 
     cibepay_language = fields.Selection(
         [("fr", "French"), ("ar", "Arabic"), ("en", "English")],
@@ -41,29 +41,25 @@ class CibepaymentProvider(models.Model):
     cibepay_terms_page = fields.Char("Terms and conditions page", default="terms")
     formUrl = fields.Char("formUrl", default="")
 
+    cibepay_is_satim_test = fields.Boolean(default=False, string="SATIM Test mode")
+
     def _get_cibepay_api(self):
 
-        json_params = (
-            '{"force_terminal_id":"'
-            + self.cibepay_terminal_id
-            + '", "udf1":"'
-            + self.cibepay_udf1
-            + '", "udf2":"'
-            + self.cibepay_udf2
-            + '", "udf3":"'
-            + self.cibepay_udf3
-            + '", "udf4":"'
-            + self.cibepay_udf4
-            + '", "udf5":"'
-            + self.cibepay_udf5
-            + '"}'
-        )
+       
+        json_params = json.dumps({
+            "force_terminal_id": self.cibepay_terminal_id,
+            "udf1": self.cibepay_udf1,
+            "udf2": self.cibepay_udf2,
+            "udf3": self.cibepay_udf3,
+            "udf4": self.cibepay_udf4,
+            "udf5": self.cibepay_udf5,
+        })
 
         return CibEPayApi(
             self.cibepay_username,
             self.cibepay_password,
             json_params,
-            self.state,
+            self.cibepay_is_satim_test,
             self.cibepay_language,
             self.cibepay_currency,
         )

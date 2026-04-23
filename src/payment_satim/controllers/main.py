@@ -67,7 +67,7 @@ class CibEpayController(http.Controller):
             .sudo()
             .create(
                 {
-                    "name": order.name,
+                    "name": f"{order.name}.pdf",
                     "type": "binary",
                     "datas": base64.b64encode(pdf),
                     "store_fname": f"{order.name}.pdf",

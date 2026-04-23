@@ -6,6 +6,7 @@ class HrEvaluationLine(models.Model):
     _description = 'Evaluation Criteria'
 
     evaluation_id = fields.Many2one('hr.evaluation', string="Evaluation", ondelete='cascade')
+
     criteria = fields.Char(string="Criteria", required=True)
     rating = fields.Selection([
         ('1', '1 - Poor'),

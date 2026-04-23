@@ -1,5 +1,5 @@
-INSERT INTO ir_model_access (name, model_id, group_id, perm_read, perm_write, perm_create, perm_unlink) VALUES
-('access_hr_evaluation_user', (SELECT id FROM ir_model WHERE model = 'hr.evaluation'), (SELECT id FROM res_groups WHERE name = 'Employee'), true, true, true, false),
-('access_hr_evaluation_manager', (SELECT id FROM ir_model WHERE model = 'hr.evaluation'), (SELECT id FROM res_groups WHERE name = 'Manager'), true, true, true, true),
-('access_hr_evaluation_line_user', (SELECT id FROM ir_model WHERE model = 'hr.evaluation.line'), (SELECT id FROM res_groups WHERE name = 'Employee'), true, true, true, false),
-('access_hr_evaluation_line_manager', (SELECT id FROM ir_model WHERE model = 'hr.evaluation.line'), (SELECT id FROM res_groups WHERE name = 'Manager'), true, true, true, true);
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_evaluation_user,access.hr.evaluation.user,model_hr_evaluation,base.group_user,1,1,1,0
+access_hr_evaluation_manager,access.hr.evaluation.manager,model_hr_evaluation,base.group_system,1,1,1,1
+access_hr_evaluation_line_user,access.hr.evaluation.line.user,model_hr_evaluation_line,base.group_user,1,1,1,0
+access_hr_evaluation_line_manager,access.hr.evaluation.line.manager,model_hr_evaluation_line,base.group_system,1,1,1,1
