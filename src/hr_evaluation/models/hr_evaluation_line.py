@@ -3,16 +3,27 @@ from odoo import models, fields
 
 class HrEvaluationLine(models.Model):
     _name = 'hr.evaluation.line'
-    _description = 'Evaluation Criteria'
+    _description = 'Critères d’évaluation'
 
-    evaluation_id = fields.Many2one('hr.evaluation', string="Evaluation", ondelete='cascade')
+    evaluation_id = fields.Many2one(
+        'hr.evaluation',
+        string="Évaluation",
+        ondelete='cascade'
+    )
 
-    criteria = fields.Char(string="Criteria", required=True)
+    criteria = fields.Char(
+        string="Critère",
+        required=True
+    )
+
     rating = fields.Selection([
-        ('1', '1 - Poor'),
-        ('2', '2 - Fair'),
-        ('3', '3 - Good'),
-        ('4', '4 - Very Good'),
+        ('1', '1 - Insuffisant'),
+        ('2', '2 - Passable'),
+        ('3', '3 - Bien'),
+        ('4', '4 - Très bien'),
         ('5', '5 - Excellent')
-    ], string="Rating")
-    comment = fields.Text(string="Comment")
+    ], string="Note")
+
+    comment = fields.Text(
+        string="Commentaire"
+    )

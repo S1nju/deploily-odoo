@@ -1,8 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <data>
-        <!-- HR Evaluation Menu -->
-        <menuitem id="menu_hr_evaluation_root" name="Evaluations" parent="hr.menu_hr_root" sequence="10"/>
-        <menuitem id="menu_hr_evaluation_action" name="Evaluations" parent="menu_hr_evaluation_root" action="action_hr_evaluation" sequence="10"/>
+        <!-- Menu Évaluations RH -->
+        <menuitem
+            id="menu_hr_evaluation_root"
+            name="Évaluations"
+            parent="hr.menu_hr_root"
+            sequence="10"
+        />
+        <menuitem
+            id="menu_hr_evaluation_action"
+            name="Gestion des évaluations"
+            parent="menu_hr_evaluation_root"
+            action="action_hr_evaluation"
+            sequence="10"
+        />
     </data>
 </odoo>

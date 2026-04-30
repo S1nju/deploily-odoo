@@ -29,13 +29,13 @@
             <field name="arch" type="xml">
                 <form string="Mission">
                     <header>
-                        <button name="action_reset_draft" type="object" string="Reset to Draft" 
+                        <button name="action_reset_draft" type="object" string="Retour au brouillon" 
                                 class="btn-secondary" invisible="state not in ['approved', 'rejected', 'done']"/>
-                        <button name="action_approve" type="object" string="Approve" 
+                        <button name="action_approve" type="object" string="Approuver" 
                                 class="btn-primary" invisible="state not in ['draft', 'rejected']"/>
-                        <button name="action_reject" type="object" string="Reject" 
+                        <button name="action_reject" type="object" string="Rejeter" 
                                 class="btn-danger" invisible="state not in ['draft', 'approved']"/>
-                        <button name="action_mark_done" type="object" string="Mark Done" 
+                        <button name="action_mark_done" type="object" string="Clôturer" 
                                 class="btn-success" invisible="state != 'approved'"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,approved,done"/>
                     </header>
@@ -47,12 +47,12 @@
                             </group>
                         </group>
                         <group>
-                            <group string="Mission Details">
+                            <group string="Détails de la mission">
                                 <field name="mission_type"/>
                                 <field name="destination"/>
                                 <field name="mission_car"/>
                             </group>
-                            <group string="Dates and Duration">
+                            <group string="Dates et durée">
                                 <label for="mission_start_date"/>
                                 <div class="o_row">
                                     <field name="mission_start_date" widget="date"/>
@@ -65,20 +65,20 @@
                             </group>
                         </group>
                         <group>
-                            <group string="Planning Dates">
+                            <group string="Dates prévues">
                                 <field name="date_start"/>
                                 <field name="date_end"/>
                             </group>
-                            <group string="Actual Dates">
+                            <group string="Dates réelles">
                                 <field name="mession_real_start_date"/>
                                 <field name="mession_real_end_date"/>
                             </group>
                         </group>
-                        <group string="Financial Information">
+                        <group string="Informations financières">
                             <field name="fee_amount" readonly="1"/>
                         </group>
                         <notebook>
-                            <page string="Mission Fees">
+                            <page string="Frais de mission">
                                 <field name="fee_ids">
                                     <list editable="bottom">
                                         <field name="designation"/>
@@ -100,10 +100,10 @@
 
         <!-- Mission Calendar View -->
         <record model="ir.ui.view" id="view_hr_mession_calendar">
-            <field name="name">hr.mession.calendar</field>
+            <field name="name">Calendrier des missions</field>
             <field name="model">hr.mession</field>
             <field name="arch" type="xml">
-                <calendar string="Missions Calendar" 
+                <calendar string="Calendrier des missions" 
                           date_start="mission_start_date"
                           date_stop="mission_end_date"
                           color="employee_id"
@@ -119,22 +119,22 @@
 
         <!-- Mission Search View -->
         <record model="ir.ui.view" id="view_hr_mession_search">
-            <field name="name">hr.mession.search</field>
+            <field name="name">Calendrier des missions </field>
             <field name="model">hr.mession</field>
             <field name="arch" type="xml">
-                <search string="Search Missions">
+                <search string="Rechercher des missions">
                     <field name="name" string="Mission"/>
                     <field name="employee_id"/>
                     <field name="destination"/>
                     <field name="mission_type"/>
                     <separator/>
-                    <filter name="my_missions" string="My Missions"
+                    <filter name="my_missions" string="Mes missions"
                             domain="[('employee_id.user_id', '=', uid)]"/>
-                    <filter name="draft" string="Draft"
+                    <filter name="draft" string="Brouillon"
                             domain="[('state', '=', 'draft')]"/>
-                    <filter name="approved" string="Approved"
+                    <filter name="approved" string="Approuvées"
                             domain="[('state', '=', 'approved')]"/>
-                    <filter name="done" string="Done"
+                    <filter name="done" string="Clôturées"
                             domain="[('state', '=', 'done')]"/>
                     <separator/>
                     <filter name="national" string="National"
@@ -142,17 +142,15 @@
                     <filter name="international" string="International"
                             domain="[('mission_type', '=', 'international')]"/>
                     <separator/>
-                    <filter name="current_month" string="This Month"
-                            domain="[('mission_start_date', '&gt;=', (context_today() - relativedelta(day=1)).strftime('%Y-%m-%d')),
-                                    ('mission_start_date', '&lt;=', (context_today() + relativedelta(day=31)).strftime('%Y-%m-%d'))]"/>
-                    <group expand="0" string="Group By">
-                        <filter name="group_by_employee" string="Employee"
+        
+                    <group expand="0" string="Regrouper par">
+                        <filter name="group_by_employee" string="Employé"
                                 context="{'group_by': 'employee_id'}"/>
-                        <filter name="group_by_type" string="Mission Type"
+                        <filter name="group_by_type" string="Type de mission"
                                 context="{'group_by': 'mission_type'}"/>
-                        <filter name="group_by_state" string="State"
+                        <filter name="group_by_state" string="Statut"
                                 context="{'group_by': 'state'}"/>
-                        <filter name="group_by_start_date" string="Start Date"
+                        <filter name="group_by_start_date" string="Date de début"
                                 context="{'group_by': 'mission_start_date'}"/>
                     </group>
                 </search>
@@ -166,24 +164,24 @@
             <field name="view_mode">list,form</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
-                    Create your first mission
+                    Créez votre première mission
                 </p>
-                <p>Manage employee missions and travel assignments.</p>
+                <p>Gérez les missions et déplacements des employés.</p>
             </field>
         </record>
 
         <!-- Calendar Action -->
         <record model="ir.actions.act_window" id="action_hr_mession_calendar">
-            <field name="name">Missions Calendar</field>
+            <field name="name">Calendrier des missions</field>
             <field name="res_model">hr.mession</field>
             <field name="view_mode">calendar,list,form</field>
             <field name="search_view_id" ref="view_hr_mession_search"/>
             <field name="context">{'search_default_my_missions': 1}</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
-                    Create your first mission
+                    Créez votre première mission
                 </p>
-                <p>Track missions in a calendar view.</p>
+                <p>Suivez les missions dans une vue calendrier.</p>
             </field>
         </record>
 

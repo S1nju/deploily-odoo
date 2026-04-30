@@ -10,7 +10,7 @@
         
         <!-- Mission Submenu -->
         <menuitem id="menu_hr_mession" 
-                  name="All Missions" 
+                  name="Toutes les missions" 
                   parent="hr_mission_menu_root" 
                   action="action_hr_mession_view"
                   groups="base.group_user"
@@ -18,7 +18,7 @@
         
         <!-- Mission Calendar Submenu -->
         <menuitem id="menu_hr_mession_calendar" 
-                  name="Missions Calendar" 
+                  name="Calendrier des missions" 
                   parent="hr_mission_menu_root" 
                   action="action_hr_mession_calendar"
                   groups="base.group_user"
@@ -33,7 +33,7 @@
         
         <!-- Mission Scale Menu -->
         <menuitem id="menu_hr_mission_scale" 
-                  name="Mission Scales" 
+                  name="Grilles de missions" 
                   parent="menu_hr_mission_config" 
                   action="action_hr_mission_scale_view"
                   groups="base.group_system"

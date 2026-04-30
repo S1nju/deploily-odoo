@@ -4,23 +4,23 @@ from odoo import api
 
 class HrPromotion(models.Model):
     _name = 'hr.promotion'
-    _description = 'Employee Promotion'
+    _description = 'Promotion de l’employé'
     _rec_name = 'employee_id'
 
-    employee_id = fields.Many2one('hr.employee', string="Employee", required=True, ondelete='cascade')
-    old_position = fields.Many2one('hr.job', string="Old Position", required=True)
-    new_position = fields.Many2one('hr.job', string="New Position", required=True)
-    promotion_date = fields.Date(string="Promotion Date", required=True)
-    old_salary = fields.Float(string="Old Salary")
-    new_salary = fields.Float(string="New Salary")
-    reason = fields.Text(string="Reason for Promotion")
-    notes = fields.Text(string="Notes")
+    employee_id = fields.Many2one('hr.employee', string="Employé", required=True, ondelete='cascade')
+    old_position = fields.Many2one('hr.job', string="Ancien poste", required=True)
+    new_position = fields.Many2one('hr.job', string="Nouveau poste", required=True)
+    promotion_date = fields.Date(string="Date de promotion", required=True)
+    old_salary = fields.Float(string="Ancien salaire")
+    new_salary = fields.Float(string="Nouveau salaire")
+    reason = fields.Text(string="Motif de la promotion")
+    notes = fields.Text(string="Remarques")
     state = fields.Selection([
-        ('draft', 'Draft'),
-        ('approved', 'Approved'),
-        ('rejected', 'Rejected'),
-        ('done', 'Done')
-    ], string="State", default='draft')
+        ('draft', 'Brouillon'),
+        ('approved', 'Approuvée'),
+        ('rejected', 'Rejetée'),
+        ('done', 'Terminée')
+    ], string="Statut", default='draft')
 
     @api.model
     def _check_can_transition(self):

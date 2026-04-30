@@ -3,27 +3,49 @@ from odoo import models, fields
 
 class HrEvaluation(models.Model):
     _name = 'hr.evaluation'
-    _description = 'Employee Evaluation'
+    _description = "Évaluation des employés"
     _rec_name = 'employee_id'
 
-    employee_id = fields.Many2one('hr.employee', string="Employee", required=True)
-    evaluation_date = fields.Date(string="Evaluation Date", default=fields.Date.today)
-    evaluator_id = fields.Many2one('hr.employee', string="Evaluator")
+    employee_id = fields.Many2one(
+        'hr.employee',
+        string="Employé",
+        required=True
+    )
+
+    evaluation_date = fields.Date(
+        string="Date d’évaluation",
+        default=fields.Date.today
+    )
+
+    evaluator_id = fields.Many2one(
+        'hr.employee',
+        string="Évaluateur"
+    )
+
     rating = fields.Selection([
-        ('1', 'Poor'),
-        ('2', 'Below Average'),
-        ('3', 'Average'),
-        ('4', 'Good'),
+        ('1', 'Médiocre'),
+        ('2', 'En dessous de la moyenne'),
+        ('3', 'Moyen'),
+        ('4', 'Bon'),
         ('5', 'Excellent')
-    ], string="Overall Rating")
-    comments = fields.Text(string="Comments")
-    line_ids = fields.One2many('hr.evaluation.line', 'evaluation_id', string="Evaluation Lines")
+    ], string="Note globale")
+
+    comments = fields.Text(
+        string="Commentaires"
+    )
+
+    line_ids = fields.One2many(
+        'hr.evaluation.line',
+        'evaluation_id',
+        string="Détails de l’évaluation"
+    )
+
     state = fields.Selection([
-        ('draft', 'Draft'),
-        ('submitted', 'Submitted'),
-        ('reviewed', 'Reviewed'),
-        ('archived', 'Archived')
-    ], string="State", default='draft')
+        ('draft', 'Brouillon'),
+        ('submitted', 'Soumise'),
+        ('reviewed', 'Validée'),
+        ('archived', 'Archivée')
+    ], string="Statut", default='draft')
 
     def action_submit(self):
         for record in self:
@@ -32,3 +54,12 @@ class HrEvaluation(models.Model):
     def action_review(self):
         for record in self:
             record.state = 'reviewed'
+            
+    def action_reset_to_draft(self):
+        for record in self:
+            record.state = 'draft'
+
+
+    def action_archive(self):
+        for record in self:
+            record.state = 'archived'

@@ -3,7 +3,7 @@
   <data>
     <!-- Leave Decision Report Action -->
     <record id="action_report_leave_decision" model="ir.actions.report">
-      <field name="name">مقرر عطلة - Leave Decision</field>
+      <field name="name">مقرر عطلة -  Décision de congé</field>
       <field name="model">hr.leave</field>
       <field name="report_type">qweb-pdf</field>
       <field name="report_name">hr_leave_algeria.report_leave_decision_document</field>

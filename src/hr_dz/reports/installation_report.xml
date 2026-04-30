@@ -3,7 +3,7 @@
   <data>
     <!-- Installation Report Action -->
     <record id="action_report_installation" model="ir.actions.report">
-      <field name="name">محضر تنصيب - Installation Report</field>
+      <field name="name">محضر تنصيب - Procès-verbal d’installation</field>
       <field name="model">hr.contract</field>
       <field name="report_type">qweb-pdf</field>
       <field name="report_name">hr_dz.report_installation_document</field>
@@ -19,10 +19,8 @@
         <t t-foreach="docs" t-as="doc">
           <t t-call="web.external_layout">
             <!-- Check if this is the first contract -->
-            <t t-set="contracts" t-value="doc.employee_id.contract_ids.sorted(lambda c: c.date_start) if doc.employee_id else []"/>
-            <t t-set="first_contract" t-value="contracts[0] if contracts else False"/>
-            <t t-set="is_first_contract" t-value="len(contracts) == 0 or (first_contract and first_contract.id == doc.id)"/>
-
+<t t-set="contracts" t-value="doc.employee_id.contract_ids.sorted('date_start') if doc.employee_id else []"/>            <t t-set="first_contract" t-value="contracts[0] if contracts else False"/>
+<t t-set="is_first_contract" t-value="doc.id == min(contracts.mapped('id')) if contracts else True"/>
             <t t-if="is_first_contract">
               <div class="page" style="font-family: Arial, sans-serif; direction: rtl; text-align: right;">
                 
@@ -126,7 +124,7 @@
             <t t-if="not is_first_contract">
               <div class="page" style="font-family: Arial, sans-serif; text-align: center; padding: 100px;">
                 <h3>هذا التقرير متاح فقط للعقد الأول</h3>
-                <p>This report is only available for the first contract</p>
+                <p>Ce rapport est disponible uniquement pour le premier contrat</p>
               </div>
             </t>
 

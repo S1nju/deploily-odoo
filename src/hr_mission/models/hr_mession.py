@@ -1,6 +1,7 @@
 from asyncio import exceptions
 from datetime import datetime
 from odoo import models, fields,api
+from odoo.exceptions import ValidationError
 
 class HrMession(models.Model):
     _name = 'hr.mession'
@@ -19,7 +20,7 @@ class HrMession(models.Model):
                                     ('plane', 'Avion'), ('boat', 'Bateau'),
                                     ('other', 'Autre')], string="Locomotion")
     
-    fee_ids = fields.One2many('hr.mession.fee', 'mission_id', string="Mission Fees")
+    fee_ids = fields.One2many('hr.mession.fee', 'mission_id', string="Frais de mission")
     fee_amount = fields.Float(string="Total Frais", compute='_compute_fee_amount', store=True)
     mission_start_date = fields.Datetime(string="Date et heure de début", required=True)
     mission_end_date = fields.Datetime(string="Date et heure de fin", required=True)
@@ -31,7 +32,7 @@ class HrMession(models.Model):
         ('approved', 'Approuvé'),
         ('rejected', 'Rejeté'),
         ('done', 'Clôturé')
-    ], default='draft')
+    ], string="Statut",default='draft')
     mission_notes = fields.Text(string='Notes')
     
     @api.depends('fee_ids.total_amount')
@@ -39,26 +40,28 @@ class HrMession(models.Model):
         for mission in self:
             mission.fee_amount = sum(mission.fee_ids.mapped('total_amount'))
     
-    @api.constrains('mission_end_date')
-    @api.onchange('mission_start_date', 'mission_end_date')
-    def _get_duration(self):
+    @api.constrains('mission_start_date', 'mission_end_date')
+    def _check_dates_and_compute_duration(self):
         for rec in self:
             if rec.mission_start_date and rec.mission_end_date:
-                today = datetime.now().date()
-                
-                # mission_start_date is already a datetime object
-                if today > rec.mission_start_date.date():
-                    raise exceptions.ValidationError(
-                        "Your mission start date must be higher or equal to today's date"
+
+                today = datetime.now()
+
+                # Start date must not be in the past
+                if rec.mission_start_date < today:
+                    raise ValidationError(
+                        "La date de début de mission doit être supérieure ou égale à la date actuelle."
                     )
 
-                if rec.mission_end_date > rec.mission_start_date:
-                    delta = rec.mission_end_date - rec.mission_start_date
-                    rec.mission_duration = str(delta)
-                else:
-                    raise exceptions.ValidationError(
-                        "Your mission end date must be higher than mission start date!"
+                # End date validation
+                if rec.mission_end_date <= rec.mission_start_date:
+                    raise ValidationError(
+                        "La date de fin de mission doit être supérieure à la date de début."
                     )
+
+                # Compute duration
+                delta = rec.mission_end_date - rec.mission_start_date
+                rec.mission_duration = str(delta)
                     
     def action_approve(self):
         for mission in self:

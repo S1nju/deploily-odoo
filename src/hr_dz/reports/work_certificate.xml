@@ -3,7 +3,7 @@
   <data>
     <!-- Work Certificate Report Action -->
     <record id="action_report_work_certificate" model="ir.actions.report">
-      <field name="name">شهادة عمل - Work Certificate</field>
+      <field name="name">شهادة عمل - Attestation de travail</field>
       <field name="model">hr.contract</field>
       <field name="report_type">qweb-pdf</field>
       <field name="report_name">hr_dz.report_work_certificate_document</field>
@@ -91,8 +91,12 @@
                 <p style="text-align: justify;">
                   بموجب عقد عمل لمدة 
                   <t t-set="contract_type" t-value="doc.sudo().contract_type_id.name.lower() if doc.sudo().contract_type_id else ''"/>
-                  <t t-set="is_fixed" t-value="'cdd' in contract_type or 'محدد' in contract_type or 'fixed' in contract_type or 'déterminé' in contract_type"/>
-                  <t t-if="is_fixed">محددة</t>
+                  <t t-set="is_fixed" t-value="
+                      'cdd' in contract_type or 
+                      'fixed' in contract_type or 
+                      'déterminé' in contract_type or 
+                      'محدد' in contract_type
+                  "/>                  <t t-if="is_fixed">محددة</t>
                   <t t-else="">غير محددة</t>
                   بـ 
                   <t t-if="doc.job_id">

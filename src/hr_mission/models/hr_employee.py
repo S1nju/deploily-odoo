@@ -3,10 +3,10 @@ from datetime import datetime
 
 class HrEmployee(models.Model):
     _name = "hr.employee"
-    _description = "Employee Category"
+    _description = "Employé"
     _inherit = "hr.employee"
 
-    in_mission = fields.Boolean(string="In Mission", compute='_compute_in_mission', store=True)
+    in_mission = fields.Boolean(string="En mission", compute='_compute_in_mission', store=True)
     missions_ids = fields.One2many('hr.mession', 'employee_id', string='Missions')
 
     @api.depends('missions_ids.state', 'missions_ids.mission_start_date', 'missions_ids.mission_end_date')
