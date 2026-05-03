@@ -26,7 +26,7 @@
 
     <template id="deploily_login" inherit_id="web.login" name="Log in">
         <xpath expr="//div[@class='oe_login_buttons text-center gap-1 d-grid mb-1 pt-3']" position="before">
-            <t t-call="deploily_signup.recaptcha" />
+            <t t-call="website_terms.recaptcha_widget" />
         </xpath>
 
     </template>
@@ -34,10 +34,10 @@
 
     <template id="deploily_signup" inherit_id="auth_signup.signup" name="Sign up">
         <xpath expr="//div[@class='text-center oe_login_buttons d-grid pt-3']" position="before">
-            <t t-call="deploily_signup.recaptcha" />
+            <t t-call="website_terms.recaptcha_widget" />
         </xpath>
     </template>
-    <template id="deploily_signup.recaptcha" name="Add reCAPTCHA to Signup">
+    <template id="recaptcha_widget" name="Add reCAPTCHA to Signup">
         <div class="mb-3 o_recaptcha" style="margin-top: 10px;">
             <div class="g-recaptcha" name="recaptcha" t-att-data-sitekey="website.get_recaptcha_site_key()" t-attf-data-callback="{{ callback_name or 'signup' }}"></div>
         </div>

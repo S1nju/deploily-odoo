@@ -20,8 +20,7 @@
                         <label string="Meta Pixel Tracking"
                                for="meta_tracking"/>
                         <div class="text-muted">
-                            For enabling Meta Pixel in you website, It tracks
-                            users activity from your website.
+                            Pour activer le Meta Pixel sur votre site web, il permet de suivre l'activité des utilisateurs sur votre site.
                         </div>
                         <group>
                             <field name="pixel_id"

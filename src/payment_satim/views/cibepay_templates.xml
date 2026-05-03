@@ -76,8 +76,8 @@
         </t>
     </template>
 
-    <template id="deploily_epayment.payment" inherit_id="website_sale.payment">
-        <xpath expr='//div[@id="address_on_payment"]' position='before'>
+    <template id="deploily_epayment_payment" inherit_id="website_sale.payment">
+        <xpath expr="//div[@id='address_on_payment']" position='before'>
             <!-- <t t-set="providers" t-value="[acq.provider for acq in acquirers if acq.state in ['test', 'enabled']]" /> -->
             <!-- <t t-if="'cibipay' in providers"> -->
             <div class="mt-4 ">
