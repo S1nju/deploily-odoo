@@ -28,10 +28,10 @@ class ResConfigSettings(models.TransientModel):
 
     meta_tracking = fields.Boolean(
         config_parameter='meta_pixel_tracking.meta_tracking', default=False,
-        help='For enabling meta tracking in your website.',
+        help='Pour activer le suivi Meta sur votre site web.',
         string="Meta tracking.")
     pixel_id = fields.Char(
-        string='Pixel ID:', help='Enter your pixel ID here.',
+        string='Pixel ID:', help='Entrez votre identifiant Pixel ici.',
         config_parameter='meta_pixel_tracking.pixel_id')
 
     @api.model
