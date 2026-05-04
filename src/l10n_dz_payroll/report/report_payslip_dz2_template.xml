@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="report_payslip_dz2_document">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="slip">
+            <div class="page" style="font-family: Arial, sans-serif; font-size: 10px; padding: 8mm;">
+
+                <!-- ═══ ENTETE ═══════════════════════════════════════════════ -->
+                <table style="width:100%; border-collapse:collapse; border:1.5px solid black;">
+                    <tr>
+                        <td style="width:45%; padding:6px 8px; vertical-align:top; border-right:1.5px solid black;">
+                            <div style="font-weight:bold; font-size:11px;"><span t-field="slip.company_id.name"/></div>
+                            <div><span t-field="slip.company_id.street"/></div>
+                            <div><span t-field="slip.company_id.city"/></div>
+                        </td>
+                        <td style="width:55%; padding:6px 8px; text-align:center; vertical-align:middle;">
+                            <div style="font-weight:bold; font-size:14px;">BULLETIN DE PAIE :</div>
+                            <div style="margin-top:4px;">
+                                <span style="font-weight:bold;">MOIS : </span>
+                                <span t-field="slip.date_from" t-options='{"format": "MMMM yyyy"}'/>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- ═══ EMPLOYEUR + EMPLOYE ══════════════════════════════════ -->
+                <table style="width:100%; border-collapse:collapse; border:1.5px solid black; border-top:0;">
+                    <tr>
+                        <td style="width:45%; padding:5px 8px; vertical-align:top; border-right:1.5px solid black;">
+                            <div><span style="font-weight:bold;">N&#176; EMPLOYEUR : </span><span style="font-weight:bold;" t-field="slip.company_id.vat"/></div>
+                            <div style="margin-top:2px;">Matricule : <span style="font-weight:bold;" t-field="slip.contract_id.matricule"/></div>
+                            <div style="margin-top:2px;">Fonction : <span style="font-weight:bold;" t-field="slip.contract_id.poste_occupe"/></div>
+                            <div style="margin-top:2px;">Affectation : <span t-field="slip.employee_id.direction"/></div>
+                            <div style="margin-top:6px;">
+                                Jours Trav. <span style="font-weight:bold;">
+                                    <t t-set="wd" t-value="slip.worked_days_line_ids.filtered(lambda l: l.code == 'WORK100')"/>
+                                    <t t-if="wd"><span t-esc="int(wd[0].number_of_days)"/></t>
+                                    <t t-else=""><span t-field="slip.contract_id.jours_ouvrables"/></t>
+                                </span>
+                            </div>
+                        </td>
+                        <td style="width:55%; padding:5px 8px; vertical-align:top;">
+                            <table style="width:100%; border-collapse:collapse;">
+                                <tr>
+                                    <td style="white-space:nowrap; width:35%;">Nom Prenom</td>
+                                    <td style="font-weight:bold; padding-left:4px;"><span t-field="slip.employee_id.name"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="white-space:nowrap; padding-top:2px;">Sit. Famille</td>
+                                    <td style="padding-left:4px; padding-top:2px;">
+                                        : <span style="font-weight:bold;">
+                                            <t t-if="slip.employee_id.situation_familiale == 'marie'">M</t>
+                                            <t t-elif="slip.employee_id.situation_familiale == 'celibataire'">C</t>
+                                            <t t-elif="slip.employee_id.situation_familiale == 'divorce'">D</t>
+                                            <t t-elif="slip.employee_id.situation_familiale == 'veuf'">V</t>
+                                        </span>
+                                        <span style="margin-left:15px;">N.ENFANTS : </span>
+                                        <span style="font-weight:bold;">
+                                            <t t-set="nb_enf" t-value="slip.employee_id.nb_enfants_dz"/>
+                                            <span t-esc="'%02d' % nb_enf if nb_enf else '00'"/>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="white-space:nowrap; padding-top:2px;">Date Entree</td>
+                                    <td style="padding-left:4px; padding-top:2px;">
+                                        : <t t-set="date_rec" t-value="slip.contract_id.date_recrutement or slip.contract_id.date_start"/>
+                                        <span t-esc="date_rec.strftime('%d/%m/%Y') if date_rec else ''"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="white-space:nowrap; padding-top:2px;">Num Sec.Soc</td>
+                                    <td style="padding-left:4px; padding-top:2px;">: <span t-field="slip.employee_id.numero_securite_sociale"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="white-space:nowrap; padding-top:2px;">Mode Paiemt</td>
+                                    <td style="padding-left:4px; padding-top:2px;">:
+                                        <t t-if="slip.moyen_paiement == 'ccp'">C C P</t>
+                                        <t t-elif="slip.moyen_paiement == 'virement'">Virement Bancaire</t>
+                                        <t t-elif="slip.moyen_paiement == 'especes'">Especes</t>
+                                        <t t-elif="slip.moyen_paiement == 'cheque'">Cheque</t>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="white-space:nowrap; padding-top:2px;">Num Compte</td>
+                                    <td style="padding-left:4px; padding-top:2px;">: <span t-field="slip.contract_id.numero_compte_bancaire"/></td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- ═══ TABLEAU RUBRIQUES ════════════════════════════════════ -->
+                <table style="width:100%; border-collapse:collapse; border:1.5px solid black; border-top:0;">
+                    <thead>
+                        <tr style="background-color:#d0d0d0; font-weight:bold; text-align:center;">
+                            <th style="border:1px solid black; padding:4px; width:9%;">RUB.</th>
+                            <th style="border:1px solid black; padding:4px; width:33%; text-align:left;">LIBELLE INDEMNITE</th>
+                            <th style="border:1px solid black; padding:4px; width:18%;">BASE</th>
+                            <th style="border:1px solid black; padding:4px; width:10%;">Nbre/Taux</th>
+                            <th style="border:1px solid black; padding:4px; width:15%;">GAINS</th>
+                            <th style="border:1px solid black; padding:4px; width:15%;">RETENUES</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <!-- ── SECTION 1 : BASE COTISABLE CNAS (OUI CNAS / OUI IRG) ── -->
+                        <tr style="background-color:#f0f0f0;">
+                            <td colspan="6" style="border:1px solid black; padding:3px 5px; font-weight:bold; font-style:italic;">
+                                Elements soumis CNAS et IRG
+                            </td>
+                        </tr>
+                        <t t-set="base_cnas_lines" t-value="slip.line_ids.filtered(lambda l: l.appears_on_payslip and l.category_id.code == 'BASE_CNAS' and l.total != 0)"/>
+                        <t t-foreach="base_cnas_lines" t-as="line">
+                            <tr>
+                                <td style="border:1px solid black; padding:3px; text-align:center;"><span t-field="line.code"/></td>
+                                <td style="border:1px solid black; padding:3px;"><span t-field="line.name"/></td>
+                                <td style="border:1px solid black; padding:3px; text-align:right;"></td>
+                                <td style="border:1px solid black; padding:3px; text-align:right;">
+                                    <t t-if="line.rate != 100 and line.rate != 0"><span t-esc="'{:.2f}'.format(line.rate)"/></t>
+                                </td>
+                                <td style="border:1px solid black; padding:3px; text-align:right;">
+                                    <t t-if="line.total &gt; 0"><span t-esc="'{:,.2f}'.format(line.total).replace(',', ' ')"/></t>
+                                </td>
+                                <td style="border:1px solid black; padding:3px;"></td>
+                            </tr>
+                        </t>
+                        <!-- Sous-total BASE CNAS -->
+                        <t t-set="total_base_cnas" t-value="sum(l.total for l in base_cnas_lines if l.total &gt; 0)"/>
+                        <tr style="background-color:#f8f8f8; font-weight:bold;">
+                            <td colspan="4" style="border:1px solid black; padding:3px 5px; text-align:right; font-style:italic;">Base Cotisable CNAS :</td>
+                            <td style="border:1px solid black; padding:3px; text-align:right;"><span t-esc="'{:,.2f}'.format(total_base_cnas).replace(',', ' ')"/></td>
+                            <td style="border:1px solid black; padding:3px;"></td>
+                        </tr>
+                        <!-- CNAS_SAL retenue -->
+                        <t t-set="cnas_line" t-value="slip.line_ids.filtered(lambda l: l.code == 'CNAS_SAL')"/>
+                        <t t-if="cnas_line and cnas_line[0].total != 0">
+                            <tr>
+                                <td style="border:1px solid black; padding:3px; text-align:center;"><span t-esc="cnas_line[0].code"/></td>
+                                <td style="border:1px solid black; padding:3px;"><span t-esc="cnas_line[0].name"/></td>
+                                <td style="border:1px solid black; padding:3px; text-align:right;"><span t-esc="'{:,.2f}'.format(total_base_cnas).replace(',', ' ')"/></td>
+                                <td style="border:1px solid black; padding:3px; text-align:right;">9.00</td>
+                                <td style="border:1px solid black; padding:3px;"></td>
+                                <td style="border:1px solid black; padding:3px; text-align:right;"><span t-esc="'{:,.2f}'.format(abs(cnas_line[0].total)).replace(',', ' ')"/></td>
+                            </tr>
+                        </t>
+
+                        <!-- ── SECTION 2 : BASE IRG NON CNAS (NON CNAS / OUI IRG) ── -->
+                        <t t-set="base_irg_lines" t-value="slip.line_ids.filtered(lambda l: l.appears_on_payslip and l.category_id.code == 'BASE_IRG' and l.total != 0)"/>
+                        <t t-if="base_irg_lines">
+                            <tr style="background-color:#f0f0f0;">
+                                <td colspan="6" style="border:1px solid black; padding:3px 5px; font-weight:bold; font-style:italic;">
+                                    Elements non soumis CNAS mais soumis IRG
+                                </td>
+                            </tr>
+                            <t t-foreach="base_irg_lines" t-as="line">
+                                <tr>
+                                    <td style="border:1px solid black; padding:3px; text-align:center;"><span t-field="line.code"/></td>
+                                    <td style="border:1px solid black; padding:3px;"><span t-field="line.name"/></td>
+                                    <td style="border:1px solid black; padding:3px;"></td>
+                                    <td style="border:1px solid black; padding:3px; text-align:right;">
+                                        <t t-if="line.rate != 100 and line.rate != 0"><span t-esc="'{:.2f}'.format(line.rate)"/></t>
+                                    </td>
+                                    <td style="border:1px solid black; padding:3px; text-align:right;">
+                                        <t t-if="line.total &gt; 0"><span t-esc="'{:,.2f}'.format(line.total).replace(',', ' ')"/></t>
+                                    </td>
+                                    <td style="border:1px solid black; padding:3px;"></td>
+                                </tr>
+                            </t>
+                            <!-- Sous-total BASE IRG + BASE_CNAS = Base imposable IRG -->
+                            <t t-set="total_base_irg" t-value="sum(l.total for l in base_irg_lines if l.total &gt; 0)"/>
+                            <t t-set="base_imposable_irg" t-value="total_base_cnas + total_base_irg"/>
+                            <tr style="background-color:#f8f8f8; font-weight:bold;">
+                                <td colspan="4" style="border:1px solid black; padding:3px 5px; text-align:right; font-style:italic;">Base Imposable IRG :</td>
+                                <td style="border:1px solid black; padding:3px; text-align:right;"><span t-esc="'{:,.2f}'.format(base_imposable_irg).replace(',', ' ')"/></td>
+                                <td style="border:1px solid black; padding:3px;"></td>
+                            </tr>
+                        </t>
+                        <!-- IRG retenue -->
+                        <t t-set="irg_line" t-value="slip.line_ids.filtered(lambda l: l.code == 'IRG')"/>
+                        <t t-if="irg_line and irg_line[0].total != 0">
+                            <tr>
+                                <td style="border:1px solid black; padding:3px; text-align:center;"><span t-esc="irg_line[0].code"/></td>
+                                <td style="border:1px solid black; padding:3px;"><span t-esc="irg_line[0].name"/></td>
+                                <td style="border:1px solid black; padding:3px; text-align:right;"><span t-esc="'{:,.2f}'.format(base_imposable_irg).replace(',', ' ')"/></td>
+                                <td style="border:1px solid black; padding:3px;"></td>
+                                <td style="border:1px solid black; padding:3px;"></td>
+                                <td style="border:1px solid black; padding:3px; text-align:right;"><span t-esc="'{:,.2f}'.format(abs(irg_line[0].total)).replace(',', ' ')"/></td>
+                            </tr>
+                        </t>
+
+                        <!-- ── SECTION 3 : AUTRES (NON CNAS / NON IRG) ─────── -->
+                        <t t-set="autres_lines" t-value="slip.line_ids.filtered(lambda l: l.appears_on_payslip and l.category_id.code == 'PRIMES' and l.total != 0)"/>
+                        <t t-if="autres_lines">
+                            <tr style="background-color:#f0f0f0;">
+                                <td colspan="6" style="border:1px solid black; padding:3px 5px; font-weight:bold; font-style:italic;">
+                                    Autres elements (non CNAS / non IRG)
+                                </td>
+                            </tr>
+                            <t t-foreach="autres_lines" t-as="line">
+                                <tr>
+                                    <td style="border:1px solid black; padding:3px; text-align:center;"><span t-field="line.code"/></td>
+                                    <td style="border:1px solid black; padding:3px;"><span t-field="line.name"/></td>
+                                    <td style="border:1px solid black; padding:3px;"></td>
+                                    <td style="border:1px solid black; padding:3px; text-align:right;">
+                                        <t t-if="line.rate != 100 and line.rate != 0"><span t-esc="'{:.2f}'.format(line.rate)"/></t>
+                                    </td>
+                                    <td style="border:1px solid black; padding:3px; text-align:right;">
+                                        <t t-if="line.total &gt; 0"><span t-esc="'{:,.2f}'.format(line.total).replace(',', ' ')"/></t>
+                                    </td>
+                                    <td style="border:1px solid black; padding:3px;"></td>
+                                </tr>
+                            </t>
+                        </t>
+
+                        <!-- ── TOTAL GENERAL ──────────────────────────────── -->
+                        <tr style="font-weight:bold; background-color:#e8e8e8;">
+                            <td colspan="4" style="border:1px solid black; padding:4px; text-align:right;">TOTAL :</td>
+                            <td style="border:1px solid black; padding:4px; text-align:right;">
+                                <t t-set="total_gains" t-value="sum(l.total for l in slip.line_ids if l.appears_on_payslip and l.total &gt; 0 and l.code not in ['BRUT','NET'])"/>
+                                <span t-esc="'{:,.2f}'.format(total_gains).replace(',', ' ')"/>
+                            </td>
+                            <td style="border:1px solid black; padding:4px; text-align:right;">
+                                <t t-set="total_ret" t-value="sum(abs(l.total) for l in slip.line_ids if l.appears_on_payslip and l.total &lt; 0)"/>
+                                <span t-esc="'{:,.2f}'.format(total_ret).replace(',', ' ')"/>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+                <!-- ═══ PIED ═════════════════════════════════════════════════ -->
+                <table style="width:100%; border-collapse:collapse; border:1.5px solid black; border-top:0;">
+                    <tr>
+                        <td style="width:55%; padding:5px 8px; border-right:1.5px solid black; vertical-align:top;">
+                            <div>
+                                <span style="font-weight:bold;">SALAIRE DE POSTE : </span>
+                                <t t-set="sp" t-value="slip.line_ids.filtered(lambda l: l.code == 'SP')"/>
+                                <span t-esc="'{:,.2f}'.format(sp[0].total if sp else slip.contract_id.salaire_de_poste).replace(',', ' ')"/>
+                            </div>
+                            <div style="margin-top:3px;">
+                                <span style="font-weight:bold;">SALAIRE IMPOSABLE : </span>
+                                <t t-set="brut_val" t-value="slip.get_salary_line_total('BRUT')"/>
+                                <t t-set="cnas_val" t-value="abs(slip.get_salary_line_total('CNAS_SAL'))"/>
+                                <span t-esc="'{:,.2f}'.format(max(0, brut_val - cnas_val)).replace(',', ' ')"/>
+                            </div>
+                        </td>
+                        <td style="width:45%; padding:5px 8px; text-align:right; vertical-align:middle;">
+                            <div style="font-weight:bold; font-size:12px;">
+                                NET A PAYER :
+                                <span t-esc="'{:,.2f}'.format(slip.net_a_payer).replace(',', ' ')"/>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+                <div style="margin-top:5px; font-size:8px; color:#555; text-align:center;">
+                    Bulletin de paie a conserver sans limitation de duree - Conformement a la legislation algerienne du travail.
+                </div>
+
+            </div>
+        </t>
+    </t>
+</template>
+</odoo>

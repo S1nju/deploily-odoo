@@ -178,7 +178,7 @@ class HrPayslip(models.Model):
             if employee.conjoint_travaille or employee.situation_familiale == "celibataire"
             else rates.irg_deduction_conjoint
         )
-        deduction_enfants = employee.nombre_enfants * rates.irg_deduction_enfant
+        deduction_enfants = employee.nb_enfants_dz * rates.irg_deduction_enfant
 
         # 3. Revenu net imposable mensuel
         revenu_net = max(0.0, salaire_brut_imposable - abattement - deduction_conjoint - deduction_enfants)
@@ -232,5 +232,5 @@ class HrPayslip(models.Model):
                 rates.smig
                 * rates.allocation_familiale_rate
                 / 100.0
-                * self.employee_id.nombre_enfants
+                * self.employee_id.nb_enfants_dz
             )

@@ -25,23 +25,105 @@
                 </group>
             </xpath>
 
-            <!-- Salaire de poste : après le champ wage -->
-            <xpath expr="//field[@name='wage']" position="after">
-                <field name="salaire_de_poste"/>
-            </xpath>
-
             <!-- Primes et indemnités : nouvelle page à la fin du notebook -->
             <xpath expr="//notebook" position="inside">
                 <page string="Primes et Indemnités (DZ)" name="dz_primes">
                     <group>
-                        <group string="Primes">
-                            <field name="prime_rendement"/>
-                            <field name="prime_astreinte"/>
+                        <field name="salaire_de_poste"
+                               string="Salaire de Poste"/>
+                    </group>
+                    <group>
+                        <group>
+                            <!-- N°1  : Salaire de Base → champ wage standard Odoo -->
+                            <!-- N°2  -->
+                            <field name="salaire_fixe_cadre_dirigeant"
+                                   string="Salaire partie fixe Cadre Dirigeant"/>
+                            <!-- N°3  -->
+                            <field name="salaire_variable_cadre_dirigeant"
+                                   string="Salaire partie variable Cadre Dirigeant"/>
+                            <!-- N°4  : IEP calculé automatiquement (date_recrutement) -->
+                            <!-- N°5  -->
+                            <field name="indemnite_travail_poste"
+                                   string="Indemnité de Travail Posté"/>
+                            <!-- N°6  -->
+                            <field name="indemnite_service_permanent"
+                                   string="Indemnité Forfaitaire de Service Permanent"/>
+                            <!-- N°7  -->
+                            <field name="indemnite_nuisance"
+                                   string="Indemnité de Nuisance"/>
+                            <!-- N°8  -->
+                            <field name="indemnite_nuit"
+                                   string="Indemnité de Travail de Nuit"/>
+                            <!-- N°9  -->
+                            <field name="indemnite_interim"
+                                   string="Indemnité d'Intérim"/>
+                            <!-- N°10 -->
+                            <field name="prime_permanence"
+                                   string="Prime de Permanence"/>
+                            <!-- N°11 -->
+                            <field name="indemnite_fonction"
+                                   string="Indemnité Forfaitaire de Fonction"/>
+                            <!-- N°12 -->
+                            <field name="indemnite_caisse"
+                                   string="Indemnité de Caisse"/>
+                            <!-- N°13 -->
+                            <field name="indemnite_sujetion"
+                                   string="Indemnité de Sujétion Spéciale"/>
+                            <!-- N°14 -->
+                            <field name="indemnite_astreinte"
+                                   string="Indemnité d'Astreinte"/>
+                            <!-- N°15 -->
+                            <field name="heures_supplementaires"
+                                   string="Heures Supplémentaires"/>
+                            <!-- N°16 -->
+                            <field name="indemnite_conge"
+                                   string="Indemnité de Congé Annuel"/>
                         </group>
-                        <group string="Indemnités">
-                            <field name="indemnite_nuisance"/>
+                        <group>
+                            <!-- N°17 -->
+                            <field name="prime_inventaire"
+                                   string="Prime d'Inventaire"/>
+                            <!-- N°18 -->
+                            <field name="prime_bilan"
+                                   string="Prime de Bilan"/>
+                            <!-- N°19 -->
+                            <field name="prime_rendement"
+                                   string="PRI"/>
+                            <!-- N°20 -->
+                            <field name="prime_prc"
+                                   string="PRC"/>
+                            <!-- N°21 -->
+                            <field name="indemnite_retraite"
+                                   string="Indemnité de Départ en Retraite"/>
+                            <!-- N°22 -->
+                            <field name="indemnite_deces"
+                                   string="Indemnité de Décès"/>
+                            <!-- N°23 -->
+                            <field name="prime_scolarite"
+                                   string="Prime de Scolarité"/>
+                            <!-- N°24 : Salaire Unique calculé automatiquement -->
+                            <!-- N°25 -->
                             <field name="prime_panier_contractuelle"
+                                   string="Panier"
                                    help="Si vide, le taux légal sera utilisé"/>
+                            <!-- N°26 : Transport calculé automatiquement (taux légal) -->
+                            <!-- N°27 -->
+                            <field name="prime_mariage"
+                                   string="Prime de Mariage"/>
+                            <!-- N°28 -->
+                            <field name="prime_vehicule"
+                                   string="Prime d'Utilisation du Véhicule Personnel"/>
+                            <!-- N°29 -->
+                            <field name="frais_mission"
+                                   string="Frais de Mission"/>
+                            <!-- N°30 -->
+                            <field name="prime_zone"
+                                   string="Prime de Zone Géographique (Isolement)"/>
+                            <!-- N°31 -->
+                            <field name="indemnite_licenciement"
+                                   string="Indemnité de Licenciement"/>
+                            <!-- N°32 : Allocations Familiales calculées automatiquement -->
+
                         </group>
                     </group>
                 </page>

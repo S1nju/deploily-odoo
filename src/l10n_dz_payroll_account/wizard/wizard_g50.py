@@ -1,6 +1,6 @@
 # Part of OCA. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models
+from odoo import fields, models
 
 
 class WizardG50(models.TransientModel):
@@ -38,22 +38,34 @@ class WizardG50(models.TransientModel):
             ("company_id", "=", self.company_id.id),
             ("state", "=", "done"),
         ])
-        data = {
-            "date_from": self.date_from,
-            "date_to": self.date_to,
-            "company_id": self.company_id.id,
-            "slip_ids": slips.ids,
-            "nombre_salaries": len(slips),
-            "total_brut": sum(slips.mapped("montant_brut")),
-            "total_cnas_sal": sum(slips.mapped("cotisation_cnas_salariale")),
-            "total_cnas_pat": sum(slips.mapped("cotisation_cnas_patronale")),
-            "total_cnas": (
-                sum(slips.mapped("cotisation_cnas_salariale")) +
-                sum(slips.mapped("cotisation_cnas_patronale"))
-            ),
-            "total_irg": sum(slips.mapped("montant_irg")),
-            "total_net": sum(slips.mapped("net_a_payer")),
+        # Pass all data via context so the template can access it
+        return {
+            'type': 'ir.actions.report',
+            'report_name': 'l10n_dz_payroll_account.report_g50_template',
+            'report_type': 'qweb-pdf',
+            'report_file': 'l10n_dz_payroll_account.report_g50_template',
+            'name': 'Declaration G50',
+            'context': {
+                'discard_logo_check': True,
+                'no_document_layout': True,
+                'active_ids': self.ids,
+                'active_model': 'l10n.dz.payroll.wizard.g50',
+                'g50_date_from': str(self.date_from),
+                'g50_date_to': str(self.date_to),
+                'g50_company_id': self.company_id.id,
+                'g50_company_name': self.company_id.name,
+                'g50_company_vat': self.company_id.vat or '-',
+                'g50_company_address': (self.company_id.street or '') + ' ' + (self.company_id.city or ''),
+                'g50_nombre_salaries': len(slips),
+                'g50_total_brut': sum(slips.mapped('montant_brut')),
+                'g50_total_irg': sum(slips.mapped('montant_irg')),
+                'g50_total_cnas_sal': sum(slips.mapped('cotisation_cnas_salariale')),
+                'g50_total_cnas_pat': sum(slips.mapped('cotisation_cnas_patronale')),
+                'g50_total_cnas': (
+                    sum(slips.mapped('cotisation_cnas_salariale')) +
+                    sum(slips.mapped('cotisation_cnas_patronale'))
+                ),
+                'g50_total_net': sum(slips.mapped('net_a_payer')),
+                'g50_slip_ids': slips.ids,
+            },
         }
-        return self.env.ref(
-            "l10n_dz_payroll_account.action_report_g50"
-        ).report_action(self, data=data)

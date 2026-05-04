@@ -3,7 +3,7 @@
 <template id="report_g50_template">
 <t t-call="web.html_container">
 <t t-foreach="docs" t-as="wizard">
-<t t-call="web.external_layout">
+<div>
 <div class="page">
     <style>
         .g50-header { background: #1a252f; color: white; padding: 15px; margin-bottom: 20px; text-align: center; }
@@ -27,12 +27,11 @@
     <!-- EN-TETE G50 -->
     <div class="g50-header">
         <div class="g50-title">DECLARATION MENSUELLE G50</div>
-        <div class="g50-subtitle">
-            Versement des retenues sur salaires — IRG + CNAS
-        </div>
+        <div class="g50-subtitle">Versement des retenues sur salaires — IRG + CNAS</div>
     </div>
 
     <!-- INFORMATIONS SOCIETE -->
+    <t t-set="ctx" t-value="request.env.context if request else {}"/>
     <div class="info-box">
         <div class="info-row">
             <span class="info-label">Raison Sociale:</span>
@@ -55,11 +54,20 @@
                 au <t t-esc="wizard.date_to.strftime('%d/%m/%Y')"/>
             </span>
         </div>
+        <t t-set="slips" t-value="wizard.env['hr.payslip'].search([('date_from','&gt;=',wizard.date_from),('date_to','&lt;=',wizard.date_to),('company_id','=',wizard.company_id.id),('state','=','done')])"/>
         <div class="info-row">
             <span class="info-label">Nombre de salaries:</span>
-            <span class="info-value"><t t-esc="docs.env['hr.payslip'].search_count([('date_from','&gt;=',wizard.date_from),('date_to','&lt;=',wizard.date_to),('company_id','=',wizard.company_id.id),('state','=','done')])"/></span>
+            <span class="info-value"><t t-esc="len(slips)"/></span>
         </div>
     </div>
+
+    <!-- Compute totals -->
+    <t t-set="total_brut" t-value="sum(slips.mapped('montant_brut'))"/>
+    <t t-set="total_irg" t-value="sum(slips.mapped('montant_irg'))"/>
+    <t t-set="total_cnas_sal" t-value="sum(slips.mapped('cotisation_cnas_salariale'))"/>
+    <t t-set="total_cnas_pat" t-value="sum(slips.mapped('cotisation_cnas_patronale'))"/>
+    <t t-set="total_net" t-value="sum(slips.mapped('net_a_payer'))"/>
+    <t t-set="total_cnas" t-value="total_cnas_sal + total_cnas_pat"/>
 
     <!-- SECTION IRG -->
     <div class="g50-section">I — IMPOT SUR LE REVENU GLOBAL (IRG)</div>
@@ -71,13 +79,6 @@
             </tr>
         </thead>
         <tbody>
-            <t t-set="slips" t-value="docs.env['hr.payslip'].search([('date_from','&gt;=',wizard.date_from),('date_to','&lt;=',wizard.date_to),('company_id','=',wizard.company_id.id),('state','=','done')])"/>
-            <t t-set="total_brut" t-value="sum(slips.mapped('montant_brut'))"/>
-            <t t-set="total_irg" t-value="sum(slips.mapped('montant_irg'))"/>
-            <t t-set="total_cnas_sal" t-value="sum(slips.mapped('cotisation_cnas_salariale'))"/>
-            <t t-set="total_cnas_pat" t-value="sum(slips.mapped('cotisation_cnas_patronale'))"/>
-            <t t-set="total_net" t-value="sum(slips.mapped('net_a_payer'))"/>
-            <t t-set="total_cnas" t-value="total_cnas_sal + total_cnas_pat"/>
             <tr>
                 <td>Masse salariale brute imposable</td>
                 <td class="amount"><t t-esc="'{:,.2f}'.format(total_brut)"/></td>
@@ -100,11 +101,11 @@
         </thead>
         <tbody>
             <tr>
-                <td>Cotisations salariales (9% du brut plafonné)</td>
+                <td>Cotisations salariales (9% du brut plafonne)</td>
                 <td class="amount"><t t-esc="'{:,.2f}'.format(total_cnas_sal)"/></td>
             </tr>
             <tr>
-                <td>Cotisations patronales (26% du brut plafonné)</td>
+                <td>Cotisations patronales (26% du brut plafonne)</td>
                 <td class="amount"><t t-esc="'{:,.2f}'.format(total_cnas_pat)"/></td>
             </tr>
             <tr>
@@ -197,7 +198,7 @@
     </div>
 
 </div>
-</t>
+</div>
 </t>
 </t>
 </template>

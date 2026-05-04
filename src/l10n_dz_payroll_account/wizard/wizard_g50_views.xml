@@ -6,17 +6,17 @@
         <field name="model">l10n.dz.payroll.wizard.g50</field>
         <field name="arch" type="xml">
             <form string="Declaration G50">
-                <group>
-                    <field name="company_id"/>
-                    <field name="date_from"/>
-                    <field name="date_to"/>
-                </group>
-                <footer>
+                <header>
                     <button name="action_print_g50" string="Imprimer G50"
                             type="object" class="btn-primary"/>
-                    <button string="Annuler" class="btn-secondary"
-                            special="cancel"/>
-                </footer>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="company_id"/>
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                    </group>
+                </sheet>
             </form>
         </field>
     </record>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+
+    <menuitem id="menu_tresorerie_pro_root" name="Trésorerie Pro" sequence="85"
+              web_icon="tresorerie_pro,static/description/icon.png"/>
+
+    <menuitem id="menu_tresorerie_dashboard" name="Tableau de bord"
+              parent="menu_tresorerie_pro_root"
+              action="action_dashboard_comptes" sequence="10"/>
+
+    <menuitem id="menu_flux_tresorerie" name="Flux de trésorerie"
+              parent="menu_tresorerie_pro_root"
+              action="action_flux_tresorerie" sequence="20"/>
+
+    <!-- "Nouveau flux" shortcut in menu → opens wizard directly -->
+    <menuitem id="menu_nouveau_flux" name="➕ Nouveau flux"
+              parent="menu_tresorerie_pro_root"
+              action="action_wizard_recurrence" sequence="25"/>
+
+    <menuitem id="menu_tresorerie_config" name="Configuration"
+              parent="menu_tresorerie_pro_root" sequence="90"/>
+
+    <menuitem id="menu_compte_tresorerie" name="Comptes de trésorerie"
+              parent="menu_tresorerie_config"
+              action="action_compte_tresorerie" sequence="10"/>
+
+  </data>
+</odoo>

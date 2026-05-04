@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_compte_tresorerie_user,compte.tresorerie user,model_compte_tresorerie,account.group_account_user,1,1,1,0
+access_compte_tresorerie_manager,compte.tresorerie manager,model_compte_tresorerie,account.group_account_manager,1,1,1,1
+access_flux_tresorerie_user,flux.tresorerie user,model_flux_tresorerie,account.group_account_user,1,1,1,0
+access_flux_tresorerie_manager,flux.tresorerie manager,model_flux_tresorerie,account.group_account_manager,1,1,1,1
+access_wizard_recurrence_user,wizard.recurrence user,model_wizard_recurrence_tresorerie,account.group_account_user,1,1,1,1
+access_wizard_recurrence_manager,wizard.recurrence manager,model_wizard_recurrence_tresorerie,account.group_account_manager,1,1,1,1

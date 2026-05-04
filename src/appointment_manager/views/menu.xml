@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ROOT MENU -->
+    <menuitem id="menu_appointment_root"
+              name="Rendez-vous"
+              sequence="10"
+              web_icon="appointment_manager,static/description/icon.png"/>
+
+    <!-- CALENDAR / LIST -->
+    <menuitem id="menu_appointment_calendar"
+              name="Calendrier"
+              parent="menu_appointment_root"
+              action="action_appointment_list"
+              sequence="1"/>
+
+    <!-- DISPONIBILITIES -->
+    <menuitem id="menu_appointment_slots"
+              name="Disponibilités"
+              parent="menu_appointment_root"
+              action="action_appointment_slot"
+              sequence="2"/>
+
+    <!-- BOOKING LINK -->
+    <menuitem id="menu_appointment_config"
+              name="Lien de réservation"
+              parent="menu_appointment_root"
+              action="action_appointment_config"
+              sequence="3"/>
+
+</odoo>

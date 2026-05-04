@@ -21,7 +21,7 @@ class HrEmployee(models.Model):
         string="Situation familiale",
         default="celibataire",
     )
-    nombre_enfants = fields.Integer(
+    nb_enfants_dz = fields.Integer(
         string="Nombre d'enfants à charge",
         default=0,
     )

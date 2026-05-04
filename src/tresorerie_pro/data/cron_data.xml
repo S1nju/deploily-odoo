@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="cron_archiver_flux_expires" model="ir.cron">
+            <field name="name">Trésorerie Pro : Archiver les flux expirés</field>
+            <field name="model_id" ref="model_flux_tresorerie"/>
+            <field name="state">code</field>
+            <field name="code">model.archiver_flux_expires()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="active">True</field>
+        </record>
+    </data>
+</odoo>

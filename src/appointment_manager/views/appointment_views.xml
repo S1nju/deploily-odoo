@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- LIST VIEW -->
+    <record id="appointment_view_list" model="ir.ui.view">
+        <field name="name">appointment.appointment.view.list</field>
+        <field name="model">appointment.appointment</field>
+        <field name="arch" type="xml">
+            <list string="Rendez-vous"
+                  decoration-success="state == 'confirmed'"
+                  decoration-muted="state == 'done'"
+                  decoration-danger="state == 'cancelled'">
+                <field name="name"/>
+                <field name="client_name"/>
+                <field name="client_email"/>
+                <field name="client_phone"/>
+                <field name="client_company"/>
+                <field name="date_appointment"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'confirmed'"
+                       decoration-warning="state == 'new'"
+                       decoration-danger="state == 'cancelled'"
+                       decoration-info="state == 'done'"/>
+                <field name="user_id" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- FORM VIEW -->
+    <record id="appointment_view_form" model="ir.ui.view">
+        <field name="name">appointment.appointment.view.form</field>
+        <field name="model">appointment.appointment</field>
+        <field name="arch" type="xml">
+            <form string="Rendez-vous">
+                <header>
+                    <button name="action_confirm" string="Confirmer" type="object"
+                            class="btn-primary" invisible="state != 'new'"/>
+                    <button name="action_done" string="Marquer Terminé" type="object"
+                            invisible="state not in ['new','confirmed']"/>
+                    <button name="action_cancel" string="Annuler" type="object"
+                            invisible="state in ['done','cancelled']"/>
+                    <button name="action_view_crm" string="Voir Opportunité CRM" type="object"
+                            class="btn-secondary" invisible="not crm_lead_id"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="new,confirmed,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group string="Informations client">
+                            <field name="client_name"/>
+                            <field name="client_email" widget="email"/>
+                            <field name="client_phone" widget="phone"/>
+                            <field name="client_company"/>
+                        </group>
+                        <group string="Rendez-vous">
+                            <field name="date_appointment"/>
+                            <field name="user_id"/>
+                            <field name="slot_id"/>
+                            <field name="crm_lead_id" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Raison / Message">
+                        <field name="reason" nolabel="1"/>
+                    </group>
+                    <group string="Notes internes">
+                        <field name="notes" nolabel="1"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- SEARCH VIEW -->
+    <record id="appointment_view_search" model="ir.ui.view">
+        <field name="name">appointment.appointment.view.search</field>
+        <field name="model">appointment.appointment</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="client_name"/>
+                <field name="client_email"/>
+                <field name="client_phone"/>
+                <field name="date_appointment"/>
+                <filter string="Nouveaux" name="new" domain="[('state','=','new')]"/>
+                <filter string="Confirmés" name="confirmed" domain="[('state','=','confirmed')]"/>
+                <filter string="Annulés" name="cancelled" domain="[('state','=','cancelled')]"/>
+                <filter string="Aujourd'hui" name="today"
+                        domain="[('date_appointment','=', context_today().strftime('%Y-%m-%d'))]"/>
+                <separator/>
+                <group expand="0" string="Grouper par">
+                    <filter string="Date" name="group_date" context="{'group_by':'date_appointment'}"/>
+                    <filter string="Statut" name="group_state" context="{'group_by':'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ACTION -->
+    <record id="action_appointment_list" model="ir.actions.act_window">
+        <field name="name">Rendez-vous</field>
+        <field name="res_model">appointment.appointment</field>
+        <field name="view_mode">list,form,calendar</field>
+        <field name="context">{'search_default_new': 1}</field>
+    </record>
+
+</odoo>

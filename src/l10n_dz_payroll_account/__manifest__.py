@@ -15,8 +15,6 @@
         "security/ir.model.access.csv",
         "data/account_mapping_data.xml",
         "views/hr_payroll_account_dz_views.xml",
-        "report/report_fiche_paie.xml",
-        "report/report_fiche_paie_template.xml",
         "report/report_grand_livre.xml",
         "report/report_grand_livre_template.xml",
         "report/report_g50.xml",

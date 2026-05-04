@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+
+    <!-- ═══════════════════════════════════════════════════════
+         DASHBOARD – Kanban comptes
+         - Nom compte + solde prévisionnel en header
+         - Détail: solde initial, total entrées, total sorties
+         - Bouton "Nouveau flux" → wizard popup
+         - Bouton "Modifier ouverture" → edit solde_initial
+         - Bouton "Voir flux" → liste filtrée
+    ═══════════════════════════════════════════════════════ -->
+    <record id="view_compte_tresorerie_kanban_dashboard" model="ir.ui.view">
+      <field name="name">compte.tresorerie.kanban.dashboard</field>
+      <field name="model">compte.tresorerie</field>
+      <field name="arch" type="xml">
+        <kanban class="treso_kanban" create="true">
+          <field name="name"/>
+          <field name="solde_initial"/>
+          <field name="solde_previsionnel"/>
+          <field name="solde_reel"/>
+          <field name="currency_id"/>
+          <field name="id"/>
+          <templates>
+            <t t-name="card">
+              <div class="treso_solde_card">
+
+                <!-- Header: nom + solde total bien visible -->
+                <div class="treso_card_header" style="display:flex;justify-content:space-between;align-items:center;">
+                  <span class="treso_compte_name" style="font-weight:700;font-size:1.05rem;">
+                    <t t-esc="record.name.value"/>
+                  </span>
+                  <span style="font-size:1.1rem;font-weight:800;color:#1a6ec5;">
+                    <field name="solde_previsionnel" widget="monetary"/>
+                  </span>
+                </div>
+
+                <!-- Body: détails -->
+                <div class="treso_card_body" style="margin-top:10px;">
+                  <div class="treso_montant_row" style="display:flex;justify-content:space-between;padding:3px 0;">
+                    <span style="color:#666;">Solde initial (ouverture)</span>
+                    <span><field name="solde_initial" widget="monetary"/></span>
+                  </div>
+                  <div class="treso_montant_row" style="display:flex;justify-content:space-between;padding:3px 0;">
+                    <span style="color:#666;">Solde réel (compta)</span>
+                    <span><field name="solde_reel" widget="monetary"/></span>
+                  </div>
+                </div>
+
+                <!-- Footer: action buttons -->
+                <div class="treso_card_footer" style="display:flex;gap:6px;margin-top:12px;flex-wrap:wrap;">
+                  <button name="action_voir_flux" type="object"
+                          class="btn btn-sm btn-primary">
+                    📋 Flux
+                  </button>
+                  <button name="action_modifier_ouverture" type="object"
+                          class="btn btn-sm btn-secondary">
+                    ✏️ Ouverture
+                  </button>
+                </div>
+
+              </div>
+            </t>
+          </templates>
+        </kanban>
+      </field>
+    </record>
+
+    <!-- Small form to edit only solde_initial -->
+    <record id="view_compte_tresorerie_ouverture_form" model="ir.ui.view">
+      <field name="name">compte.tresorerie.ouverture.form</field>
+      <field name="model">compte.tresorerie</field>
+      <field name="priority">20</field>
+      <field name="arch" type="xml">
+        <form string="Modifier le solde initial">
+          <sheet>
+            <group>
+              <field name="name" readonly="1"/>
+              <field name="solde_initial" widget="monetary"/>
+              <field name="currency_id" invisible="1"/>
+            </group>
+          </sheet>
+          <footer>
+            <button string="Enregistrer" class="btn-primary" special="save"/>
+            <button string="Annuler"     class="btn-secondary" special="cancel"/>
+          </footer>
+        </form>
+      </field>
+    </record>
+
+    <!-- ACTION Dashboard -->
+    <record id="action_dashboard_comptes" model="ir.actions.act_window">
+      <field name="name">Tableau de bord</field>
+      <field name="res_model">compte.tresorerie</field>
+      <field name="view_mode">kanban,list,form</field>
+    </record>
+
+  </data>
+</odoo>

@@ -13,7 +13,7 @@
                     <group>
                         <group string="Situation familiale">
                             <field name="situation_familiale"/>
-                            <field name="nombre_enfants"/>
+                            <field name="nb_enfants_dz"/>
                             <field name="conjoint_travaille"/>
                         </group>
                         <group string="Identifiants administratifs">

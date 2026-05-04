@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="hr_contract_view_form_dz" model="ir.ui.view">
+        <field name="name">hr.contract.form.inherit.dz</field>
+        <field name="model">hr.contract</field>
+        <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Identification algérienne -->
+            <xpath expr="//group[@name='salary']" position="after">
+                <group string="Identification Algérienne" name="dz_identification">
+                    <group>
+                        <field name="matricule"/>
+                        <field name="numero_cnas"/>
+                        <field name="numero_compte_bancaire"/>
+                        <field name="date_recrutement"/>
+                    </group>
+                    <group>
+                        <field name="grade"/>
+                        <field name="categorie_professionnelle"/>
+                        <field name="poste_occupe"/>
+                        <field name="jours_ouvrables"/>
+                    </group>
+                </group>
+            </xpath>
+
+            <!-- Salaire de poste après wage -->
+            <xpath expr="//field[@name='wage']" position="after">
+                <field name="salaire_de_poste"/>
+            </xpath>
+
+            <!-- Toutes les primes et indemnités -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Primes et Indemnités (DZ)" name="dz_primes">
+
+                    <!-- GROUPE 1: OUI CNAS / OUI IRG -->
+                    <group string="OUI CNAS / OUI IRG">
+                        <group>
+                            <field name="indemnite_travail_poste"/>
+                            <field name="indemnite_service_permanent"/>
+                            <field name="indemnite_nuisance"/>
+                            <field name="indemnite_nuit"/>
+                            <field name="indemnite_interim"/>
+                            <field name="prime_permanence"/>
+                            <field name="indemnite_fonction"/>
+                            <field name="indemnite_caisse"/>
+                            <field name="indemnite_sujetion"/>
+                            <field name="indemnite_astreinte"/>
+                        </group>
+                        <group>
+                            <field name="heures_supplementaires"/>
+                            <field name="indemnite_conge"/>
+                            <field name="prime_inventaire"/>
+                            <field name="prime_bilan"/>
+                            <field name="prime_rendement"/>
+                            <field name="prime_prc"/>
+                        </group>
+                    </group>
+
+                    <!-- GROUPE 2: NON CNAS / OUI IRG -->
+                    <group string="NON CNAS / OUI IRG">
+                        <group>
+                            <field name="indemnite_retraite"/>
+                            <field name="prime_panier_contractuelle"
+                                   help="Si vide, le taux légal sera utilisé"/>
+                            <field name="prime_mariage"/>
+                            <field name="prime_vehicule"/>
+                        </group>
+                    </group>
+
+                    <!-- GROUPE 3: NON CNAS / NON IRG -->
+                    <group string="NON CNAS / NON IRG">
+                        <group>
+                            <field name="indemnite_deces"/>
+                            <field name="prime_scolarite"/>
+                            <field name="frais_mission"/>
+                            <field name="prime_zone"/>
+                            <field name="indemnite_licenciement"/>
+                        </group>
+                    </group>
+
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>

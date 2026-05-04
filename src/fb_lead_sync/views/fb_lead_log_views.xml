@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- List view -->
+    <record id="fb_lead_log_view_list" model="ir.ui.view">
+        <field name="name">fb.lead.log.view.list</field>
+        <field name="model">fb.lead.log</field>
+        <field name="arch" type="xml">
+            <tree decoration-success="status == 'success'"
+                  decoration-danger="status == 'error'"
+                  decoration-warning="status == 'no_credentials'">
+                <field name="sync_date"/>
+                <field name="leads_found"/>
+                <field name="leads_created"/>
+                <field name="leads_skipped"/>
+                <field name="status"/>
+                <field name="error_message"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form view -->
+    <record id="fb_lead_log_view_form" model="ir.ui.view">
+        <field name="name">fb.lead.log.view.form</field>
+        <field name="model">fb.lead.log</field>
+        <field name="arch" type="xml">
+            <form string="Sync Log">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="sync_date"/>
+                            <field name="status"/>
+                        </group>
+                        <group>
+                            <field name="leads_found"/>
+                            <field name="leads_created"/>
+                            <field name="leads_skipped"/>
+                        </group>
+                    </group>
+                    <group string="Notes / Error">
+                        <field name="error_message" nolabel="1"/>
+                    </group>
+                    <group string="Created Leads">
+                        <field name="lead_ids" widget="many2many_tags" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_fb_lead_log" model="ir.actions.act_window">
+        <field name="name">Facebook Sync Logs</field>
+        <field name="res_model">fb.lead.log</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

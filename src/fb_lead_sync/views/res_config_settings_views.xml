@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_facebook" model="ir.ui.view">
+        <field name="name">res.config.settings.view.facebook.lead.sync</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base_setup.action_general_configuration"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app string="Facebook Lead Sync" name="fb_lead_sync">
+                    <setting string="Enable Daily Sync">
+                        <field name="fb_sync_active" widget="boolean_toggle"/>
+                        <div class="text-muted">
+                            Automatically fetch new leads from Facebook every day at midnight.
+                        </div>
+                    </setting>
+                    <setting string="Facebook App ID">
+                        <field name="fb_app_id" placeholder="e.g. 1234567890123456"/>
+                        <div class="text-muted">From developers.facebook.com → Your App → Settings → Basic</div>
+                    </setting>
+                    <setting string="Facebook App Secret">
+                        <field name="fb_app_secret" password="True" placeholder="••••••••••••"/>
+                        <div class="text-muted">Keep this secret — do not share it.</div>
+                    </setting>
+                    <setting string="Page Access Token">
+                        <field name="fb_access_token" password="True" placeholder="••••••••••••"/>
+                        <div class="text-muted">Long-lived access token for your Facebook Page.</div>
+                    </setting>
+                    <setting string="Ad Account ID">
+                        <field name="fb_ad_account_id" placeholder="act_1234567890"/>
+                        <div class="text-muted">Found in Meta Ads Manager (format: act_XXXXXXXXX)</div>
+                    </setting>
+                    <setting string="Lead Form ID">
+                        <field name="fb_form_id" placeholder="e.g. 9876543210987654"/>
+                        <div class="text-muted">The ID of your Facebook Lead Ad form.</div>
+                    </setting>
+                    <setting string="Default Sales Team">
+                        <field name="fb_default_team_id"/>
+                    </setting>
+                    <setting string="Default Salesperson">
+                        <field name="fb_default_user_id"/>
+                    </setting>
+                </app>
+            </xpath>
+        </field>
+    </record>
+</odoo>

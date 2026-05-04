@@ -41,7 +41,7 @@
         <field name="name">Declaration G50</field>
         <field name="res_model">l10n.dz.payroll.wizard.g50</field>
         <field name="view_mode">form</field>
-        <field name="target">new</field>
+        <field name="target">current</field>
     </record>
 
     <menuitem
