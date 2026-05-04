@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- HR Employee Views (Inherited) -->
+        <record model="ir.ui.view" id="view_hr_employee_form_inherit">
+            <field name="name">hr.employee.form.inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_open_contract']" position="after">
+                    <button name="action_open_missions" type="object" string="Missions" icon="fa-plane" 
+                            class="btn-info" groups="hr.group_hr_manager"/>
+                </xpath>
+                <xpath expr="//field[@name='work_phone']" position="before">
+                    <field name="in_mission" widget="boolean_toggle" readonly="1"/>
+                </xpath>
+                <xpath expr="//field[@name='work_phone']" position="after">
+                    <field name="category"/>
+                    
+                </xpath>
+                <xpath expr="//field[@name='ssnid']" position="after">
+                    
+                    <field name="ccp_number"/>
+                   
+                    <field name="iep_rate"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

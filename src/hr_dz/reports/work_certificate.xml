@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+    <!-- Work Certificate Report Action -->
+    <record id="action_report_work_certificate" model="ir.actions.report">
+      <field name="name">شهادة عمل - Attestation de travail</field>
+      <field name="model">hr.contract</field>
+      <field name="report_type">qweb-pdf</field>
+      <field name="report_name">hr_dz.report_work_certificate_document</field>
+      <field name="report_file">hr_dz.report_work_certificate_document</field>
+      <field name="binding_model_id" ref="model_hr_contract"/>
+      <field name="binding_type">report</field>
+      <field name="print_report_name">'شهادة عمل - %s' % (object.employee_id.name)</field>
+    </record>
+
+    <!-- QWeb Report Template -->
+    <template id="report_work_certificate_document">
+      <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="doc">
+          <t t-call="web.external_layout">
+            <div class="page" style="font-family: Arial, sans-serif; direction: rtl; text-align: right;">
+              
+              <!-- Header -->
+              <div style="text-align: center; margin-bottom: 40px;">
+                <h2 style="font-size: 20px; margin: 0;">شهادة عمل</h2>
+                <h3 style="font-size: 16px; margin: 10px 0;">ATTESTATION DE TRAVAIL</h3>
+              </div>
+
+              <!-- Main Content -->
+              <div style="line-height: 2.5; font-size: 14px;">
+                
+                <!-- Company Manager -->
+                <p style="text-align: justify;">
+                  السيد(ة) 
+                  <t t-if="doc.company_id and doc.company_id.partner_id">
+                    <span t-esc="doc.company_id.partner_id.name or '….'"/>
+                  </t>
+                  <t t-else="">….</t>
+                  بصفته(ها) مسير(ة) الشركة 
+                  <t t-if="doc.company_id">
+                    <span t-esc="doc.company_id.name or '….'"/>
+                  </t>
+                  <t t-else="">….</t>
+                  ،الكائن مقرها 
+                  <t t-if="doc.company_id and doc.company_id.partner_id">
+                    <span t-esc="doc.company_id.partner_id.street or '…..'"/>
+                  </t>
+                  <t t-else="">…..</t>
+                </p>
+
+                <!-- Separator -->
+                <p style="text-align: center; margin: 20px 0;">————————————————</p>
+
+                <p style="font-weight: bold;">بصفته(ها) المستخدم</p>
+
+                <!-- Employee Information -->
+                <p>
+                  السيد(ة): 
+                  <t t-if="doc.employee_id">
+                    <span t-esc="doc.employee_id.name or '….'"/>
+                  </t>
+                  <t t-else="">….</t>
+                </p>
+
+                <p>
+                  المولود(ة) في: 
+                  <t t-if="doc.employee_id and 'birthday' in doc.employee_id._fields and doc.employee_id.birthday">
+                    <span t-esc="doc.employee_id.birthday"/>
+                  </t>
+                  <t t-else="">….</t>
+                  بـ: …..
+                </p>
+
+                <p>الساكن(ة) ب: …...</p>
+
+                <!-- Separator -->
+                <p style="text-align: center; margin: 20px 0;">————————————————</p>
+
+                <p style="font-weight: bold;">بصفته(ها) الأجير(ة)</p>
+
+                <!-- Employment Details -->
+                <p style="text-align: justify;">
+                  تعمل بشركتنا منذ: 
+                  <t t-if="doc.date_start">
+                    <span t-esc="doc.date_start" t-options="{'widget': 'date', 'format': 'dd/MM/yyyy'}"/>
+                  </t>
+                  <t t-else="">…..</t>
+                  إلى يومنا هذا
+                </p>
+
+                <p style="text-align: justify;">
+                  بموجب عقد عمل لمدة 
+                  <t t-set="contract_type" t-value="doc.sudo().contract_type_id.name.lower() if doc.sudo().contract_type_id else ''"/>
+                  <t t-set="is_fixed" t-value="
+                      'cdd' in contract_type or 
+                      'fixed' in contract_type or 
+                      'déterminé' in contract_type or 
+                      'محدد' in contract_type
+                  "/>                  <t t-if="is_fixed">محددة</t>
+                  <t t-else="">غير محددة</t>
+                  بـ 
+                  <t t-if="doc.job_id">
+                    <span t-esc="doc.job_id.name or '…..'"/>
+                  </t>
+                  <t t-else="">…..</t>
+                  قابلة للتجديد.
+                </p>
+
+                <p>
+                  في منصب: 
+                  <t t-if="doc.employee_id and doc.employee_id.job_id">
+                    <span t-esc="doc.employee_id.job_id.name or '…..'"/>
+                  </t>
+                  <t t-else="">…..</t>
+                </p>
+
+                <p style="margin-top: 30px;">لاستغلالها حسب ما يسمح به القانون</p>
+
+                <!-- Date and Signature -->
+                <div style="margin-top: 60px;">
+                  <p>
+                    حرر بـ 
+                    <t t-if="doc.company_id and doc.company_id.partner_id">
+                      <span t-esc="doc.company_id.partner_id.city or '…..'"/>
+                    </t>
+                    <t t-else="">…..</t>
+                    ، في: <span t-esc="time.strftime('%d/%m/%Y')"/>
+                  </p>
+
+                  <div style="margin-top: 60px; text-align: center;">
+                    <p style="font-weight: bold;">خاتم وإمضاء المستخدم</p>
+                    <p style="margin-top: 40px;">_____________________</p>
+                  </div>
+                </div>
+
+                <!-- Footer -->
+                <div style="margin-top: 50px; font-size: 10px; border-top: 1px solid #ccc; padding-top: 10px;">
+                  <p style="margin: 0;">
+                    <t t-if="doc.company_id">
+                      <span t-esc="doc.company_id.name"/>
+                    </t>
+                  </p>
+                  <p style="margin: 0;">
+                    <t t-if="doc.company_id and doc.company_id.partner_id">
+                      <span t-esc="doc.company_id.partner_id.street or ''"/> - 
+                      <span t-esc="doc.company_id.partner_id.city or ''"/>
+                    </t>
+                  </p>
+                </div>
+
+              </div>
+
+            </div>
+          </t>
+        </t>
+      </t>
+    </template>
+  </data>
+</odoo>

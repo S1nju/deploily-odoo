@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- HR Medical Menu -->
+    <menuitem id="menu_hr_medical_root" name="Dossier médical"  groups="base.group_user" sequence="95"                 
+                  
+                  />
+        <menuitem id="menu_hr_medical_action" name="Dossiers médicaux" parent="menu_hr_medical_root" action="action_hr_medical" sequence="1"/>
+    </data>
+</odoo>

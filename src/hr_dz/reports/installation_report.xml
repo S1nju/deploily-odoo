@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+    <!-- Installation Report Action -->
+    <record id="action_report_installation" model="ir.actions.report">
+      <field name="name">محضر تنصيب - Procès-verbal d’installation</field>
+      <field name="model">hr.contract</field>
+      <field name="report_type">qweb-pdf</field>
+      <field name="report_name">hr_dz.report_installation_document</field>
+      <field name="report_file">hr_dz.report_installation_document</field>
+      <field name="binding_model_id" ref="model_hr_contract"/>
+      <field name="binding_type">report</field>
+      <field name="print_report_name">'محضر تنصيب - %s' % (object.employee_id.name)</field>
+    </record>
+
+    <!-- QWeb Report Template -->
+    <template id="report_installation_document">
+      <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="doc">
+          <t t-call="web.external_layout">
+            <!-- Check if this is the first contract -->
+<t t-set="contracts" t-value="doc.employee_id.contract_ids.sorted('date_start') if doc.employee_id else []"/>            <t t-set="first_contract" t-value="contracts[0] if contracts else False"/>
+<t t-set="is_first_contract" t-value="doc.id == min(contracts.mapped('id')) if contracts else True"/>
+            <t t-if="is_first_contract">
+              <div class="page" style="font-family: Arial, sans-serif; direction: rtl; text-align: right;">
+                
+                <!-- Header -->
+                <div style="text-align: center; margin-bottom: 40px;">
+                  <h2 style="font-size: 20px; margin: 0;">محضر تنصيب</h2>
+                  <h3 style="font-size: 16px; margin: 10px 0;">PROCÈS-VERBAL D'INSTALLATION</h3>
+                </div>
+
+                <!-- Main Content -->
+                <div style="line-height: 2.5; font-size: 14px;">
+                  <p style="text-align: justify;">
+                    في عام <span t-esc="doc.get_year_in_arabic()"/> في اليوم 
+                    <t t-if="doc.date_start">
+                      <span t-esc="doc.date_start.day"/>
+                    </t>
+                    <t t-else="">…...</t>
+                    من شهر 
+                    <t t-if="doc.date_start">
+                      <span t-esc="doc.date_start.strftime('%B')"/>
+                    </t>
+                    <t t-else="">….</t>
+                    ، قمنا
+                  </p>
+
+                  <p style="text-align: justify;">
+                    نحن السيد(ة) 
+                    <t t-if="doc.company_id and doc.company_id.partner_id">
+                      <span t-esc="doc.company_id.partner_id.name or '…..'"/>
+                    </t>
+                    <t t-else="">…..</t>
+                    ، بصفتنا مسير(ة) للشركة 
+                    <t t-if="doc.company_id">
+                      <span t-esc="doc.company_id.name or '…..'"/>
+                    </t>
+                    <t t-else="">…..</t>
+                    "……. "، بتنصيب
+                  </p>
+
+                  <p style="text-align: justify;">
+                    الســــــيـــــــد(ة) 
+                    <t t-if="doc.employee_id">
+                      <span t-esc="doc.employee_id.name or '…..'"/>
+                    </t>
+                    <t t-else="">…..</t>
+                    بصفته(ها) 
+                    <t t-if="doc.employee_id and doc.employee_id.job_id">
+                      <span t-esc="doc.employee_id.job_id.name or '…………………………...'"/>
+                    </t>
+                    <t t-else="">…………………………...</t>
+                  </p>
+
+                  <!-- Signature Section -->
+                  <div style="margin-top: 80px;">
+                    <table style="width: 100%; border-collapse: collapse;">
+                      <tr>
+                        <td style="width: 50%; text-align: center; vertical-align: top;">
+                          <p style="margin: 0; font-weight: bold;">إمضاء المعني بالأمر</p>
+                          <p style="margin: 40px 0 0 0;">_____________________</p>
+                        </td>
+                        <td style="width: 50%; text-align: center; vertical-align: top;">
+                          <p style="margin: 0; font-weight: bold;">المستخدم</p>
+                          <p style="margin: 40px 0 0 0;">_____________________</p>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+
+                  <!-- Date and Location -->
+                  <div style="margin-top: 60px; text-align: center;">
+                    <p>
+                      حرر في: 
+                      <t t-if="doc.company_id and doc.company_id.partner_id">
+                        <span t-esc="doc.company_id.partner_id.city or '…..'"/>
+                      </t>
+                      <t t-else="">…..</t>
+                      ، بتاريخ: <span t-esc="time.strftime('%d/%m/%Y')"/>
+                    </p>
+                  </div>
+
+                  <!-- Footer -->
+                  <div style="margin-top: 50px; font-size: 10px; border-top: 1px solid #ccc; padding-top: 10px;">
+                    <p style="margin: 0;">
+                      <t t-if="doc.company_id">
+                        <span t-esc="doc.company_id.name"/>
+                      </t>
+                    </p>
+                    <p style="margin: 0;">
+                      <t t-if="doc.company_id and doc.company_id.partner_id">
+                        <span t-esc="doc.company_id.partner_id.street or ''"/> - 
+                        <span t-esc="doc.company_id.partner_id.city or ''"/>
+                      </t>
+                    </p>
+                  </div>
+                </div>
+
+              </div>
+            </t>
+
+            <!-- If not first contract, show message -->
+            <t t-if="not is_first_contract">
+              <div class="page" style="font-family: Arial, sans-serif; text-align: center; padding: 100px;">
+                <h3>هذا التقرير متاح فقط للعقد الأول</h3>
+                <p>Ce rapport est disponible uniquement pour le premier contrat</p>
+              </div>
+            </t>
+
+          </t>
+        </t>
+      </t>
+    </template>
+  </data>
+</odoo>

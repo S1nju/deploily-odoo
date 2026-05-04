@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Mission List View -->
+        <record model="ir.ui.view" id="view_hr_mession_list">
+            <field name="name">hr.mession.list</field>
+            <field name="model">hr.mession</field>
+            <field name="arch" type="xml">
+                <list string="Missions" sample="1">
+                    <field name="name"/>
+                    <field name="employee_id"/>
+                    <field name="destination"/>
+                    <field name="mission_start_date"/>
+                    <field name="mission_end_date"/>
+                    <field name="mission_duration"/>
+                    <field name="mission_type"/>
+                    <field name="mission_car"/>
+                    <field name="state" widget="badge" decoration-success="state == 'approved'" 
+                           decoration-info="state == 'draft'" decoration-danger="state == 'rejected'" 
+                           decoration-muted="state == 'done'"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Mission Form View -->
+        <record model="ir.ui.view" id="view_hr_mession_form">
+            <field name="name">hr.mession.form</field>
+            <field name="model">hr.mession</field>
+            <field name="arch" type="xml">
+                <form string="Mission">
+                    <header>
+                        <button name="action_reset_draft" type="object" string="Retour au brouillon" 
+                                class="btn-secondary" invisible="state not in ['approved', 'rejected', 'done']"/>
+                        <button name="action_approve" type="object" string="Approuver" 
+                                class="btn-primary" invisible="state not in ['draft', 'rejected']"/>
+                        <button name="action_reject" type="object" string="Rejeter" 
+                                class="btn-danger" invisible="state not in ['draft', 'approved']"/>
+                        <button name="action_mark_done" type="object" string="Clôturer" 
+                                class="btn-success" invisible="state != 'approved'"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,approved,done"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group colspan="4">
+                                <field name="name" placeholder="Objet de la mission"/>
+                                <field name="employee_id"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group string="Détails de la mission">
+                                <field name="mission_type"/>
+                                <field name="destination"/>
+                                <field name="mission_car"/>
+                            </group>
+                            <group string="Dates et durée">
+                                <label for="mission_start_date"/>
+                                <div class="o_row">
+                                    <field name="mission_start_date" widget="date"/>
+                                </div>
+                                <label for="mission_end_date"/>
+                                <div class="o_row">
+                                    <field name="mission_end_date" widget="date"/>
+                                </div>
+                                <field name="mission_duration" readonly="1"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group string="Dates prévues">
+                                <field name="date_start"/>
+                                <field name="date_end"/>
+                            </group>
+                            <group string="Dates réelles">
+                                <field name="mession_real_start_date"/>
+                                <field name="mession_real_end_date"/>
+                            </group>
+                        </group>
+                        <group string="Informations financières">
+                            <field name="fee_amount" readonly="1"/>
+                        </group>
+                        <notebook>
+                            <page string="Frais de mission">
+                                <field name="fee_ids">
+                                    <list editable="bottom">
+                                        <field name="designation"/>
+                                        <field name="unit_value"/>                                        <field name="currency_id" options="{'no_create': True, 'no_open': True}"/>                                        <field name="number_of_days"/>
+                                        <field name="total_amount" readonly="1"/>
+                                        <field name="observations"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Notes">
+                                <field name="mission_notes" placeholder="Additional notes about the mission..." 
+                                       nolabel="1"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Mission Calendar View -->
+        <record model="ir.ui.view" id="view_hr_mession_calendar">
+            <field name="name">Calendrier des missions</field>
+            <field name="model">hr.mession</field>
+            <field name="arch" type="xml">
+                <calendar string="Calendrier des missions" 
+                          date_start="mission_start_date"
+                          date_stop="mission_end_date"
+                          color="employee_id"
+                          mode="month"
+                          event_open_popup="true"
+                          quick_create="false">
+                    <field name="name"/>
+                    <field name="employee_id"/>
+                    <field name="destination"/>
+                </calendar>
+            </field>
+        </record>
+
+        <!-- Mission Search View -->
+        <record model="ir.ui.view" id="view_hr_mession_search">
+            <field name="name">Calendrier des missions </field>
+            <field name="model">hr.mession</field>
+            <field name="arch" type="xml">
+                <search string="Rechercher des missions">
+                    <field name="name" string="Mission"/>
+                    <field name="employee_id"/>
+                    <field name="destination"/>
+                    <field name="mission_type"/>
+                    <separator/>
+                    <filter name="my_missions" string="Mes missions"
+                            domain="[('employee_id.user_id', '=', uid)]"/>
+                    <filter name="draft" string="Brouillon"
+                            domain="[('state', '=', 'draft')]"/>
+                    <filter name="approved" string="Approuvées"
+                            domain="[('state', '=', 'approved')]"/>
+                    <filter name="done" string="Clôturées"
+                            domain="[('state', '=', 'done')]"/>
+                    <separator/>
+                    <filter name="national" string="National"
+                            domain="[('mission_type', '=', 'national')]"/>
+                    <filter name="international" string="International"
+                            domain="[('mission_type', '=', 'international')]"/>
+                    <separator/>
+        
+                    <group expand="0" string="Regrouper par">
+                        <filter name="group_by_employee" string="Employé"
+                                context="{'group_by': 'employee_id'}"/>
+                        <filter name="group_by_type" string="Type de mission"
+                                context="{'group_by': 'mission_type'}"/>
+                        <filter name="group_by_state" string="Statut"
+                                context="{'group_by': 'state'}"/>
+                        <filter name="group_by_start_date" string="Date de début"
+                                context="{'group_by': 'mission_start_date'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Main Window Action -->
+        <record model="ir.actions.act_window" id="action_hr_mession_view">
+            <field name="name">Missions</field>
+            <field name="res_model">hr.mession</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Créez votre première mission
+                </p>
+                <p>Gérez les missions et déplacements des employés.</p>
+            </field>
+        </record>
+
+        <!-- Calendar Action -->
+        <record model="ir.actions.act_window" id="action_hr_mession_calendar">
+            <field name="name">Calendrier des missions</field>
+            <field name="res_model">hr.mession</field>
+            <field name="view_mode">calendar,list,form</field>
+            <field name="search_view_id" ref="view_hr_mession_search"/>
+            <field name="context">{'search_default_my_missions': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Créez votre première mission
+                </p>
+                <p>Suivez les missions dans une vue calendrier.</p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

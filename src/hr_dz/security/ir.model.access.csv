@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+access_hr_contract_template_user,access_hr_contract_template_user,model_hr_contract_template,base.group_user,1,0,0,0
+access_hr_contract_template_hr_user,access_hr_contract_template_hr_user,model_hr_contract_template,hr.group_hr_user,1,1,1,0
+access_hr_contract_template_manager,access_hr_contract_template_manager,model_hr_contract_template,hr.group_hr_manager,1,1,1,1
+access_hr_contract_article_user,access_hr_contract_article_user,model_hr_contract_article,base.group_user,1,0,0,0
+access_hr_contract_article_hr_user,access_hr_contract_article_hr_user,model_hr_contract_article,hr.group_hr_user,1,1,1,0
+access_hr_contract_article_manager,access_hr_contract_article_manager,model_hr_contract_article,hr.group_hr_manager,1,1,1,1
+access_hr_contract_inherit_user,access_hr_contract_inherit_user,model_hr_contract,base.group_user,1,0,0,0
+

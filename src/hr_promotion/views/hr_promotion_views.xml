@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- HR Promotion Views -->
+        <record model="ir.ui.view" id="view_hr_promotion_form">
+            <field name="name">hr.promotion.form</field>
+            <field name="model">hr.promotion</field>
+            <field name="arch" type="xml">
+                <form string="Promotion">
+                    <header>
+                        <button name="action_approve" string="Approuver" type="object" class="btn-primary"/>
+                        <button name="action_reject" string="Rejeter" type="object"/>
+                        <button name="action_done" string="Marquer comme terminée" type="object"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="employee_id"/>
+                            <field name="promotion_date"/>
+                            <field name="old_position"/>
+                            <field name="new_position"/>
+                            <field name="old_salary"/>
+                            <field name="new_salary"/>
+                        </group>
+                        <field name="reason"/>
+                        <field name="notes"/>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_hr_promotion_list">
+            <field name="name">hr.promotion.list</field>
+            <field name="model">hr.promotion</field>
+            <field name="arch" type="xml">
+                <list string="Promotions">
+                    <field name="employee_id"/>
+                    <field name="new_position"/>
+                    <field name="promotion_date"/>
+                    <field name="state"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- HR Promotion Action -->
+        <record model="ir.actions.act_window" id="action_hr_promotion">
+            <field name="name">Promotions</field>
+            <field name="res_model">hr.promotion</field>
+            <field name="view_mode">list,form</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Mission Management Top Menu -->
+        <menuitem id="hr_mission_menu_root" 
+                  name="Missions" 
+                  web_icon="hr_mission,static/description/icon.png"
+                  groups="base.group_user"
+                  sequence="50"/>
+        
+        <!-- Mission Submenu -->
+        <menuitem id="menu_hr_mession" 
+                  name="Toutes les missions" 
+                  parent="hr_mission_menu_root" 
+                  action="action_hr_mession_view"
+                  groups="base.group_user"
+                  sequence="10"/>
+        
+        <!-- Mission Calendar Submenu -->
+        <menuitem id="menu_hr_mession_calendar" 
+                  name="Calendrier des missions" 
+                  parent="hr_mission_menu_root" 
+                  action="action_hr_mession_calendar"
+                  groups="base.group_user"
+                  sequence="15"/>
+        
+        <!-- Configuration Submenu -->
+        <menuitem id="menu_hr_mission_config" 
+                  name="Configuration" 
+                  parent="hr_mission_menu_root"
+                  groups="base.group_system"
+                  sequence="50"/>
+        
+        <!-- Mission Scale Menu -->
+        <menuitem id="menu_hr_mission_scale" 
+                  name="Grilles de missions" 
+                  parent="menu_hr_mission_config" 
+                  action="action_hr_mission_scale_view"
+                  groups="base.group_system"
+                  sequence="10"/>
+    </data>
+</odoo>
