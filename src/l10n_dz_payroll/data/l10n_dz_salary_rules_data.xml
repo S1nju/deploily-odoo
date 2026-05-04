@@ -1,0 +1,590 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="0">
+
+    <!--
+    ================================================================
+    RÈGLES SALARIALES ALGÉRIENNES — 32 ÉLÉMENTS COMPLETS
+    Source: Tableau officiel "Éléments cotisables et imposables"
+    ================================================================
+    BASE_CNAS : OUI CNAS + OUI IRG
+    BASE_IRG  : NON CNAS + OUI IRG
+    PRIMES    : NON CNAS + NON IRG
+    ================================================================
+    -->
+
+    <!-- ============================================================
+         GROUPE 1 — OUI CNAS / OUI IRG (BASE_CNAS)
+         Séquences 10-99
+    ============================================================ -->
+
+    <!-- 1. Salaire de Base -->
+    <record id="rule_dz_salaire_base" model="hr.salary.rule">
+        <field name="name">Salaire de Base</field>
+        <field name="code">SB</field>
+        <field name="sequence">10</field>
+        <field name="category_id" ref="category_base_cnas_dz"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.wage
+        </field>
+    </record>
+
+    <!-- 2. Salaire de Poste -->
+    <record id="rule_dz_salaire_poste" model="hr.salary.rule">
+        <field name="name">Salaire de Poste</field>
+        <field name="code">SP</field>
+        <field name="sequence">12</field>
+        <field name="category_id" ref="category_base_cnas_dz"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.salaire_de_poste or 0.0
+        </field>
+    </record>
+
+    <!-- 2. Salaire partie fixe Cadre Dirigeant -->
+    <record id="rule_dz_salaire_fixe_cadre" model="hr.salary.rule">
+        <field name="name">Salaire partie fixe Cadre Dirigeant</field>
+        <field name="code">SFCD</field>
+        <field name="sequence">13</field>
+        <field name="category_id" ref="category_base_cnas_dz"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.salaire_fixe_cadre_dirigeant or 0.0
+        </field>
+    </record>
+
+    <!-- 3. Salaire partie variable Cadre Dirigeant -->
+    <record id="rule_dz_salaire_variable_cadre" model="hr.salary.rule">
+        <field name="name">Salaire partie variable Cadre Dirigeant</field>
+        <field name="code">SVCD</field>
+        <field name="sequence">14</field>
+        <field name="category_id" ref="category_base_cnas_dz"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.salaire_variable_cadre_dirigeant or 0.0
+        </field>
+    </record>
+
+    <!-- 4. IEP — Indemnité d'Expérience Professionnelle -->
+    <record id="rule_dz_iep" model="hr.salary.rule">
+        <field name="name">Indemnité d'Expérience Professionnelle (IEP)</field>
+        <field name="code">IEP</field>
+        <field name="sequence">15</field>
+        <field name="category_id" ref="category_base_cnas_dz"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = payslip.compute_iep(contract.wage)
+        </field>
+    </record>
+
+    <!-- 4. Indemnité de Travail Posté -->
+    <record id="rule_dz_travail_poste" model="hr.salary.rule">
+        <field name="name">Indemnité de Travail Posté</field>
+        <field name="code">ITP</field>
+        <field name="sequence">16</field>
+        <field name="category_id" ref="category_base_cnas_dz"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.indemnite_travail_poste or 0.0
+        </field>
+    </record>
+
+    <!-- 5. Indemnité Forfaitaire de Service Permanent -->
+    <record id="rule_dz_service_permanent" model="hr.salary.rule">
+        <field name="name">Indemnité Forfaitaire de Service Permanent</field>
+        <field name="code">IFSP</field>
+        <field name="sequence">17</field>
+        <field name="category_id" ref="category_base_cnas_dz"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.indemnite_service_permanent or 0.0
+        </field>
+    </record>
+
+    <!-- 6. Indemnité de Nuisance -->
+    <record id="rule_dz_nuisance" model="hr.salary.rule">
+        <field name="name">Indemnité de Nuisance</field>
+        <field name="code">NUIS</field>
+        <field name="sequence">18</field>
+        <field name="category_id" ref="category_base_cnas_dz"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.indemnite_nuisance or 0.0
+        </field>
+    </record>
+
+    <!-- 7. Indemnité de Travail de Nuit -->
+    <record id="rule_dz_travail_nuit" model="hr.salary.rule">
+        <field name="name">Indemnité de Travail de Nuit</field>
+        <field name="code">NUIT</field>
+        <field name="sequence">19</field>
+        <field name="category_id" ref="category_base_cnas_dz"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.indemnite_nuit or 0.0
+        </field>
+    </record>
+
+    <!-- 8. Indemnité d'Intérim -->
+    <record id="rule_dz_interim" model="hr.salary.rule">
+        <field name="name">Indemnité d'Intérim</field>
+        <field name="code">INTER</field>
+        <field name="sequence">20</field>
+        <field name="category_id" ref="category_base_cnas_dz"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.indemnite_interim or 0.0
+        </field>
+    </record>
+
+    <!-- 9. Prime de Permanence -->
+    <record id="rule_dz_permanence" model="hr.salary.rule">
+        <field name="name">Prime de Permanence</field>
+        <field name="code">PERM</field>
+        <field name="sequence">21</field>
+        <field name="category_id" ref="category_base_cnas_dz"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.prime_permanence or 0.0
+        </field>
+    </record>
+
+    <!-- 10. Indemnité Forfaitaire de Fonction -->
+    <record id="rule_dz_fonction" model="hr.salary.rule">
+        <field name="name">Indemnité Forfaitaire de Fonction</field>
+        <field name="code">FONC</field>
+        <field name="sequence">22</field>
+        <field name="category_id" ref="category_base_cnas_dz"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.indemnite_fonction or 0.0
+        </field>
+    </record>
+
+    <!-- 11. Indemnité de Caisse -->
+    <record id="rule_dz_caisse" model="hr.salary.rule">
+        <field name="name">Indemnité de Caisse</field>
+        <field name="code">CAIS</field>
+        <field name="sequence">23</field>
+        <field name="category_id" ref="category_base_cnas_dz"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.indemnite_caisse or 0.0
+        </field>
+    </record>
+
+    <!-- 12. Indemnité de Sujétion Spéciale -->
+    <record id="rule_dz_sujetion" model="hr.salary.rule">
+        <field name="name">Indemnité de Sujétion Spéciale</field>
+        <field name="code">SUJE</field>
+        <field name="sequence">24</field>
+        <field name="category_id" ref="category_base_cnas_dz"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.indemnite_sujetion or 0.0
+        </field>
+    </record>
+
+    <!-- 13. Indemnité d'Astreinte -->
+    <record id="rule_dz_astreinte" model="hr.salary.rule">
+        <field name="name">Indemnité d'Astreinte</field>
+        <field name="code">ASTR</field>
+        <field name="sequence">25</field>
+        <field name="category_id" ref="category_base_cnas_dz"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.indemnite_astreinte or 0.0
+        </field>
+    </record>
+
+    <!-- 14. Heures Supplémentaires -->
+    <record id="rule_dz_heures_supp" model="hr.salary.rule">
+        <field name="name">Heures Supplémentaires</field>
+        <field name="code">HSUPP</field>
+        <field name="sequence">26</field>
+        <field name="category_id" ref="category_base_cnas_dz"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.heures_supplementaires or 0.0
+        </field>
+    </record>
+
+    <!-- 15. Indemnité de Congé Annuel -->
+    <record id="rule_dz_conge_annuel" model="hr.salary.rule">
+        <field name="name">Indemnité de Congé Annuel</field>
+        <field name="code">CONG</field>
+        <field name="sequence">27</field>
+        <field name="category_id" ref="category_base_cnas_dz"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.indemnite_conge or 0.0
+        </field>
+    </record>
+
+    <!-- 16. Prime d'Inventaire -->
+    <record id="rule_dz_inventaire" model="hr.salary.rule">
+        <field name="name">Prime d'Inventaire</field>
+        <field name="code">INVE</field>
+        <field name="sequence">28</field>
+        <field name="category_id" ref="category_base_cnas_dz"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.prime_inventaire or 0.0
+        </field>
+    </record>
+
+    <!-- 17. Prime de Bilan -->
+    <record id="rule_dz_bilan" model="hr.salary.rule">
+        <field name="name">Prime de Bilan</field>
+        <field name="code">BILA</field>
+        <field name="sequence">29</field>
+        <field name="category_id" ref="category_base_cnas_dz"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.prime_bilan or 0.0
+        </field>
+    </record>
+
+    <!-- 18. Prime de Rendement (PRI) -->
+    <record id="rule_dz_prime_rendement" model="hr.salary.rule">
+        <field name="name">Prime de Rendement (PRI)</field>
+        <field name="code">PRI_RDT</field>
+        <field name="sequence">30</field>
+        <field name="category_id" ref="category_base_cnas_dz"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.prime_rendement or 0.0
+        </field>
+    </record>
+
+    <!-- 19. PRC — Prime de Résultats Collectifs -->
+    <record id="rule_dz_prc" model="hr.salary.rule">
+        <field name="name">PRC (Prime de Résultats Collectifs)</field>
+        <field name="code">PRC</field>
+        <field name="sequence">31</field>
+        <field name="category_id" ref="category_base_cnas_dz"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.prime_prc or 0.0
+        </field>
+    </record>
+
+    <!-- ============================================================
+         GROUPE 2 — NON CNAS / OUI IRG (BASE_IRG)
+         Séquences 35-49
+    ============================================================ -->
+
+    <!-- 20. Indemnité de Départ en Retraite -->
+    <record id="rule_dz_retraite" model="hr.salary.rule">
+        <field name="name">Indemnité de Départ en Retraite</field>
+        <field name="code">RETR</field>
+        <field name="sequence">35</field>
+        <field name="category_id" ref="category_base_irg_dz"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.indemnite_retraite or 0.0
+        </field>
+    </record>
+
+    <!-- 21. Indemnité de Panier -->
+    <record id="rule_dz_indemnite_panier" model="hr.salary.rule">
+        <field name="name">Indemnité de Panier</field>
+        <field name="code">PANIER</field>
+        <field name="sequence">40</field>
+        <field name="category_id" ref="category_base_irg_dz"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+rates = payslip._get_dz_rates()
+jours = worked_days.WORK100.number_of_days if worked_days.WORK100 else 0
+taux_panier = contract.prime_panier_contractuelle or (rates.indemnite_panier if rates else 120.0)
+result = taux_panier * jours
+        </field>
+    </record>
+
+    <!-- 22. Indemnité de Transport -->
+    <record id="rule_dz_indemnite_transport" model="hr.salary.rule">
+        <field name="name">Indemnité de Transport</field>
+        <field name="code">TRANSPORT</field>
+        <field name="sequence">42</field>
+        <field name="category_id" ref="category_base_irg_dz"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+rates = payslip._get_dz_rates()
+result = rates.indemnite_transport if rates else 3000.0
+        </field>
+    </record>
+
+    <!-- 23. Prime de Mariage -->
+    <record id="rule_dz_mariage" model="hr.salary.rule">
+        <field name="name">Prime de Mariage</field>
+        <field name="code">MARI</field>
+        <field name="sequence">44</field>
+        <field name="category_id" ref="category_base_irg_dz"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.prime_mariage or 0.0
+        </field>
+    </record>
+
+    <!-- 24. Prime d'Utilisation du Véhicule Personnel -->
+    <record id="rule_dz_vehicule" model="hr.salary.rule">
+        <field name="name">Prime d'Utilisation du Véhicule Personnel</field>
+        <field name="code">VEHI</field>
+        <field name="sequence">46</field>
+        <field name="category_id" ref="category_base_irg_dz"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.prime_vehicule or 0.0
+        </field>
+    </record>
+
+    <!-- ============================================================
+         GROUPE 3 — NON CNAS / NON IRG (PRIMES)
+         Séquences 50-69
+    ============================================================ -->
+
+    <!-- 25. Indemnité de Décès -->
+    <record id="rule_dz_deces" model="hr.salary.rule">
+        <field name="name">Indemnité de Décès</field>
+        <field name="code">DECE</field>
+        <field name="sequence">50</field>
+        <field name="category_id" ref="category_primes_dz"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.indemnite_deces or 0.0
+        </field>
+    </record>
+
+    <!-- 26. Prime de Scolarité -->
+    <record id="rule_dz_scolarite" model="hr.salary.rule">
+        <field name="name">Prime de Scolarité</field>
+        <field name="code">SCOL</field>
+        <field name="sequence">52</field>
+        <field name="category_id" ref="category_primes_dz"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.prime_scolarite or 0.0
+        </field>
+    </record>
+
+    <!-- 27. Salaire Unique -->
+    <record id="rule_dz_salaire_unique" model="hr.salary.rule">
+        <field name="name">Salaire Unique</field>
+        <field name="code">SU</field>
+        <field name="sequence">54</field>
+        <field name="category_id" ref="category_primes_dz"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="amount_select">code</field>
+        <field name="condition_select">python</field>
+        <field name="condition_python">
+result = (
+    employee.situation_familiale == 'marie'
+    and not employee.conjoint_travaille
+)
+        </field>
+        <field name="amount_python_compute">
+rates = payslip._get_dz_rates()
+result = (rates.smig * 0.5) if rates else 0.0
+        </field>
+    </record>
+
+    <!-- 28. Frais de Mission -->
+    <record id="rule_dz_mission" model="hr.salary.rule">
+        <field name="name">Frais de Mission</field>
+        <field name="code">MISS</field>
+        <field name="sequence">56</field>
+        <field name="category_id" ref="category_primes_dz"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.frais_mission or 0.0
+        </field>
+    </record>
+
+    <!-- 29. Prime de Zone Géographique (Isolement) -->
+    <record id="rule_dz_zone" model="hr.salary.rule">
+        <field name="name">Prime de Zone Géographique (Isolement)</field>
+        <field name="code">ZONE</field>
+        <field name="sequence">58</field>
+        <field name="category_id" ref="category_primes_dz"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.prime_zone or 0.0
+        </field>
+    </record>
+
+    <!-- 30. Indemnité de Licenciement -->
+    <record id="rule_dz_licenciement" model="hr.salary.rule">
+        <field name="name">Indemnité de Licenciement</field>
+        <field name="code">LICE</field>
+        <field name="sequence">60</field>
+        <field name="category_id" ref="category_primes_dz"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.indemnite_licenciement or 0.0
+        </field>
+    </record>
+
+    <!-- 31. Allocations Familiales -->
+    <record id="rule_dz_allocations_familiales" model="hr.salary.rule">
+        <field name="name">Allocations Familiales</field>
+        <field name="code">AF</field>
+        <field name="sequence">62</field>
+        <field name="category_id" ref="category_primes_dz"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+rates = payslip._get_dz_rates()
+result = 0.0 if not rates else rates.smig * rates.allocation_familiale_rate / 100.0 * (employee.nb_enfants_dz or 0)
+        </field>
+    </record>
+
+    <!-- ============================================================
+         CALCULS — BRUT, CNAS, IRG, NET
+    ============================================================ -->
+
+    <!-- SALAIRE BRUT (total affiché) -->
+    <record id="rule_dz_brut" model="hr.salary.rule">
+        <field name="name">Salaire Brut</field>
+        <field name="code">BRUT</field>
+        <field name="sequence">100</field>
+        <field name="category_id" ref="category_brut_dz"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+# BRUT = BASE_CNAS + BASE_IRG + PRIMES
+result = categories.BASE_CNAS + categories.BASE_IRG + categories.PRIMES
+        </field>
+    </record>
+
+    <!-- CNAS SALARIALE 9% — base = BASE_CNAS uniquement -->
+    <record id="rule_dz_cnas_sal" model="hr.salary.rule">
+        <field name="name">Cotisation CNAS Salariale (9%)</field>
+        <field name="code">CNAS_SAL</field>
+        <field name="sequence">110</field>
+        <field name="category_id" ref="category_cotisations_dz"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = -payslip.compute_cnas_salariale(categories.BASE_CNAS)
+        </field>
+    </record>
+
+    <!-- IRG — base = BASE_CNAS + BASE_IRG - CNAS_SAL -->
+    <record id="rule_dz_irg" model="hr.salary.rule">
+        <field name="name">IRG (Impôt sur le Revenu Global)</field>
+        <field name="code">IRG</field>
+        <field name="sequence">120</field>
+        <field name="category_id" ref="category_cotisations_dz"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+# Base IRG = (BASE_CNAS + BASE_IRG) - CNAS salariale
+base_imposable = categories.BASE_CNAS + categories.BASE_IRG + categories.COTISATIONS
+result = -payslip.compute_irg(base_imposable)
+        </field>
+    </record>
+
+    <!-- NET À PAYER -->
+    <record id="rule_dz_net" model="hr.salary.rule">
+        <field name="name">Net à Payer</field>
+        <field name="code">NET</field>
+        <field name="sequence">200</field>
+        <field name="category_id" ref="category_net_dz"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = categories.BASE_CNAS + categories.BASE_IRG + categories.PRIMES + categories.COTISATIONS
+        </field>
+    </record>
+
+    <!-- CNAS PATRONALE 26% — base = BASE_CNAS uniquement -->
+    <record id="rule_dz_cnas_pat" model="hr.salary.rule">
+        <field name="name">Charge Patronale CNAS (26%)</field>
+        <field name="code">CNAS_PAT</field>
+        <field name="sequence">210</field>
+        <field name="category_id" ref="category_charges_pat_dz"/>
+        <field name="appears_on_payslip">False</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = payslip.compute_cnas_patronale(categories.BASE_CNAS)
+        </field>
+    </record>
+
+    <!-- ================================================================== -->
+    <!-- LIAISON DES RÈGLES À LA STRUCTURE                                   -->
+    <!-- ================================================================== -->
+    <record id="structure_dz_base" model="hr.payroll.structure">
+        <field name="rule_ids" eval="[
+            Command.link(ref('l10n_dz_payroll.rule_dz_salaire_base')),
+            Command.link(ref('l10n_dz_payroll.rule_dz_salaire_poste')),
+            Command.link(ref('l10n_dz_payroll.rule_dz_salaire_fixe_cadre')),
+            Command.link(ref('l10n_dz_payroll.rule_dz_salaire_variable_cadre')),
+            Command.link(ref('l10n_dz_payroll.rule_dz_iep')),
+            Command.link(ref('l10n_dz_payroll.rule_dz_travail_poste')),
+            Command.link(ref('l10n_dz_payroll.rule_dz_service_permanent')),
+            Command.link(ref('l10n_dz_payroll.rule_dz_nuisance')),
+            Command.link(ref('l10n_dz_payroll.rule_dz_travail_nuit')),
+            Command.link(ref('l10n_dz_payroll.rule_dz_interim')),
+            Command.link(ref('l10n_dz_payroll.rule_dz_permanence')),
+            Command.link(ref('l10n_dz_payroll.rule_dz_fonction')),
+            Command.link(ref('l10n_dz_payroll.rule_dz_caisse')),
+            Command.link(ref('l10n_dz_payroll.rule_dz_sujetion')),
+            Command.link(ref('l10n_dz_payroll.rule_dz_astreinte')),
+            Command.link(ref('l10n_dz_payroll.rule_dz_heures_supp')),
+            Command.link(ref('l10n_dz_payroll.rule_dz_conge_annuel')),
+            Command.link(ref('l10n_dz_payroll.rule_dz_inventaire')),
+            Command.link(ref('l10n_dz_payroll.rule_dz_bilan')),
+            Command.link(ref('l10n_dz_payroll.rule_dz_prime_rendement')),
+            Command.link(ref('l10n_dz_payroll.rule_dz_prc')),
+            Command.link(ref('l10n_dz_payroll.rule_dz_retraite')),
+            Command.link(ref('l10n_dz_payroll.rule_dz_indemnite_panier')),
+            Command.link(ref('l10n_dz_payroll.rule_dz_indemnite_transport')),
+            Command.link(ref('l10n_dz_payroll.rule_dz_mariage')),
+            Command.link(ref('l10n_dz_payroll.rule_dz_vehicule')),
+            Command.link(ref('l10n_dz_payroll.rule_dz_deces')),
+            Command.link(ref('l10n_dz_payroll.rule_dz_scolarite')),
+            Command.link(ref('l10n_dz_payroll.rule_dz_salaire_unique')),
+            Command.link(ref('l10n_dz_payroll.rule_dz_mission')),
+            Command.link(ref('l10n_dz_payroll.rule_dz_zone')),
+            Command.link(ref('l10n_dz_payroll.rule_dz_licenciement')),
+            Command.link(ref('l10n_dz_payroll.rule_dz_allocations_familiales')),
+            Command.link(ref('l10n_dz_payroll.rule_dz_brut')),
+            Command.link(ref('l10n_dz_payroll.rule_dz_cnas_sal')),
+            Command.link(ref('l10n_dz_payroll.rule_dz_irg')),
+            Command.link(ref('l10n_dz_payroll.rule_dz_net')),
+            Command.link(ref('l10n_dz_payroll.rule_dz_cnas_pat')),
+        ]"/>
+    </record>
+
+</odoo>

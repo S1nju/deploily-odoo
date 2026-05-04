@@ -1,0 +1,204 @@
+/* ═══════════════════════════════════════════════════
+   Trésorerie Pro — Dashboard CSS
+   Cartes Kanban pour les soldes de comptes
+═══════════════════════════════════════════════════ */
+
+/* Conteneur Kanban global */
+.treso_kanban .o_kanban_record {
+    padding: 0;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    border: none;
+    margin-bottom: 10px;
+}
+
+.treso_kanban .o_kanban_record:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
+    transform: translateY(-2px);
+}
+
+/* Carte principale */
+.treso_solde_card {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-radius: 10px;
+    min-width: 260px;
+}
+
+/* En-tête de la carte */
+.treso_card_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px 10px;
+    background: linear-gradient(135deg, #1a6ec5 0%, #0d4e99 100%);
+    color: #fff;
+    border-radius: 10px 10px 0 0;
+}
+
+.treso_compte_name {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+/* Badges état */
+.treso_badge {
+    font-size: 0.7rem;
+    padding: 3px 9px;
+    border-radius: 20px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.badge-success {
+    background: #28a745;
+    color: #fff;
+}
+
+.badge-warning {
+    background: #ffc107;
+    color: #333;
+}
+
+.badge-secondary {
+    background: rgba(255,255,255,0.25);
+    color: #fff;
+}
+
+/* Corps de la carte */
+.treso_card_body {
+    padding: 12px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.treso_montant_row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.treso_montant_row:last-child {
+    border-bottom: none;
+}
+
+.treso_label {
+    font-size: 0.8rem;
+    color: #6c757d;
+    flex: 1;
+}
+
+.treso_value {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #212529;
+    text-align: right;
+}
+
+.treso_value.fw-bold {
+    font-size: 0.98rem;
+    color: #1a6ec5;
+}
+
+/* Alerte écart */
+.treso_ecart_alerte .treso_value {
+    color: #dc3545;
+}
+.treso_ecart_alerte .treso_label {
+    color: #dc3545;
+}
+
+/* Pied de la carte */
+.treso_card_footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 7px 16px 10px;
+    background: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+    border-radius: 0 0 10px 10px;
+}
+
+.treso_type {
+    font-size: 0.72rem;
+    color: #495057;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.treso_date {
+    font-size: 0.72rem;
+    color: #6c757d;
+}
+
+/* ─── Colonnes Kanban ─────────────────────────────── */
+.treso_kanban .o_kanban_group {
+    background: #f0f4fa;
+    border-radius: 12px;
+    padding: 10px;
+    border: 1.5px solid #d0ddf0;
+    min-width: 300px;
+}
+
+/* En-tête colonne (nom du compte) */
+.treso_kanban .o_column_title {
+    font-weight: 800;
+    font-size: 1rem;
+    color: #1a3a6b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Total affiché dans l'en-tête de colonne via progressbar */
+.treso_kanban .o_kanban_group_show_total {
+    font-weight: 700;
+    color: #1a6ec5;
+    font-size: 1.05rem;
+}
+
+/* Total block sous le titre de la colonne */
+.treso_kanban .o_kanban_header_title {
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.treso_total_block {
+    background: linear-gradient(135deg, #1a6ec5, #0d4e99);
+    color: white;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    box-shadow: 0 2px 6px rgba(26,110,197,0.3);
+}
+
+.treso_total_block .treso_total_label {
+    font-size: 0.72rem;
+    opacity: 0.85;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.treso_total_block .treso_total_value {
+    font-size: 1.15rem;
+    font-weight: 800;
+}
+
+/* ─── Liste flux amélioration ───────────────────── */
+.o_list_view .o_data_row.text-danger td {
+    color: #dc3545 !important;
+    font-weight: 600;
+}
+.o_list_view .o_data_row.text-success td {
+    color: #28a745 !important;
+}

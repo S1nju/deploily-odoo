@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="hr_employee_view_form_dz" model="ir.ui.view">
+        <field name="name">hr.employee.form.inherit.dz</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Ajoute un onglet DZ dans le notebook de l'employé -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Infos Sociales DZ" name="dz_social">
+                    <group>
+                        <group string="Situation familiale">
+                            <field name="situation_familiale"/>
+                            <field name="nb_enfants_dz"/>
+                            <field name="conjoint_travaille"/>
+                        </group>
+                        <group string="Identifiants administratifs">
+                            <field name="numero_securite_sociale"/>
+                            <field name="numero_nif"/>
+                            <field name="direction"/>
+                            <field name="taux_irg"
+                                   help="Taux IRG fixe. Laisser à 0 pour utiliser le barème progressif."/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>

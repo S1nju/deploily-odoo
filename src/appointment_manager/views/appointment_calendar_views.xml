@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- CALENDAR VIEW -->
+    <record id="appointment_view_calendar" model="ir.ui.view">
+        <field name="name">appointment.appointment.view.calendar</field>
+        <field name="model">appointment.appointment</field>
+        <field name="arch" type="xml">
+            <calendar string="Calendrier des Rendez-vous"
+                      date_start="date_appointment"
+                      color="state"
+                      quick_create="False"
+                      mode="month">
+                <field name="client_name"/>
+                <field name="client_phone"/>
+                <field name="state"/>
+            </calendar>
+        </field>
+    </record>
+
+</odoo>

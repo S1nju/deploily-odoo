@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="wizard_attestation_travail_view_form" model="ir.ui.view">
+        <field name="name">wizard.attestation.travail.form</field>
+        <field name="model">wizard.attestation.travail</field>
+        <field name="arch" type="xml">
+            <form string="Attestation de Travail et de Salaire">
+                <group>
+                    <field name="employee_id"/>
+                    <field name="annee"/>
+                </group>
+                <footer>
+                    <button name="action_print" string="Imprimer" type="object" class="btn-primary"/>
+                    <button string="Annuler" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_wizard_attestation_travail" model="ir.actions.act_window">
+        <field name="name">Attestation de Travail et de Salaire</field>
+        <field name="res_model">wizard.attestation.travail</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="hr.model_hr_employee"/>
+        <field name="binding_view_types">form</field>
+    </record>
+</odoo>

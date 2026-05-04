@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- CRM menu → Facebook Sync Logs -->
+    <menuitem id="menu_fb_lead_log"
+              name="Facebook Sync Logs"
+              parent="crm.crm_menu_root"
+              action="action_fb_lead_log"
+              sequence="50"/>
+</odoo>

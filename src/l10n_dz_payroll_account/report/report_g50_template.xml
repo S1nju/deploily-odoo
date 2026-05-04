@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="report_g50_template">
+<t t-call="web.html_container">
+<t t-foreach="docs" t-as="wizard">
+<div>
+<div class="page">
+    <style>
+        .g50-header { background: #1a252f; color: white; padding: 15px; margin-bottom: 20px; text-align: center; }
+        .g50-title { font-size: 22px; font-weight: bold; }
+        .g50-subtitle { font-size: 13px; margin-top: 5px; }
+        .g50-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
+        .g50-table th { background: #2c3e50; color: white; padding: 8px 10px; font-size: 12px; text-align: left; }
+        .g50-table td { padding: 8px 10px; border: 1px solid #ddd; font-size: 12px; }
+        .g50-table td.amount { text-align: right; font-weight: bold; }
+        .g50-section { background: #2980b9; color: white; padding: 8px 10px; font-weight: bold; font-size: 13px; margin: 15px 0 5px 0; }
+        .g50-total { background: #1a252f; color: white; font-weight: bold; }
+        .g50-total td { color: white; font-size: 14px; }
+        .info-box { border: 2px solid #2c3e50; padding: 10px; margin-bottom: 15px; }
+        .info-row { display: flex; margin-bottom: 5px; }
+        .info-label { width: 200px; font-weight: bold; font-size: 12px; }
+        .info-value { font-size: 12px; border-bottom: 1px solid #333; flex: 1; }
+        .sign-box { margin-top: 40px; display: flex; justify-content: space-between; }
+        .sign-col { text-align: center; width: 45%; }
+    </style>
+
+    <!-- EN-TETE G50 -->
+    <div class="g50-header">
+        <div class="g50-title">DECLARATION MENSUELLE G50</div>
+        <div class="g50-subtitle">Versement des retenues sur salaires — IRG + CNAS</div>
+    </div>
+
+    <!-- INFORMATIONS SOCIETE -->
+    <t t-set="ctx" t-value="request.env.context if request else {}"/>
+    <div class="info-box">
+        <div class="info-row">
+            <span class="info-label">Raison Sociale:</span>
+            <span class="info-value"><t t-esc="wizard.company_id.name"/></span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">NIF:</span>
+            <span class="info-value"><t t-esc="wizard.company_id.vat or '-'"/></span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">Adresse:</span>
+            <span class="info-value">
+                <t t-esc="(wizard.company_id.street or '') + ' ' + (wizard.company_id.city or '')"/>
+            </span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">Periode:</span>
+            <span class="info-value">
+                Du <t t-esc="wizard.date_from.strftime('%d/%m/%Y')"/>
+                au <t t-esc="wizard.date_to.strftime('%d/%m/%Y')"/>
+            </span>
+        </div>
+        <t t-set="slips" t-value="wizard.env['hr.payslip'].search([('date_from','&gt;=',wizard.date_from),('date_to','&lt;=',wizard.date_to),('company_id','=',wizard.company_id.id),('state','=','done')])"/>
+        <div class="info-row">
+            <span class="info-label">Nombre de salaries:</span>
+            <span class="info-value"><t t-esc="len(slips)"/></span>
+        </div>
+    </div>
+
+    <!-- Compute totals -->
+    <t t-set="total_brut" t-value="sum(slips.mapped('montant_brut'))"/>
+    <t t-set="total_irg" t-value="sum(slips.mapped('montant_irg'))"/>
+    <t t-set="total_cnas_sal" t-value="sum(slips.mapped('cotisation_cnas_salariale'))"/>
+    <t t-set="total_cnas_pat" t-value="sum(slips.mapped('cotisation_cnas_patronale'))"/>
+    <t t-set="total_net" t-value="sum(slips.mapped('net_a_payer'))"/>
+    <t t-set="total_cnas" t-value="total_cnas_sal + total_cnas_pat"/>
+
+    <!-- SECTION IRG -->
+    <div class="g50-section">I — IMPOT SUR LE REVENU GLOBAL (IRG)</div>
+    <table class="g50-table">
+        <thead>
+            <tr>
+                <th style="width:60%">Designation</th>
+                <th style="width:40%; text-align:right">Montant (DA)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Masse salariale brute imposable</td>
+                <td class="amount"><t t-esc="'{:,.2f}'.format(total_brut)"/></td>
+            </tr>
+            <tr>
+                <td>IRG retenu a la source sur salaires</td>
+                <td class="amount"><t t-esc="'{:,.2f}'.format(total_irg)"/></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- SECTION CNAS -->
+    <div class="g50-section">II — COTISATIONS CNAS (Securite Sociale)</div>
+    <table class="g50-table">
+        <thead>
+            <tr>
+                <th style="width:60%">Designation</th>
+                <th style="width:40%; text-align:right">Montant (DA)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Cotisations salariales (9% du brut plafonne)</td>
+                <td class="amount"><t t-esc="'{:,.2f}'.format(total_cnas_sal)"/></td>
+            </tr>
+            <tr>
+                <td>Cotisations patronales (26% du brut plafonne)</td>
+                <td class="amount"><t t-esc="'{:,.2f}'.format(total_cnas_pat)"/></td>
+            </tr>
+            <tr>
+                <td><b>Total CNAS a verser</b></td>
+                <td class="amount"><b><t t-esc="'{:,.2f}'.format(total_cnas)"/></b></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- RECAPITULATIF GENERAL -->
+    <div class="g50-section">III — RECAPITULATIF GENERAL</div>
+    <table class="g50-table">
+        <tbody>
+            <tr>
+                <td style="width:60%">Total masse salariale brute</td>
+                <td class="amount"><t t-esc="'{:,.2f}'.format(total_brut)"/></td>
+            </tr>
+            <tr>
+                <td>Total IRG a verser</td>
+                <td class="amount"><t t-esc="'{:,.2f}'.format(total_irg)"/></td>
+            </tr>
+            <tr>
+                <td>Total CNAS a verser (sal. + pat.)</td>
+                <td class="amount"><t t-esc="'{:,.2f}'.format(total_cnas)"/></td>
+            </tr>
+            <tr>
+                <td>Total net a payer aux salaries</td>
+                <td class="amount"><t t-esc="'{:,.2f}'.format(total_net)"/></td>
+            </tr>
+            <tr class="g50-total">
+                <td><b>TOTAL GENERAL A VERSER AU TRESOR</b></td>
+                <td class="amount">
+                    <b><t t-esc="'{:,.2f}'.format(total_irg + total_cnas)"/></b>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- DETAIL PAR EMPLOYE -->
+    <div class="g50-section">IV — DETAIL PAR EMPLOYE</div>
+    <table class="g50-table" style="font-size:10px">
+        <thead>
+            <tr>
+                <th>Matricule</th>
+                <th>Nom et Prenom</th>
+                <th style="text-align:right">Brut</th>
+                <th style="text-align:right">CNAS Sal.</th>
+                <th style="text-align:right">IRG</th>
+                <th style="text-align:right">Net</th>
+                <th style="text-align:right">CNAS Pat.</th>
+            </tr>
+        </thead>
+        <tbody>
+            <t t-foreach="slips" t-as="slip">
+            <tr>
+                <td><t t-esc="slip.contract_id.matricule or '-'"/></td>
+                <td><t t-esc="slip.employee_id.name"/></td>
+                <td style="text-align:right"><t t-esc="'{:,.2f}'.format(slip.montant_brut)"/></td>
+                <td style="text-align:right"><t t-esc="'{:,.2f}'.format(slip.cotisation_cnas_salariale)"/></td>
+                <td style="text-align:right"><t t-esc="'{:,.2f}'.format(slip.montant_irg)"/></td>
+                <td style="text-align:right"><t t-esc="'{:,.2f}'.format(slip.net_a_payer)"/></td>
+                <td style="text-align:right"><t t-esc="'{:,.2f}'.format(slip.cotisation_cnas_patronale)"/></td>
+            </tr>
+            </t>
+            <tr class="g50-total">
+                <td colspan="2"><b>TOTAUX</b></td>
+                <td style="text-align:right"><b><t t-esc="'{:,.2f}'.format(total_brut)"/></b></td>
+                <td style="text-align:right"><b><t t-esc="'{:,.2f}'.format(total_cnas_sal)"/></b></td>
+                <td style="text-align:right"><b><t t-esc="'{:,.2f}'.format(total_irg)"/></b></td>
+                <td style="text-align:right"><b><t t-esc="'{:,.2f}'.format(total_net)"/></b></td>
+                <td style="text-align:right"><b><t t-esc="'{:,.2f}'.format(total_cnas_pat)"/></b></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- SIGNATURES -->
+    <div class="sign-box">
+        <div class="sign-col">
+            <p><b>Cachet et Signature de l'Employeur</b></p>
+            <br/><br/><br/>
+            <p>___________________________</p>
+            <p>Date: ____________________</p>
+        </div>
+        <div class="sign-col">
+            <p><b>Visa du Receveur</b></p>
+            <br/><br/><br/>
+            <p>___________________________</p>
+            <p>Date: ____________________</p>
+        </div>
+    </div>
+
+</div>
+</div>
+</t>
+</t>
+</template>
+</odoo>

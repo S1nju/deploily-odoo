@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="0">
+
+    <!-- Catégories de rubriques de paie algériennes -->
+    <record id="category_brut_dz" model="hr.salary.rule.category">
+        <field name="name">Salaire Brut</field>
+        <field name="code">BRUT</field>
+    </record>
+    <record id="category_base_dz" model="hr.salary.rule.category">
+        <field name="name">Salaire de Base</field>
+        <field name="code">BASE</field>
+        <field name="parent_id" ref="category_brut_dz"/>
+    </record>
+    <record id="category_primes_dz" model="hr.salary.rule.category">
+        <field name="name">Primes et Indemnités</field>
+        <field name="code">PRIMES</field>
+        <field name="parent_id" ref="category_brut_dz"/>
+    </record>
+    <record id="category_cotisations_dz" model="hr.salary.rule.category">
+        <field name="name">Cotisations et Retenues</field>
+        <field name="code">COTISATIONS</field>
+    </record>
+    <record id="category_charges_pat_dz" model="hr.salary.rule.category">
+        <field name="name">Charges Patronales</field>
+        <field name="code">CHARGES_PAT</field>
+    </record>
+    <record id="category_net_dz" model="hr.salary.rule.category">
+        <field name="name">Net à Payer</field>
+        <field name="code">NET</field>
+    </record>
+
+    <!--
+    ================================================================
+    NOUVELLES CATÉGORIES POUR CALCUL CORRECT CNAS ET IRG
+    BASE_CNAS : OUI CNAS — SB, SP, IEP, PRI_RDT
+    BASE_IRG  : NON CNAS / OUI IRG — PANIER, TRANSPORT
+    ================================================================
+    -->
+    <record id="category_base_cnas_dz" model="hr.salary.rule.category">
+        <field name="name">Base Cotisable CNAS</field>
+        <field name="code">BASE_CNAS</field>
+        <field name="parent_id" ref="category_brut_dz"/>
+    </record>
+
+    <record id="category_base_irg_dz" model="hr.salary.rule.category">
+        <field name="name">Base Imposable IRG (non CNAS)</field>
+        <field name="code">BASE_IRG</field>
+        <field name="parent_id" ref="category_brut_dz"/>
+    </record>
+
+</odoo>

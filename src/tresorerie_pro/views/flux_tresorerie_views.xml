@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+
+    <!-- ═══════════════════════════════════════════════════════
+         SEARCH VIEW
+    ═══════════════════════════════════════════════════════ -->
+    <record id="view_flux_tresorerie_search" model="ir.ui.view">
+      <field name="name">flux.tresorerie.search</field>
+      <field name="model">flux.tresorerie</field>
+      <field name="arch" type="xml">
+        <search string="Flux de trésorerie">
+          <field name="compte_id"/>
+          <field name="label"/>
+          <field name="partner_id"/>
+          <separator/>
+          <filter name="f_entrees" string="Entrées" domain="[('montant_entree','>',0)]"/>
+          <filter name="f_sorties" string="Sorties" domain="[('montant_sortie','>',0)]"/>
+          <separator/>
+          <filter name="f_prevu"    string="Prévu"    domain="[('state','=','prevu')]"/>
+          <filter name="f_en_cours" string="En cours" domain="[('state','=','en_cours')]"/>
+          <filter name="f_fait"     string="Fait"     domain="[('state','=','fait')]"/>
+          <separator/>
+          <filter string="Archivé" name="inactive" domain="[('active','=',False)]"/>
+          <group expand="0" string="Regrouper par">
+            <filter name="group_compte"  string="Compte"     context="{'group_by':'compte_id'}"/>
+            <filter name="group_mois"    string="Mois"       context="{'group_by':'date_prevue:month'}"/>
+            <filter name="group_state"   string="État"       context="{'group_by':'state'}"/>
+          </group>
+        </search>
+      </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════
+         LIST VIEW — NOT editable inline, "Nouveau" opens wizard
+    ═══════════════════════════════════════════════════════ -->
+    <record id="view_flux_tresorerie_list" model="ir.ui.view">
+      <field name="name">flux.tresorerie.list</field>
+      <field name="model">flux.tresorerie</field>
+      <field name="arch" type="xml">
+        <list
+            decoration-danger="solde_courant &lt; 0"
+            decoration-success="state == 'fait'"
+            default_order="date asc"
+            string="Flux de trésorerie"
+            create="false">
+
+          <field name="active"      column_invisible="1"/>
+          <field name="state"       column_invisible="1"/>
+          <field name="currency_id" column_invisible="1"/>
+          <field name="name"        column_invisible="1"/>
+
+          <field name="date_prevue"    string="Date"/>
+          <field name="label"          string="Désignation"/>
+          <field name="compte_id"/>
+          <field name="partner_id"     optional="show"/>
+          <field name="type_recurrence" string="Fréquence" optional="show"/>
+          <field name="montant_entree"  widget="monetary"/>
+          <field name="montant_sortie"  widget="monetary"/>
+          <field name="solde_courant"   widget="monetary" string="Solde"/>
+          <field name="lock_status"     string=" "/>
+
+          <button type="object" name="action_verrouiller"   icon="fa-check-circle"
+                  title="Valider → Fait"   invisible="state == 'fait'"/>
+          <button type="object" name="action_deverrouiller" icon="fa-unlock"
+                  title="Déverrouiller"    invisible="state != 'fait'"/>
+          <button type="object" name="action_detail"        icon="fa-external-link" title="Modifier"/>
+        </list>
+      </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════
+         FORM VIEW — for editing existing flux
+    ═══════════════════════════════════════════════════════ -->
+    <record id="view_flux_tresorerie_form" model="ir.ui.view">
+      <field name="name">flux.tresorerie.form</field>
+      <field name="model">flux.tresorerie</field>
+      <field name="arch" type="xml">
+        <form string="Flux de trésorerie">
+          <header>
+            <field name="state" widget="statusbar" statusbar_visible="prevu,en_cours,fait"/>
+            <button name="action_verrouiller"   string="Valider (Fait)" type="object"
+                    class="btn-primary" invisible="state == 'fait'"/>
+            <button name="action_deverrouiller" string="Déverrouiller"  type="object"
+                    invisible="state != 'fait'"/>
+          </header>
+          <sheet>
+            <div class="oe_title">
+              <h1><field name="name" readonly="1"/></h1>
+            </div>
+            <group>
+              <group string="Informations">
+                <field name="compte_id"  readonly="state == 'fait'"/>
+                <field name="label"      readonly="state == 'fait'"/>
+                <field name="partner_id" readonly="state == 'fait'"/>
+              </group>
+              <group string="Montants">
+                <field name="date_prevue"    readonly="state == 'fait'"/>
+                <field name="date_effective" invisible="state != 'fait'"/>
+                <field name="montant_entree" readonly="state == 'fait'" widget="monetary"/>
+                <field name="montant_sortie" readonly="state == 'fait'" widget="monetary"/>
+                <field name="balance"        widget="monetary"/>
+                <field name="solde_courant"  widget="monetary" string="Solde cumulé"/>
+                <field name="currency_id"    invisible="1"/>
+              </group>
+            </group>
+            <group string="Récurrence" invisible="not type_recurrence or type_recurrence == 'once'">
+              <field name="type_recurrence" readonly="1"/>
+              <field name="date_debut"      readonly="1"/>
+              <field name="date_fin"        readonly="1"/>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════
+         GRAPH VIEW
+    ═══════════════════════════════════════════════════════ -->
+    <record id="view_flux_tresorerie_graph" model="ir.ui.view">
+      <field name="name">flux.tresorerie.graph</field>
+      <field name="model">flux.tresorerie</field>
+      <field name="arch" type="xml">
+        <graph type="bar" string="Flux de trésorerie">
+          <field name="date_prevue" interval="month"/>
+          <field name="montant_entree" type="measure"/>
+          <field name="montant_sortie" type="measure"/>
+        </graph>
+      </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════
+         ACTION — list opens with wizard button for new
+    ═══════════════════════════════════════════════════════ -->
+    <record id="action_flux_tresorerie" model="ir.actions.act_window">
+      <field name="name">Flux de trésorerie</field>
+      <field name="res_model">flux.tresorerie</field>
+      <field name="view_mode">list,form,graph</field>
+    </record>
+
+    <!-- Server action: unlock from list -->
+    <record id="action_server_deverrouiller" model="ir.actions.server">
+      <field name="name">Déverrouiller</field>
+      <field name="model_id" ref="model_flux_tresorerie"/>
+      <field name="binding_model_id" ref="model_flux_tresorerie"/>
+      <field name="binding_view_types">list</field>
+      <field name="state">code</field>
+      <field name="code">records.action_deverrouiller()</field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════
+         BUTTON "Nouveau flux" in list toolbar → opens wizard
+    ═══════════════════════════════════════════════════════ -->
+    <record id="action_nouveau_flux_depuis_liste" model="ir.actions.server">
+      <field name="name">Nouveau flux</field>
+      <field name="model_id" ref="model_flux_tresorerie"/>
+      <field name="binding_model_id" ref="model_flux_tresorerie"/>
+      <field name="binding_view_types">list</field>
+      <field name="state">code</field>
+      <field name="code">
+action = {
+    'type': 'ir.actions.act_window',
+    'name': 'Nouveau flux',
+    'res_model': 'wizard.recurrence.tresorerie',
+    'view_mode': 'form',
+    'target': 'new',
+}
+      </field>
+    </record>
+
+  </data>
+</odoo>

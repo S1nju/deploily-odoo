@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="group_l10n_dz_payroll_admin" model="res.groups">
+        <field name="name">Administrateur Paie DZ</field>
+        <field name="category_id" ref="base.module_category_human_resources_payroll"/>
+        <field name="implied_ids" eval="[(4, ref('payroll.group_payroll_manager'))]"/>
+    </record>
+</odoo>

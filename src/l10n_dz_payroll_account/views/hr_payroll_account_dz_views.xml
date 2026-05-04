@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ================================================================== -->
+    <!-- BULLETIN DE PAIE — journal editable + CNAS Patronale               -->
+    <!-- ================================================================== -->
+    <record id="hr_payslip_view_form_account_dz" model="ir.ui.view">
+        <field name="name">hr.payslip.form.inherit.account.dz</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id" ref="payroll_account.hr_payslip_view_form"/>
+        <field name="priority">20</field>
+        <field name="arch" type="xml">
+            <field name="journal_id" position="attributes">
+                <attribute name="readonly">0</attribute>
+                <attribute name="required">1</attribute>
+            </field>
+            <field name="move_id" position="after">
+                <field name="move_cnas_patronale_id" readonly="1"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- ================================================================== -->
+    <!-- LOT DE BULLETINS — journal editable                                 -->
+    <!-- ================================================================== -->
+    <record id="hr_payslip_run_view_form_dz" model="ir.ui.view">
+        <field name="name">hr.payslip.run.form.inherit.dz</field>
+        <field name="model">hr.payslip.run</field>
+        <field name="inherit_id" ref="payroll_account.hr_payslip_run_view_form"/>
+        <field name="arch" type="xml">
+            <field name="journal_id" position="attributes">
+                <attribute name="readonly">0</attribute>
+            </field>
+        </field>
+    </record>
+
+    <!-- ================================================================== -->
+    <!-- MENU G50                                                            -->
+    <!-- ================================================================== -->
+    <record id="action_wizard_g50" model="ir.actions.act_window">
+        <field name="name">Declaration G50</field>
+        <field name="res_model">l10n.dz.payroll.wizard.g50</field>
+        <field name="view_mode">form</field>
+        <field name="target">current</field>
+    </record>
+
+    <menuitem
+    id="menu_g50"
+    name="Declaration G50"
+    parent="account.menu_finance_reports"
+    action="action_wizard_g50"
+    sequence="99"/>
+
+</odoo>

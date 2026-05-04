@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="report_grand_livre_template">
+<t t-call="web.html_container">
+<t t-foreach="docs" t-as="run">
+<t t-call="web.external_layout">
+<div class="page">
+    <style>
+        .gl-header { background: #1a252f; color: white; padding: 15px; margin-bottom: 20px; text-align: center; }
+        .gl-title { font-size: 20px; font-weight: bold; }
+        .gl-subtitle { font-size: 13px; margin-top: 5px; }
+        .gl-table { width: 100%; border-collapse: collapse; font-size: 10px; margin-bottom: 20px; }
+        .gl-table th { background: #2c3e50; color: white; padding: 6px 4px; text-align: center; }
+        .gl-table td { padding: 5px 4px; border-bottom: 1px solid #ddd; text-align: right; }
+        .gl-table td:first-child { text-align: left; }
+        .gl-table td:nth-child(2) { text-align: left; }
+        .gl-table tr:nth-child(even) { background: #f8f9fa; }
+        .gl-total-row { background: #2c3e50 !important; color: white; font-weight: bold; }
+        .section-box { background: #ecf0f1; padding: 8px; margin: 10px 0; font-weight: bold; }
+    </style>
+
+    <!-- EN-TETE -->
+    <div class="gl-header">
+        <div class="gl-title">GRAND LIVRE DE PAIE GLOBAL</div>
+        <div class="gl-subtitle">
+            <t t-esc="run.company_id.name"/> |
+            Periode: <t t-esc="run.date_start.strftime('%B %Y')"/>
+        </div>
+    </div>
+
+    <!-- RECAPITULATIF -->
+    <div class="section-box">RECAPITULATIF DU LOT: <t t-esc="run.name"/></div>
+    <table class="gl-table">
+        <thead>
+            <tr>
+                <th>Matricule</th>
+                <th>Nom et Prenom</th>
+                <th>Poste</th>
+                <th>SB</th>
+                <th>Primes</th>
+                <th>Brut</th>
+                <th>CNAS Sal.</th>
+                <th>IRG</th>
+                <th>Net a Payer</th>
+                <th>CNAS Pat.</th>
+                <th>Cout Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <t t-set="total_sb" t-value="0"/>
+            <t t-set="total_primes" t-value="0"/>
+            <t t-set="total_brut" t-value="0"/>
+            <t t-set="total_cnas_sal" t-value="0"/>
+            <t t-set="total_irg" t-value="0"/>
+            <t t-set="total_net" t-value="0"/>
+            <t t-set="total_cnas_pat" t-value="0"/>
+
+            <t t-foreach="run.slip_ids.filtered(lambda s: s.state == 'done')" t-as="slip">
+                <t t-set="sb" t-value="slip.get_salary_line_total('SB')"/>
+                <t t-set="primes" t-value="slip.montant_brut - sb"/>
+                <t t-set="total_sb" t-value="total_sb + sb"/>
+                <t t-set="total_primes" t-value="total_primes + primes"/>
+                <t t-set="total_brut" t-value="total_brut + slip.montant_brut"/>
+                <t t-set="total_cnas_sal" t-value="total_cnas_sal + slip.cotisation_cnas_salariale"/>
+                <t t-set="total_irg" t-value="total_irg + slip.montant_irg"/>
+                <t t-set="total_net" t-value="total_net + slip.net_a_payer"/>
+                <t t-set="total_cnas_pat" t-value="total_cnas_pat + slip.cotisation_cnas_patronale"/>
+            <tr>
+                <td><t t-esc="slip.contract_id.matricule or '-'"/></td>
+                <td><t t-esc="slip.employee_id.name"/></td>
+                <td><t t-esc="slip.contract_id.job_id.name or '-'"/></td>
+                <td><t t-esc="'{:,.2f}'.format(sb)"/></td>
+                <td><t t-esc="'{:,.2f}'.format(primes)"/></td>
+                <td><t t-esc="'{:,.2f}'.format(slip.montant_brut)"/></td>
+                <td><t t-esc="'{:,.2f}'.format(slip.cotisation_cnas_salariale)"/></td>
+                <td><t t-esc="'{:,.2f}'.format(slip.montant_irg)"/></td>
+                <td><t t-esc="'{:,.2f}'.format(slip.net_a_payer)"/></td>
+                <td><t t-esc="'{:,.2f}'.format(slip.cotisation_cnas_patronale)"/></td>
+                <td><t t-esc="'{:,.2f}'.format(slip.montant_brut + slip.cotisation_cnas_patronale)"/></td>
+            </tr>
+            </t>
+
+            <!-- LIGNE TOTAUX -->
+            <tr class="gl-total-row">
+                <td colspan="3">TOTAUX</td>
+                <td><t t-esc="'{:,.2f}'.format(total_sb)"/></td>
+                <td><t t-esc="'{:,.2f}'.format(total_primes)"/></td>
+                <td><t t-esc="'{:,.2f}'.format(total_brut)"/></td>
+                <td><t t-esc="'{:,.2f}'.format(total_cnas_sal)"/></td>
+                <td><t t-esc="'{:,.2f}'.format(total_irg)"/></td>
+                <td><t t-esc="'{:,.2f}'.format(total_net)"/></td>
+                <td><t t-esc="'{:,.2f}'.format(total_cnas_pat)"/></td>
+                <td><t t-esc="'{:,.2f}'.format(total_brut + total_cnas_pat)"/></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- PIED DE PAGE -->
+    <div style="margin-top: 30px; display: flex; justify-content: space-between;">
+        <div>
+            <p><b>Responsable Paie</b></p>
+            <br/><br/>
+            <p>___________________________</p>
+        </div>
+        <div>
+            <p><b>Direction Generale</b></p>
+            <br/><br/>
+            <p>___________________________</p>
+        </div>
+    </div>
+
+</div>
+</t>
+</t>
+</t>
+</template>
+</odoo>

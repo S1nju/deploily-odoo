@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+
+    <!-- ═══════════════════════════════════════════════════════
+         WIZARD FLUX – Form (popup)
+         Opens for BOTH new one-time and recurring flux
+    ═══════════════════════════════════════════════════════ -->
+    <record id="view_wizard_flux_form" model="ir.ui.view">
+      <field name="name">wizard.recurrence.tresorerie.form</field>
+      <field name="model">wizard.recurrence.tresorerie</field>
+      <field name="arch" type="xml">
+        <form string="Nouveau flux de trésorerie">
+          <sheet>
+            <group string="Informations">
+              <field name="compte_id"/>
+              <field name="label"/>
+              <field name="partner_id"/>
+            </group>
+            <group string="Mouvement">
+              <field name="type_mouvement" widget="radio"/>
+              <field name="montant" widget="monetary"/>
+              <field name="currency_id" invisible="1"/>
+            </group>
+            <group string="Fréquence">
+              <field name="type_recurrence" widget="radio"/>
+            </group>
+            <!-- One time -->
+            <group string="Date" invisible="type_recurrence != 'once'">
+              <field name="date_prevue"/>
+            </group>
+            <!-- Recurring -->
+            <group string="Période" invisible="type_recurrence == 'once'">
+              <field name="date_debut" required="type_recurrence != 'once'"/>
+              <field name="date_fin"   required="type_recurrence != 'once'"/>
+              <field name="jour_semaine"
+                     invisible="type_recurrence != 'semaine'"
+                     required="type_recurrence == 'semaine'"/>
+              <field name="jour_mois"
+                     invisible="type_recurrence != 'mois'"
+                     required="type_recurrence == 'mois'"/>
+            </group>
+          </sheet>
+          <footer>
+            <button name="action_creer_flux" string="Créer" type="object" class="btn-primary"/>
+            <button string="Annuler" class="btn-secondary" special="cancel"/>
+          </footer>
+        </form>
+      </field>
+    </record>
+
+    <!-- Action: open wizard as popup -->
+    <record id="action_wizard_recurrence" model="ir.actions.act_window">
+      <field name="name">Nouveau flux</field>
+      <field name="res_model">wizard.recurrence.tresorerie</field>
+      <field name="view_mode">form</field>
+      <field name="target">new</field>
+    </record>
+
+  </data>
+</odoo>

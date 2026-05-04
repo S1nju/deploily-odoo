@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_l10n_dz_payroll_rate_user,l10n.dz.hr.payroll.rate user,model_l10n_dz_hr_payroll_rate,payroll.group_payroll_user,1,0,0,0
+access_l10n_dz_payroll_rate_manager,l10n.dz.hr.payroll.rate manager,model_l10n_dz_hr_payroll_rate,payroll.group_payroll_manager,1,1,1,1
+access_l10n_dz_payroll_irg_bracket_user,l10n.dz.hr.payroll.irg.bracket user,model_l10n_dz_hr_payroll_irg_bracket,payroll.group_payroll_user,1,0,0,0
+access_l10n_dz_payroll_irg_bracket_manager,l10n.dz.hr.payroll.irg.bracket manager,model_l10n_dz_hr_payroll_irg_bracket,payroll.group_payroll_manager,1,1,1,1
+access_wizard_attestation_travail,wizard.attestation.travail,model_wizard_attestation_travail,payroll.group_payroll_user,1,1,1,1
