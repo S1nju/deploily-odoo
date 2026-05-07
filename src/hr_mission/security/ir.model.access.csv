@@ -1,7 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_hr_mission_scale_user,hr.mession.scale.user,model_hr_mession_scale,base.group_user,1,0,0,0
-access_hr_mission_scale_manager,hr.mession.scale.manager,model_hr_mession_scale,base.group_system,1,1,1,1
-access_hr_mession_user,hr.mession.user,model_hr_mession,base.group_user,1,0,0,0
-access_hr_mession_manager,hr.mession.manager,model_hr_mession,base.group_system,1,1,1,1
-access_hr_mession_fee_user,hr.mession.fee.user,model_hr_mession_fee,base.group_user,1,1,1,0
-access_hr_mession_fee_manager,hr.mession.fee.manager,model_hr_mession_fee,base.group_system,1,1,1,1

@@ -4,12 +4,12 @@
         Website Terms and Conditions and Privacy Policy Management
     """,
     "author": "SARL Transformatek",
-    "website": "https://transformatek.dz",
+    "website": "https://deploily.cloud",
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/master/odoo/addons/base/module/module_data.xml
     # for the full list
     "category": "Uncategorized",
-    "version": "0.1",
+    'version': '18.0.1.0',
     # any module necessary for this one to work correctly
     "depends": [
         "base",
@@ -32,4 +32,6 @@
     "application": True,
     "installable": True,
     "auto_install": False,
+        'license': 'LGPL-3',
+
 }

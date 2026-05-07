@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- HR Medical Menu -->
+    <menuitem id="menu_hr_dz_promotion_root" name="Promotions"  groups="base.group_user" sequence="95" />
+        <menuitem id="menu_hr_dz_promotion_action" name="Dossiers de promotion" parent="menu_hr_dz_promotion_root" action="action_hr_dz_promotion" sequence="1"/>
+    </data>
+</odoo>

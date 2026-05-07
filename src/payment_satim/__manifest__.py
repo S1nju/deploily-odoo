@@ -3,15 +3,15 @@
     "name": "CIB Epay",
     "summary": """Payment gateway for Algerian CIB cards""",
     "description": """
-        Payment gateway for Algerian CIB cards
+        Payment gateway for Algerian (dz) CIB cards
     """,
     "author": "SARL TransformaTek",
-    "website": "https://transformatek.dz",
+    "website": "https://deploily.cloud",
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/14.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     "category": "Accounting/Payment Providers",
-    "version": "2.0",
+    'version': '18.0.1.0',
     # any module necessary for this one to work correctly
     "depends": ["payment", "sale_management", "sale", "website_sale", "website_terms"],
     # always loaded
@@ -34,4 +34,8 @@
     # "application": True,
     "post_init_hook": "post_init_hook",
     "uninstall_hook": "uninstall_hook",
+        'license': 'LGPL-3',
+        'application': True,
+
+
 }

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- HR Mission Scale Views -->
+        <record model="ir.ui.view" id="view_hr_dz_mission_scale_tree">
+            <field name="name">Grilles de missions</field>
+            <field name="model">hr.mession.scale</field>
+            <field name="arch" type="xml">
+                <list string="Grilles de missions" sample="1">
+                    <field name="name"/>
+                    <field name="mission_type"/>
+                    <field name="daily_amount"/>
+                    <field name="is_covered"/>
+                </list>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_hr_dz_mission_scale_form">
+            <field name="name">Grilles de missions</field>
+            <field name="model">hr.mession.scale</field>
+            <field name="arch" type="xml">
+                <form string="Grilles de missions">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="mission_type"/>
+                            <field name="daily_amount"/>
+                            <field name="is_covered"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_hr_dz_mission_scale_view">
+            <field name="name">Grilles de missions</field>
+            <field name="res_model">hr.mession.scale</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+    Créer une grille de missions
+</p>
+<p>Définissez les indemnités de mission pour les affectations nationales et internationales.</p>
+            </field>
+        </record>
+    </data>
+</odoo>

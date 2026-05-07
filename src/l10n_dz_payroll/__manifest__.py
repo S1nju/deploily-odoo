@@ -23,8 +23,8 @@ Ce module gère la paie selon la réglementation algérienne :
     """,
     "version": "18.0.1.0.0",
     "category": "Payroll",
-    "author": "OCA, Algerian Contributors",
-    "website": "https://github.com/OCA/l10n-algeria",
+    "author": "OCA, Algerian Contributors + SARL Transformatek",
+    "website": "https://deploily.cloud",
     "license": "LGPL-3",
     "depends": [
         "payroll",
@@ -51,6 +51,8 @@ Ce module gère la paie selon la réglementation algérienne :
         "report/report_attestation_template.xml",
     ],
     "installable": True,
-    "application": False,
+    "application": True,
     "auto_install": False,
+        'license': 'LGPL-3',
+
 }
