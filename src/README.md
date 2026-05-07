@@ -37,7 +37,7 @@ You can purchase **Odoo pre-installed with these Algerian localization modules**
 
 
 
-<p align="center">
+<!-- <p align="center">
   <a href="https://deploily.cloud/en/application-service/odoo?vps=17" target="_blank">
     <span style="
       display:inline-block;
@@ -52,6 +52,12 @@ You can purchase **Odoo pre-installed with these Algerian localization modules**
     ">
       🚀 Buy Odoo with Algerian Modules
     </span>
+  </a>
+</p> -->
+
+<p align="center">
+  <a href="https://deploily.cloud/en/application-service/odoo?vps=17">
+    <img src="https://img.shields.io/badge/🚀%20BUY%20ODOO%20WITH%20ALGERIAN%20MODULES-ff4d4d?style=for-the-badge&logo=odoo&logoColor=white"/>
   </a>
 </p>
 This option allows you to:
