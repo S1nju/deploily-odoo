@@ -69,21 +69,6 @@ Purchase **Odoo fully deployed** with all Algerian localization modules pre-inst
 - ✅ Ongoing maintenance and updates
 
 
-
-
----
-
-## 📬 Contact & Support
-
-For professional services, customization requests, or deployment support:
-
-<div align="center">
-
-[![🌐 Website](https://img.shields.io/badge/🌐%20Website-deploily.cloud-0ea5e9?style=for-the-badge)](https://deploily.cloud)
-[![📧 Contact Us](https://img.shields.io/badge/📧%20Contact%20Us-Get%20in%20Touch-6366f1?style=for-the-badge)](https://deploily.cloud/contactus)
-
-</div>
-
 ---
 
 <div align="center">
