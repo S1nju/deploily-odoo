@@ -56,7 +56,7 @@ Purchase **Odoo fully deployed** with all Algerian localization modules pre-inst
 
 
 <a href="https://deploily.cloud/en/application-service/odoo?vps=17">
-  <img src="https://img.shields.io/badge/%F0%9F%9A%80%20BUY%20ODOO%20%E2%80%94%20ALGERIA%20PACKAGE-0ea5e9?style=for-the-badge&logoColor=white&labelColor=0284c7" height="50" alt="Buy Odoo Algeria Package"/>
+  <img src="https://img.shields.io/badge/%F0%9F%9A%80%20BUY%20ODOO%20%E2%80%94%20ALGERIA%20PACKAGE-0ea5e9?style=for-the-badge&logoColor=white&labelColor=0284c7" height="50" alt="Buy Odoo Algeria Module"/>
 </a>
 </div>
 
