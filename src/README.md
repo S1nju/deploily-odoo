@@ -54,9 +54,10 @@ Purchase **Odoo fully deployed** with all Algerian localization modules pre-inst
 
 <div align="center">
 
-[![🚀 Buy Odoo — Algeria Package](https://img.shields.io/badge/🚀%20Buy%20Odoo%20—%20Algeria%20Package-0ea5e9?style=for-the-badge&logo=odoo&logoColor=white)](https://deploily.cloud/en/application-service/odoo?vps=17)
 
-
+<a href="https://deploily.cloud/en/application-service/odoo?vps=17">
+  <img src="https://img.shields.io/badge/%F0%9F%9A%80%20BUY%20ODOO%20%E2%80%94%20ALGERIA%20PACKAGE-0ea5e9?style=for-the-badge&logoColor=white&labelColor=0284c7" height="50" alt="Buy Odoo Algeria Package"/>
+</a>
 </div>
 
 **What's included:**
@@ -82,12 +83,6 @@ For professional services, customization requests, or deployment support:
 [![📧 Contact Us](https://img.shields.io/badge/📧%20Contact%20Us-Get%20in%20Touch-6366f1?style=for-the-badge)](https://deploily.cloud/contactus)
 
 </div>
-
----
-
-## 📄 License
-
-This project is licensed under the **LGPL-3.0 License** — see the [LICENSE](LICENSE) file for details.
 
 ---
 
