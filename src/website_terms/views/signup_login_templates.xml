@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <template id="deploily_signup_fields" inherit_id="auth_signup.fields">
+    <template id="website_terms_signup_fields" inherit_id="auth_signup.fields">
         <xpath expr="//input[@id='password']" position="after">
             <small class="form-text text-primary  mb-2" style="font-size: 0.60rem;">
                 Password must contain at least 8 characters, including uppercase and lowercase letters, a number, and a special character.
@@ -15,29 +15,23 @@
                     id="terms_conditions"
                     class="form-check-input mt-1"
                     required="required" />
-
                     <label for="terms_conditions" class="form-check-label text-muted small">
                         <t t-esc="website.terms_conditions_text"/>
                         <a t-att-href="website.terms_conditions_page.url" target="_blank">Conditions d’utilisation</a> et <a t-att-href="website.privacy_policy_page.url" target="_blank">Politique de confidentialité</a>, et je consens au traitement de mes données personnelles conformément à <strong>la loi 18-07 sur la protection des individus</strong>.</label>
 
+              
             </div>
         </xpath>
     </template>
 
-    <template id="deploily_login" inherit_id="web.login" name="Log in">
-        <xpath expr="//div[@class='oe_login_buttons text-center gap-1 d-grid mb-1 pt-3']" position="before">
-            <t t-call="website_terms.recaptcha_widget" />
-        </xpath>
-
-    </template>
 
 
-    <template id="deploily_signup" inherit_id="auth_signup.signup" name="Sign up">
+    <template id="website_terms_signup" inherit_id="auth_signup.signup" name="Sign up">
         <xpath expr="//div[@class='text-center oe_login_buttons d-grid pt-3']" position="before">
-            <t t-call="website_terms.recaptcha_widget" />
+            <t t-call="website_terms.recaptcha" />
         </xpath>
     </template>
-    <template id="recaptcha_widget" name="Add reCAPTCHA to Signup">
+    <template id="website_terms.recaptcha" name="Add reCAPTCHA to Signup">
         <div class="mb-3 o_recaptcha" style="margin-top: 10px;">
             <div class="g-recaptcha" name="recaptcha" t-att-data-sitekey="website.get_recaptcha_site_key()" t-attf-data-callback="{{ callback_name or 'signup' }}"></div>
         </div>
