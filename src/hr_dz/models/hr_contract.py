@@ -18,44 +18,43 @@ class HrContract(models.Model):
 
     def get_year_in_arabic(self):
         """Convertir l'année en texte arabe"""
+        self.ensure_one()  # Sécurité : un seul enregistrement
+        
         ones = ['', 'واحد', 'اثنان', 'ثلاثة', 'أربعة', 'خمسة', 'ستة', 'سبعة', 'ثمانية', 'تسعة']
         tens = ['', 'عشرة', 'عشرون', 'ثلاثون', 'أربعون', 'خمسون', 'ستون', 'سبعون', 'ثمانون', 'تسعون']
         hundreds = ['', 'مائة', 'مائتان', 'ثلاثمائة', 'أربعمائة', 'خمسمائة', 'ستمائة', 'سبعمائة', 'ثمانمائة', 'تسعمائة']
 
-        for rec in self:
-            year = rec.date_start.year if rec.date_start else 2023
+        year = self.date_start.year if self.date_start else 2023
 
-            if year < 2000 or year > 2099:
-                rec.year_in_arabic = str(year)
-                continue
+        if year < 2000 or year > 2099:
+            return str(year)
 
-            result = 'ألفين'
-            remainder = year - 2000
+        result = 'ألفين'
+        remainder = year - 2000
 
-            if remainder == 0:
-                rec.year_in_arabic = result
-                continue
+        if remainder == 0:
+            return result
 
-            result += ' و'
+        result += ' و'
 
-            h = remainder // 100
-            if h:
-                result += hundreds[h]
-                remainder %= 100
-                if remainder:
-                    result += ' و'
+        h = remainder // 100
+        if h:
+            result += hundreds[h]
+            remainder %= 100
+            if remainder:
+                result += ' و'
 
-            if remainder >= 10:
-                t = remainder // 10
-                o = remainder % 10
-                if o:
-                    result += ones[o] + ' و' + tens[t]
-                else:
-                    result += tens[t]
-            elif remainder:
-                result += ones[remainder]
+        if remainder >= 10:
+            t = remainder // 10
+            o = remainder % 10
+            if o:
+                result += ones[o] + ' و' + tens[t]
+            else:
+                result += tens[t]
+        elif remainder:
+            result += ones[remainder]
 
-            rec.year_in_arabic = result
+        return result  # ✅ return au lieu de rec.year_in_arabic = result
 
     @api.onchange('template_id')
     def _onchange_template_id(self):
