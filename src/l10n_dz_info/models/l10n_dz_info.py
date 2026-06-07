@@ -44,11 +44,3 @@ class ResPartner(models.Model):
     )
 
 
-class HrEmployee(models.Model):
-    _inherit = 'hr.employee'
-
-    commune_id = fields.Many2one(
-        'res.country.state.commune',
-        string='Commune',
-        domain="[('state_id', '=', private_state_id)]",
-    )

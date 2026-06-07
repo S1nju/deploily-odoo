@@ -23,3 +23,9 @@ class HrEmployee(models.Model):
         ('maitrise', 'Maîtrise'),
         ('execution', 'Exécution')
     ], string="Catégorie professionnelle")
+
+    commune_id = fields.Many2one(
+        'res.country.state.commune',
+        string='Commune',
+        domain="[('state_id', '=', private_state_id)]",
+    )

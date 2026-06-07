@@ -7,6 +7,14 @@
             <field name="model">hr.employee</field>
             <field name="inherit_id" ref="hr.view_employee_form"/>
             <field name="arch" type="xml">
+                <xpath expr="//div[hasclass('o_address_format')]//field[@name='private_state_id']" position="after">
+                <field name="commune_id"
+                       string="Commune"
+                       placeholder="Commune..."
+                       class="o_address_state"
+                       options="{'no_create': True}"
+                       domain="[('state_id', '=', private_state_id)]"/>
+            </xpath>
                 <xpath expr="//button[@name='action_open_contract']" position="after">
                     <button name="action_open_missions" type="object" string="Missions" icon="fa-plane" 
                             class="btn-info" groups="hr.group_hr_manager"/>
@@ -26,5 +34,7 @@
                 </xpath>
             </field>
         </record>
+  
+
     </data>
 </odoo>
