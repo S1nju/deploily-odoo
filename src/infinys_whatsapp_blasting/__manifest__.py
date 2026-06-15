@@ -16,11 +16,11 @@
         - Convert all incoming messages to database contact
         - Analytics: Track message delivery and engagement metrics (not this in community edition).
     """,
-    "author": "Infinys System Indonesia",
+    "author": "Infinys System Indonesia + SARL Transformatek",
     "website": "https://www.infinyscloud.com/platform/odoo/",
     "category": "Marketing/Email Marketing",
     "version": "1.0.0",
-    "license": "AGPL-3",
+    'license': 'LGPL-3',
     "live_test_url": "https://odoo-ce.atisicloud.com/",
     "icon": "/infinys_whatsapp_blasting/static/description/icon.png",
     # any module necessary for this one to work correctly
