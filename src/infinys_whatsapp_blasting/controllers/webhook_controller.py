@@ -23,7 +23,6 @@ class WhatsAppWebhookController(http.Controller):
         csrf=False
     )
     def wa_incoming(self, **kwargs):
-
         # ----------------------------------------------------
         # 1. META WEBHOOK VERIFICATION (GET)
         # ----------------------------------------------------
