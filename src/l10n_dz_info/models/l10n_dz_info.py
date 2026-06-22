@@ -16,18 +16,18 @@ class ResCountryStateCommune(models.Model):
     state_id = fields.Many2one('res.country.state', string='Wilaya', required=True)
 
 
-class ResCompany(models.Model):
-    _inherit = 'res.company'
+# class ResCompany(models.Model):
+#     _inherit = 'res.company'
 
-    rc = fields.Char(string='R.C')
-    nif = fields.Char(string='N.I.F', size=15)
-    nis = fields.Char(string='N.I.S')
-    ai = fields.Char(string='Article d\'imposition')
-    commune_id = fields.Many2one(
-        'res.country.state.commune',
-        string='Commune',
-        domain="[('state_id', '=', state_id)]",
-    )
+#     rc = fields.Char(string='R.C')
+#     nif = fields.Char(string='N.I.F', size=15)
+#     nis = fields.Char(string='N.I.S')
+#     ai = fields.Char(string='Article d\'imposition')
+#     commune_id = fields.Many2one(
+#         'res.country.state.commune',
+#         string='Commune',
+#         domain="[('state_id', '=', state_id)]",
+#     )
 
 
 # class ResPartner(models.Model):
