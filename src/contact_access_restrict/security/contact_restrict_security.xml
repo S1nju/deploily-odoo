@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+
+        <!-- Security group: users placed in this group get the extra
+             record rule below applied to them. Users NOT in this group
+             are completely unaffected. -->
+        <record id="group_contact_restricted" model="res.groups">
+            <field name="name">Contacts: Restricted to Own</field>
+            <field name="category_id" ref="base.module_category_sales_sales"/>
+            <field name="comment">Users in this group only see contacts where
+                they are the Salesperson, that they created themselves, or
+                that are child contacts of a company they are the
+                Salesperson of. Their own related partner and the company
+                partner remain visible so avatar/chatter keep working.
+            </field>
+        </record>
+
+        <!-- Record rule restricting res.partner for that group -->
+        <record id="contact_rule_restricted" model="ir.rule">
+            <field name="name">Contacts: restrict to own salesperson / creator</field>
+            <field name="model_id" ref="base.model_res_partner"/>
+            <field name="domain_force">[
+                '|', '|', '|', '|', '|',
+                ('user_id', '=', user.id),
+                ('create_uid', '=', user.id),
+                ('parent_id.user_id', '=', user.id),
+                ('crm_lead_ids.user_id', '=', user.id),
+                ('id', '=', user.partner_id.id),
+                ('id', '=', user.company_id.partner_id.id)
+            ]</field>
+            <field name="groups" eval="[(4, ref('group_contact_restricted'))]"/>
+            <field name="perm_read">1</field>
+            <field name="perm_write">1</field>
+            <field name="perm_create">1</field>
+            <field name="perm_unlink">0</field>
+        </record>
+
+    </data>
+</odoo>
