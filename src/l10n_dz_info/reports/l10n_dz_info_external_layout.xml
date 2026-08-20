@@ -65,7 +65,7 @@
     <template id="l10n_dz_info_external_layout__inherit_address" inherit_id="web.address_layout">
 
         <xpath expr="//div[@name='address']" position="inside">
-            <t t-set="partner" t-value="o.partner_id or None"/>
+            <t t-set="partner" t-value="company.partner_id or None"/>
             <t t-if="partner">
                 <div class="mt-1">
                     <t t-if="partner.rc">
