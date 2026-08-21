@@ -21,7 +21,20 @@
                         <field name="name"/>
                         <field name="course_id"/>
                     </group>
-                    <field name="description"/>
+                    <notebook>
+                        <page string="Questions">
+                            <field name="question_ids">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="question_type"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Instructions">
+                            <field name="description"/>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>

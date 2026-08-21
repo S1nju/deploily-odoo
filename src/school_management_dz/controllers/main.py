@@ -47,19 +47,36 @@ class SchoolPortal(http.Controller):
             
         parent = request.env.user.partner_id
         student_name = kw.get('student_name')
-        test_answer = kw.get('test_answer', '')
         
-        student = request.env['school.student'].sudo().create({
-            'name': student_name, 
+        # Dynamically build student fields, except student_name
+        student_vals = {
+            'name': student_name,
             'parent_id': parent.id
-        })
+        }
+        for key, val in kw.items():
+            if key.startswith('student_') and key != 'student_name':
+                field_name = key.replace('student_', '')
+                student_vals[field_name] = val
+                
+        student = request.env['school.student'].sudo().create(student_vals)
+        
+        # Dynamically build test answers
+        answers_str = []
+        for key, val in kw.items():
+            if key.startswith('question_'):
+                q_id = int(key.replace('question_', ''))
+                q = request.env['school.course.test.question'].sudo().browse(q_id)
+                if q.exists():
+                    answers_str.append(f"Q: {q.name}\nA: {val}")
+                    
+        formatted_answers = "\n\n".join(answers_str)
         
         stage = request.env['crm.stage'].sudo().search([('name', '=', 'استشارة مجانية')], limit=1)
         lead_vals = {
             'name': f"{student_name} - {course.name}",
             'partner_id': parent.id,
             'student_id': student.id,
-            'description': f"Registration Request.\nStudent: {student_name}\nTest Answer Form: {test_answer}",
+            'description': f"Registration Request.\nStudent: {student_name}\n\n=== Test Answers ===\n{formatted_answers}",
         }
         if stage:
             lead_vals['stage_id'] = stage.id

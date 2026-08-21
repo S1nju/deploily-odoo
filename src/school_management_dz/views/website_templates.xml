@@ -79,11 +79,12 @@
                             </div>
                         </div>
                         <div class="col-md-8">
-                            <h2><t t-esc="course.name"/></h2>
-                            <p><strong>Tutor:</strong> <t t-esc="course.tutor_id.name"/></p>
-                            <p><strong>Starts:</strong> <t t-esc="course.start_date"/></p>
-                            <p><strong>Center:</strong> <t t-esc="course.center_id.name"/></p>
-                            <p t-if="course.location"><strong>Details/Location:</strong> <t t-esc="course.location"/></p>
+                            <h2 t-field="course.name"/>
+                            <p><strong>Level/Year:</strong> <span t-field="course.subcategory_id.name"/></p>
+                            <p><strong>Tutor:</strong> <span t-field="course.tutor_id.name"/></p>
+                            <p><strong>Starts:</strong> <span t-field="course.start_date"/></p>
+                            <p><strong>Center:</strong> <span t-field="course.center_id.name"/></p>
+                            <p t-if="course.location"><strong>Details/Location:</strong> <span t-field="course.location"/></p>
                             
                             <t t-if="course.schedule_ids">
                                 <p><strong>Schedule:</strong></p>
@@ -114,10 +115,12 @@
     
     <template id="course_register_form" name="Course Registration Form">
         <t t-call="website.layout">
-            <div class="container mt-4 mb-4">
-                <h2>Registration: <t t-esc="course.name"/></h2>
-                <p class="text-muted"><strong>Center:</strong> <t t-esc="course.center_id.name"/></p>
-                <form t-attf-action="/course/#{slug(course)}/register" method="post">
+            <div id="wrap" class="oe_structure oe_empty">
+                <section class="container mt-4 mb-4">
+                    <h2>Registration: <span t-field="course.name"/></h2>
+                    <p class="text-muted mb-1"><strong>Level:</strong> <span t-field="course.subcategory_id.name"/></p>
+                    <p class="text-muted"><strong>Center:</strong> <span t-field="course.center_id.name"/></p>
+                    <form t-attf-action="/course/#{slug(course)}/register" method="post">
                     <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                     
                     <h4>Student Information</h4>
@@ -132,13 +135,29 @@
                             <div class="alert alert-secondary">
                                 <strong><t t-esc="test.name"/></strong>
                                 <p><t t-esc="test.description"/></p>
-                                <textarea name="test_answer" class="form-control" rows="3" placeholder="Enter answers for the evaluation here..."></textarea>
+                                
+                                <t t-foreach="test.question_ids" t-as="question">
+                                    <div class="mb-3 mt-3">
+                                        <label><strong><t t-esc="question.name"/></strong> *</label>
+                                        <t t-if="question.question_type == 'text'">
+                                            <textarea t-attf-name="question_#{question.id}" class="form-control" rows="2" required="required"></textarea>
+                                        </t>
+                                        <t t-if="question.question_type == 'boolean'">
+                                            <select t-attf-name="question_#{question.id}" class="form-control" required="required">
+                                                <option value="yes">نعم (Yes)</option>
+                                                <option value="no">لا (No)</option>
+                                            </select>
+                                        </t>
+                                    </div>
+                                </t>
                             </div>
                         </t>
                     </t>
                     
                     <button type="submit" class="btn btn-primary mt-3">Submit Registration</button>
                 </form>
+                </section>
+                <div class="oe_structure oe_empty"/>
             </div>
         </t>
     </template>
