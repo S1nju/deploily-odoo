@@ -7,6 +7,7 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='department_id']" position="after">
                 <field name="center_id" string="Associated Center"/>
+                <field name="is_tutor"/>
             </xpath>
         </field>
     </record>
@@ -18,6 +19,7 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='department_id']" position="after">
                 <field name="center_id" string="Associated Center"/>
+                <field name="is_tutor"/>
             </xpath>
         </field>
     </record>

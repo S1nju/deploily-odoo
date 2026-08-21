@@ -31,7 +31,7 @@ class SchoolCourse(models.Model):
     subcategory_id = fields.Many2one('school.service.subcategory', 'Subcategory', required=True)
     category_id = fields.Many2one('school.service.category', related='subcategory_id.category_id', store=True)
     
-    tutor_id = fields.Many2one('hr.employee', 'Tutor')
+    tutor_id = fields.Many2one('hr.employee', 'Tutor', domain="[('is_tutor', '=', True)]")
     recruitment_id = fields.Many2one('hr.applicant', 'Recruitment Link')
     schedule_ids = fields.One2many('school.course.schedule', 'course_id', 'Schedules')
     test_ids = fields.One2many('school.course.test', 'course_id', 'Tests/Assessments')
