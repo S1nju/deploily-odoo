@@ -129,3 +129,21 @@ class SchoolPortal(http.Controller):
         return request.render('school_management_dz.portal_my_students', {
             'students': students,
         })
+
+    @http.route(['/my/students/<model("school.student"):student>'], type='http', auth="user", website=True)
+    def portal_my_student_detail(self, student, **kw):
+        parent = request.env.user.partner_id
+        if student.parent_id.id != parent.id:
+            return request.render('website.page_404')
+            
+        paid_regs = request.env['school.registration'].sudo().search([
+            ('parent_id', '=', parent.id),
+            ('state', '=', 'paid')
+        ])
+        
+        if not paid_regs:
+            return request.render('school_management_dz.portal_blocked_unpaid', {})
+
+        return request.render('school_management_dz.portal_my_student_detail', {
+            'student': student,
+        })
