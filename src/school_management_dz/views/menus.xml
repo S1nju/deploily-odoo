@@ -2,15 +2,22 @@
 <odoo>
     <menuitem id="menu_school_management_root" name="School Management" sequence="50" web_icon="school_management,static/description/icon.png"/>
     
-    <menuitem id="menu_school_operations" name="Operations" parent="menu_school_management_root" sequence="10"/>
-    <menuitem id="menu_school_configuration" name="Configuration" parent="menu_school_management_root" sequence="20"/>
+    <!-- Top-level Menus -->
+    <menuitem id="menu_school_students_top" name="Students" parent="menu_school_management_root" sequence="10"/>
+    <menuitem id="menu_school_courses_top" name="Courses" parent="menu_school_management_root" sequence="20"/>
+    <menuitem id="menu_school_payments_top" name="Payments" parent="menu_school_management_root" sequence="30" action="action_school_payment"/>
+    
+    <menuitem id="menu_school_configuration" name="Configuration" parent="menu_school_management_root" sequence="40"/>
 
-    <menuitem id="menu_school_student" name="Students" parent="menu_school_operations" sequence="10" action="action_school_student"/>
-    <menuitem id="menu_school_course" name="Courses" parent="menu_school_operations" sequence="20" action="action_school_course"/>
-    <menuitem id="menu_school_registration" name="Registrations" parent="menu_school_operations" sequence="30" action="action_school_registration"/>
-    <menuitem id="menu_school_attendance" name="Attendance Tracker" parent="menu_school_operations" sequence="40" action="action_school_attendance_tracker"/>
-    <menuitem id="menu_school_test" name="Assessments" parent="menu_school_operations" sequence="50" action="action_school_test"/>
-    <menuitem id="menu_school_payment" name="Payments" parent="menu_school_operations" sequence="60" action="action_school_payment"/>
+    <!-- Students submenu -->
+    <menuitem id="menu_school_student" name="Students" parent="menu_school_students_top" sequence="10" action="action_school_student"/>
+    <menuitem id="menu_school_attendance" name="Attendance Tracker" parent="menu_school_students_top" sequence="20" action="action_school_attendance_tracker"/>
+    <menuitem id="menu_school_registration" name="Registrations" parent="menu_school_students_top" sequence="30" action="action_school_registration"/>
 
+    <!-- Courses submenu -->
+    <menuitem id="menu_school_course" name="Courses" parent="menu_school_courses_top" sequence="10" action="action_school_course"/>
+    <menuitem id="menu_school_test" name="Assessments" parent="menu_school_courses_top" sequence="20" action="action_school_test"/>
+
+    <!-- Configuration submenu -->
     <menuitem id="menu_school_service_category" name="Categories" parent="menu_school_configuration" sequence="10" action="action_school_service_category"/>
 </odoo>
