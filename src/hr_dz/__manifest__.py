@@ -6,7 +6,7 @@
     "website": "https://deploily.cloud",
     "category": "Human Resources/Localization",
     "version": "18.0.1.0.0",
-    "depends": ["hr","hr_contract","hr_holidays","hr_dz_mission"],
+    "depends": ["hr","hr_contract","hr_holidays","hr_dz_mission", "l10n_dz_info"],
     "data": [
         "security/ir.model.access.csv",
         "views/hr_employee_views.xml",
