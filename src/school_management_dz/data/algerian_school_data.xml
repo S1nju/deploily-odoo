@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Categories -->
+        <record id="cat_primary" model="school.service.category"><field name="name">الابتدائي</field></record>
+        <record id="cat_middle" model="school.service.category"><field name="name">المتوسط</field></record>
+        <record id="cat_high" model="school.service.category"><field name="name">الثانوي</field></record>
+
+        <!-- Primary -->
+        <record id="sub_prim_general" model="school.service.subcategory"><field name="name">الابتدائي الطور</field><field name="category_id" ref="cat_primary"/></record>
+        <record id="course_prim_ar" model="school.course"><field name="name">اللغة العربية</field><field name="subcategory_id" ref="sub_prim_general"/><field name="is_published" eval="True"/></record>
+        <record id="course_prim_fr" model="school.course"><field name="name">اللغة الفرنسية</field><field name="subcategory_id" ref="sub_prim_general"/><field name="is_published" eval="True"/></record>
+        <record id="course_prim_math" model="school.course"><field name="name">الرياضيات</field><field name="subcategory_id" ref="sub_prim_general"/><field name="is_published" eval="True"/></record>
+
+        <!-- Middle -->
+        <record id="sub_mid_1" model="school.service.subcategory"><field name="name">1 متوسط</field><field name="category_id" ref="cat_middle"/></record>
+        <record id="course_mid_1_math" model="school.course"><field name="name">الرياضيات</field><field name="subcategory_id" ref="sub_mid_1"/><field name="is_published" eval="True"/></record>
+        <record id="course_mid_1_phys" model="school.course"><field name="name">العلوم الفيزيائية</field><field name="subcategory_id" ref="sub_mid_1"/><field name="is_published" eval="True"/></record>
+        <record id="course_mid_1_sci" model="school.course"><field name="name">علوم الطبيعة والحياة</field><field name="subcategory_id" ref="sub_mid_1"/><field name="is_published" eval="True"/></record>
+        <record id="course_mid_1_ar" model="school.course"><field name="name">اللغة العربية</field><field name="subcategory_id" ref="sub_mid_1"/><field name="is_published" eval="True"/></record>
+        <record id="course_mid_1_fr" model="school.course"><field name="name">اللغة الفرنسية</field><field name="subcategory_id" ref="sub_mid_1"/><field name="is_published" eval="True"/></record>
+        <record id="course_mid_1_en" model="school.course"><field name="name">اللغة الإنجليزية</field><field name="subcategory_id" ref="sub_mid_1"/><field name="is_published" eval="True"/></record>
+        <record id="sub_mid_2" model="school.service.subcategory"><field name="name">2 متوسط</field><field name="category_id" ref="cat_middle"/></record>
+        <record id="course_mid_2_math" model="school.course"><field name="name">الرياضيات</field><field name="subcategory_id" ref="sub_mid_2"/><field name="is_published" eval="True"/></record>
+        <record id="course_mid_2_phys" model="school.course"><field name="name">العلوم الفيزيائية</field><field name="subcategory_id" ref="sub_mid_2"/><field name="is_published" eval="True"/></record>
+        <record id="course_mid_2_sci" model="school.course"><field name="name">علوم الطبيعة والحياة</field><field name="subcategory_id" ref="sub_mid_2"/><field name="is_published" eval="True"/></record>
+        <record id="course_mid_2_ar" model="school.course"><field name="name">اللغة العربية</field><field name="subcategory_id" ref="sub_mid_2"/><field name="is_published" eval="True"/></record>
+        <record id="course_mid_2_fr" model="school.course"><field name="name">اللغة الفرنسية</field><field name="subcategory_id" ref="sub_mid_2"/><field name="is_published" eval="True"/></record>
+        <record id="course_mid_2_en" model="school.course"><field name="name">اللغة الإنجليزية</field><field name="subcategory_id" ref="sub_mid_2"/><field name="is_published" eval="True"/></record>
+        <record id="sub_mid_3" model="school.service.subcategory"><field name="name">3 متوسط</field><field name="category_id" ref="cat_middle"/></record>
+        <record id="course_mid_3_math" model="school.course"><field name="name">الرياضيات</field><field name="subcategory_id" ref="sub_mid_3"/><field name="is_published" eval="True"/></record>
+        <record id="course_mid_3_phys" model="school.course"><field name="name">العلوم الفيزيائية</field><field name="subcategory_id" ref="sub_mid_3"/><field name="is_published" eval="True"/></record>
+        <record id="course_mid_3_sci" model="school.course"><field name="name">علوم الطبيعة والحياة</field><field name="subcategory_id" ref="sub_mid_3"/><field name="is_published" eval="True"/></record>
+        <record id="course_mid_3_ar" model="school.course"><field name="name">اللغة العربية</field><field name="subcategory_id" ref="sub_mid_3"/><field name="is_published" eval="True"/></record>
+        <record id="course_mid_3_fr" model="school.course"><field name="name">اللغة الفرنسية</field><field name="subcategory_id" ref="sub_mid_3"/><field name="is_published" eval="True"/></record>
+        <record id="course_mid_3_en" model="school.course"><field name="name">اللغة الإنجليزية</field><field name="subcategory_id" ref="sub_mid_3"/><field name="is_published" eval="True"/></record>
+        <record id="sub_mid_4" model="school.service.subcategory"><field name="name">4 متوسط</field><field name="category_id" ref="cat_middle"/></record>
+        <record id="course_mid_4_math" model="school.course"><field name="name">الرياضيات</field><field name="subcategory_id" ref="sub_mid_4"/><field name="is_published" eval="True"/></record>
+        <record id="course_mid_4_phys" model="school.course"><field name="name">العلوم الفيزيائية</field><field name="subcategory_id" ref="sub_mid_4"/><field name="is_published" eval="True"/></record>
+        <record id="course_mid_4_sci" model="school.course"><field name="name">علوم الطبيعة والحياة</field><field name="subcategory_id" ref="sub_mid_4"/><field name="is_published" eval="True"/></record>
+        <record id="course_mid_4_ar" model="school.course"><field name="name">اللغة العربية</field><field name="subcategory_id" ref="sub_mid_4"/><field name="is_published" eval="True"/></record>
+        <record id="course_mid_4_fr" model="school.course"><field name="name">اللغة الفرنسية</field><field name="subcategory_id" ref="sub_mid_4"/><field name="is_published" eval="True"/></record>
+        <record id="course_mid_4_en" model="school.course"><field name="name">اللغة الإنجليزية</field><field name="subcategory_id" ref="sub_mid_4"/><field name="is_published" eval="True"/></record>
+
+        <!-- High -->
+        <record id="sub_high_y1b1" model="school.service.subcategory"><field name="name">1 ثانوي - جذع مشترك آداب</field><field name="category_id" ref="cat_high"/></record>
+        <record id="course_high_y1b1_math" model="school.course"><field name="name">الرياضيات</field><field name="subcategory_id" ref="sub_high_y1b1"/><field name="is_published" eval="True"/></record>
+        <record id="course_high_y1b1_phys" model="school.course"><field name="name">العلوم الفيزيائية</field><field name="subcategory_id" ref="sub_high_y1b1"/><field name="is_published" eval="True"/></record>
+        <record id="course_high_y1b1_sci" model="school.course"><field name="name">علوم الطبيعة والحياة</field><field name="subcategory_id" ref="sub_high_y1b1"/><field name="is_published" eval="True"/></record>
+        <record id="sub_high_y1b2" model="school.service.subcategory"><field name="name">1 ثانوي - جذع مشترك علوم</field><field name="category_id" ref="cat_high"/></record>
+        <record id="course_high_y1b2_math" model="school.course"><field name="name">الرياضيات</field><field name="subcategory_id" ref="sub_high_y1b2"/><field name="is_published" eval="True"/></record>
+        <record id="course_high_y1b2_phys" model="school.course"><field name="name">العلوم الفيزيائية</field><field name="subcategory_id" ref="sub_high_y1b2"/><field name="is_published" eval="True"/></record>
+        <record id="course_high_y1b2_sci" model="school.course"><field name="name">علوم الطبيعة والحياة</field><field name="subcategory_id" ref="sub_high_y1b2"/><field name="is_published" eval="True"/></record>
+        <record id="sub_high_y2b1" model="school.service.subcategory"><field name="name">2 ثانوي - آداب وفلسفة</field><field name="category_id" ref="cat_high"/></record>
+        <record id="course_high_y2b1_math" model="school.course"><field name="name">الرياضيات</field><field name="subcategory_id" ref="sub_high_y2b1"/><field name="is_published" eval="True"/></record>
+        <record id="course_high_y2b1_phys" model="school.course"><field name="name">العلوم الفيزيائية</field><field name="subcategory_id" ref="sub_high_y2b1"/><field name="is_published" eval="True"/></record>
+        <record id="course_high_y2b1_sci" model="school.course"><field name="name">علوم الطبيعة والحياة</field><field name="subcategory_id" ref="sub_high_y2b1"/><field name="is_published" eval="True"/></record>
+        <record id="sub_high_y2b2" model="school.service.subcategory"><field name="name">2 ثانوي - آداب ولغات</field><field name="category_id" ref="cat_high"/></record>
+        <record id="course_high_y2b2_math" model="school.course"><field name="name">الرياضيات</field><field name="subcategory_id" ref="sub_high_y2b2"/><field name="is_published" eval="True"/></record>
+        <record id="course_high_y2b2_phys" model="school.course"><field name="name">العلوم الفيزيائية</field><field name="subcategory_id" ref="sub_high_y2b2"/><field name="is_published" eval="True"/></record>
+        <record id="course_high_y2b2_sci" model="school.course"><field name="name">علوم الطبيعة والحياة</field><field name="subcategory_id" ref="sub_high_y2b2"/><field name="is_published" eval="True"/></record>
+        <record id="sub_high_y2b3" model="school.service.subcategory"><field name="name">2 ثانوي - علوم تجريبية</field><field name="category_id" ref="cat_high"/></record>
+        <record id="course_high_y2b3_math" model="school.course"><field name="name">الرياضيات</field><field name="subcategory_id" ref="sub_high_y2b3"/><field name="is_published" eval="True"/></record>
+        <record id="course_high_y2b3_phys" model="school.course"><field name="name">العلوم الفيزيائية</field><field name="subcategory_id" ref="sub_high_y2b3"/><field name="is_published" eval="True"/></record>
+        <record id="course_high_y2b3_sci" model="school.course"><field name="name">علوم الطبيعة والحياة</field><field name="subcategory_id" ref="sub_high_y2b3"/><field name="is_published" eval="True"/></record>
+        <record id="sub_high_y2b4" model="school.service.subcategory"><field name="name">2 ثانوي - رياضيات / تقني رياضي</field><field name="category_id" ref="cat_high"/></record>
+        <record id="course_high_y2b4_math" model="school.course"><field name="name">الرياضيات</field><field name="subcategory_id" ref="sub_high_y2b4"/><field name="is_published" eval="True"/></record>
+        <record id="course_high_y2b4_phys" model="school.course"><field name="name">العلوم الفيزيائية</field><field name="subcategory_id" ref="sub_high_y2b4"/><field name="is_published" eval="True"/></record>
+        <record id="course_high_y2b4_sci" model="school.course"><field name="name">علوم الطبيعة والحياة</field><field name="subcategory_id" ref="sub_high_y2b4"/><field name="is_published" eval="True"/></record>
+        <record id="sub_high_y2b5" model="school.service.subcategory"><field name="name">2 ثانوي - تسيير واقتصاد</field><field name="category_id" ref="cat_high"/></record>
+        <record id="course_high_y2b5_math" model="school.course"><field name="name">الرياضيات</field><field name="subcategory_id" ref="sub_high_y2b5"/><field name="is_published" eval="True"/></record>
+        <record id="course_high_y2b5_phys" model="school.course"><field name="name">العلوم الفيزيائية</field><field name="subcategory_id" ref="sub_high_y2b5"/><field name="is_published" eval="True"/></record>
+        <record id="course_high_y2b5_sci" model="school.course"><field name="name">علوم الطبيعة والحياة</field><field name="subcategory_id" ref="sub_high_y2b5"/><field name="is_published" eval="True"/></record>
+        <record id="sub_high_y3b1" model="school.service.subcategory"><field name="name">3 ثانوي - آداب وفلسفة</field><field name="category_id" ref="cat_high"/></record>
+        <record id="course_high_y3b1_math" model="school.course"><field name="name">الرياضيات</field><field name="subcategory_id" ref="sub_high_y3b1"/><field name="is_published" eval="True"/></record>
+        <record id="course_high_y3b1_phys" model="school.course"><field name="name">العلوم الفيزيائية</field><field name="subcategory_id" ref="sub_high_y3b1"/><field name="is_published" eval="True"/></record>
+        <record id="course_high_y3b1_sci" model="school.course"><field name="name">علوم الطبيعة والحياة</field><field name="subcategory_id" ref="sub_high_y3b1"/><field name="is_published" eval="True"/></record>
+        <record id="sub_high_y3b2" model="school.service.subcategory"><field name="name">3 ثانوي - آداب ولغات</field><field name="category_id" ref="cat_high"/></record>
+        <record id="course_high_y3b2_math" model="school.course"><field name="name">الرياضيات</field><field name="subcategory_id" ref="sub_high_y3b2"/><field name="is_published" eval="True"/></record>
+        <record id="course_high_y3b2_phys" model="school.course"><field name="name">العلوم الفيزيائية</field><field name="subcategory_id" ref="sub_high_y3b2"/><field name="is_published" eval="True"/></record>
+        <record id="course_high_y3b2_sci" model="school.course"><field name="name">علوم الطبيعة والحياة</field><field name="subcategory_id" ref="sub_high_y3b2"/><field name="is_published" eval="True"/></record>
+        <record id="sub_high_y3b3" model="school.service.subcategory"><field name="name">3 ثانوي - علوم تجريبية</field><field name="category_id" ref="cat_high"/></record>
+        <record id="course_high_y3b3_math" model="school.course"><field name="name">الرياضيات</field><field name="subcategory_id" ref="sub_high_y3b3"/><field name="is_published" eval="True"/></record>
+        <record id="course_high_y3b3_phys" model="school.course"><field name="name">العلوم الفيزيائية</field><field name="subcategory_id" ref="sub_high_y3b3"/><field name="is_published" eval="True"/></record>
+        <record id="course_high_y3b3_sci" model="school.course"><field name="name">علوم الطبيعة والحياة</field><field name="subcategory_id" ref="sub_high_y3b3"/><field name="is_published" eval="True"/></record>
+        <record id="sub_high_y3b4" model="school.service.subcategory"><field name="name">3 ثانوي - رياضيات / تقني رياضي</field><field name="category_id" ref="cat_high"/></record>
+        <record id="course_high_y3b4_math" model="school.course"><field name="name">الرياضيات</field><field name="subcategory_id" ref="sub_high_y3b4"/><field name="is_published" eval="True"/></record>
+        <record id="course_high_y3b4_phys" model="school.course"><field name="name">العلوم الفيزيائية</field><field name="subcategory_id" ref="sub_high_y3b4"/><field name="is_published" eval="True"/></record>
+        <record id="course_high_y3b4_sci" model="school.course"><field name="name">علوم الطبيعة والحياة</field><field name="subcategory_id" ref="sub_high_y3b4"/><field name="is_published" eval="True"/></record>
+        <record id="sub_high_y3b5" model="school.service.subcategory"><field name="name">3 ثانوي - تسيير واقتصاد</field><field name="category_id" ref="cat_high"/></record>
+        <record id="course_high_y3b5_math" model="school.course"><field name="name">الرياضيات</field><field name="subcategory_id" ref="sub_high_y3b5"/><field name="is_published" eval="True"/></record>
+        <record id="course_high_y3b5_phys" model="school.course"><field name="name">العلوم الفيزيائية</field><field name="subcategory_id" ref="sub_high_y3b5"/><field name="is_published" eval="True"/></record>
+        <record id="course_high_y3b5_sci" model="school.course"><field name="name">علوم الطبيعة والحياة</field><field name="subcategory_id" ref="sub_high_y3b5"/><field name="is_published" eval="True"/></record>
+    </data>
+</odoo>

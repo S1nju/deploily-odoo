@@ -10,6 +10,7 @@
         'security/security.xml',
         'security/ir.model.access.csv',
         'data/crm_stages.xml',
+        'data/algerian_school_data.xml',
         'data/mock_data.xml',
         'views/parent_views.xml',
         'views/attendance_views.xml',

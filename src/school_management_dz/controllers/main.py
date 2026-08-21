@@ -35,6 +35,7 @@ class SchoolPortal(http.Controller):
     def course_details(self, course, **kw):
         return request.render('school_management_dz.course_details', {
             'course': course,
+            'main_object': course,
         })
 
     @http.route(['/course/<model("school.course"):course>/register'], type='http', auth='user', website=True, methods=['GET', 'POST'])

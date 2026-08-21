@@ -68,42 +68,46 @@
     
     <template id="course_details" name="Course Details">
         <t t-call="website.layout">
-            <div class="container mt-4 mb-4">
-                <a href="/courses" class="btn btn-secondary mb-3"><i class="fa fa-arrow-left"></i> Back to Courses</a>
-                <div class="row">
-                    <div class="col-md-4 mb-4">
-                        <div t-if="course.image_1920" class="mb-3">
-                            <img t-attf-src="data:image/png;base64,#{course.image_1920}" class="img-fluid rounded shadow" alt="Course Image"/>
+            <div id="wrap" class="oe_structure oe_empty">
+                <div class="oe_structure"/>
+                <section class="container mt-4 mb-4">
+                    <a href="/courses" class="btn btn-secondary mb-3"><i class="fa fa-arrow-left"></i> Back to Courses</a>
+                    <div class="row">
+                        <div class="col-md-4 mb-4">
+                            <div t-if="course.image_1920" class="mb-3">
+                                <img t-attf-src="data:image/png;base64,#{course.image_1920}" class="img-fluid rounded shadow" alt="Course Image"/>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <h2><t t-esc="course.name"/></h2>
+                            <p><strong>Tutor:</strong> <t t-esc="course.tutor_id.name"/></p>
+                            <p><strong>Starts:</strong> <t t-esc="course.start_date"/></p>
+                            <p><strong>Center:</strong> <t t-esc="course.center_id.name"/></p>
+                            <p t-if="course.location"><strong>Details/Location:</strong> <t t-esc="course.location"/></p>
+                            
+                            <t t-if="course.schedule_ids">
+                                <p><strong>Schedule:</strong></p>
+                                <ul class="list-group mb-3">
+                                    <t t-foreach="course.schedule_ids" t-as="sched">
+                                        <li class="list-group-item">
+                                            <strong><t t-esc="sched.weekday_string"/>:</strong>
+                                            <t t-esc="sched.time_string"/>
+                                        </li>
+                                    </t>
+                                </ul>
+                            </t>
+                            
+                            <div class="mt-3">
+                                <t t-raw="course.description"/>
+                            </div>
+                            <div class="mt-3 alert alert-info">
+                                You can register below. Please ensure your parent profile is completed.
+                            </div>
+                            <a t-attf-href="/course/#{slug(course)}/register" class="btn btn-success mt-3">Register Now</a>
                         </div>
                     </div>
-                    <div class="col-md-8">
-                        <h2><t t-esc="course.name"/></h2>
-                        <p><strong>Tutor:</strong> <t t-esc="course.tutor_id.name"/></p>
-                        <p><strong>Starts:</strong> <t t-esc="course.start_date"/></p>
-                        <p><strong>Center:</strong> <t t-esc="course.center_id.name"/></p>
-                        <p t-if="course.location"><strong>Details/Location:</strong> <t t-esc="course.location"/></p>
-                        
-                        <t t-if="course.schedule_ids">
-                            <p><strong>Schedule:</strong></p>
-                            <ul class="list-group mb-3">
-                                <t t-foreach="course.schedule_ids" t-as="sched">
-                                    <li class="list-group-item">
-                                        <strong><t t-esc="sched.weekday_string"/>:</strong>
-                                        <t t-esc="sched.time_string"/>
-                                    </li>
-                                </t>
-                            </ul>
-                        </t>
-                        
-                        <div class="mt-3">
-                            <t t-raw="course.description"/>
-                        </div>
-                        <div class="mt-3 alert alert-info">
-                            You can register below. Please ensure your parent profile is completed.
-                        </div>
-                        <a t-attf-href="/course/#{slug(course)}/register" class="btn btn-success mt-3">Register Now</a>
-                    </div>
-                </div>
+                </section>
+                <div class="oe_structure oe_empty"/>
             </div>
         </t>
     </template>
