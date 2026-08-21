@@ -46,19 +46,36 @@ class SchoolPortal(http.Controller):
             })
             
         parent = request.env.user.partner_id
-        student_name = kw.get('student_name')
         
-        # Dynamically build student fields, except student_name
-        student_vals = {
-            'name': student_name,
-            'parent_id': parent.id
-        }
-        for key, val in kw.items():
-            if key.startswith('student_') and key != 'student_name':
-                field_name = key.replace('student_', '')
-                student_vals[field_name] = val
-                
-        student = request.env['school.student'].sudo().create(student_vals)
+        # Check if existing student or new
+        existing_id = kw.get('existing_student_id')
+        student = False
+        student_name = "Existing Student"
+        
+        if existing_id and existing_id != 'new':
+            student = request.env['school.student'].sudo().browse(int(existing_id))
+            student_name = student.name
+        else:
+            student_name = kw.get('student_name', 'New Student')
+            # Build student fields for a new record
+            student_vals = {
+                'name': student_name,
+                'parent_id': parent.id
+            }
+            
+            # File upload processing
+            grades_file = kw.get('student_grades_file')
+            if grades_file and hasattr(grades_file, 'read'):
+                import base64
+                student_vals['grades_file'] = base64.b64encode(grades_file.read())
+                student_vals['grades_filename'] = grades_file.filename
+            
+            for key, val in kw.items():
+                if key.startswith('student_') and key not in ['student_name', 'student_grades_file']:
+                    field_name = key.replace('student_', '')
+                    student_vals[field_name] = val
+                    
+            student = request.env['school.student'].sudo().create(student_vals)
         
         # Dynamically build test answers
         answers_str = []
@@ -94,4 +111,21 @@ class SchoolPortal(http.Controller):
         return request.render('school_management_dz.registration_success', {
             'student': student,
             'course': course,
+        })
+
+    @http.route(['/my/students'], type='http', auth="user", website=True)
+    def portal_my_students(self, **kw):
+        parent = request.env.user.partner_id
+        paid_regs = request.env['school.registration'].sudo().search([
+            ('parent_id', '=', parent.id),
+            ('state', '=', 'paid')
+        ])
+        
+        if not paid_regs:
+            # Prevent access if no paid registrations exist
+            return request.render('school_management_dz.portal_blocked_unpaid', {})
+            
+        students = parent.student_ids
+        return request.render('school_management_dz.portal_my_students', {
+            'students': students,
         })

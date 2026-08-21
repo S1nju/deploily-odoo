@@ -23,6 +23,11 @@ class SchoolRegistration(models.Model):
     ], string='Status', default='draft')
     crm_lead_id = fields.Many2one('crm.lead', 'CRM Lead', readonly=True)
     test_answers = fields.Text('Evaluation Test Answers', readonly=True)
+    challenge_ids = fields.One2many('school.student.challenge', 'registration_id', 'Competency Challenges')
+    
+    # helper for UI access to student's uploaded grades
+    grades_file = fields.Binary(related='student_ids.grades_file', string='Grades File', readonly=True)
+    grades_filename = fields.Char(related='student_ids.grades_filename', string='Grades Filename', readonly=True)
 
     @api.model_create_multi
     def create(self, vals_list):

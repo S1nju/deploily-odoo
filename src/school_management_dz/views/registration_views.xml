@@ -24,8 +24,23 @@
                         <page string="Students">
                             <field name="student_ids" domain="[('parent_id', '=', parent_id)]"/>
                         </page>
+                        <page string="Student Grades &amp; Info">
+                            <group>
+                                <field name="grades_filename" invisible="1"/>
+                                <field name="grades_file" filename="grades_filename" widget="binary"/>
+                            </group>
+                        </page>
                         <page string="Test Answers">
                             <field name="test_answers" widget="text"/>
+                        </page>
+                        <page string="Competency Challenges">
+                            <field name="challenge_ids">
+                                <list editable="bottom">
+                                    <field name="name"/>
+                                    <field name="state"/>
+                                    <field name="date_evaluated"/>
+                                </list>
+                            </field>
                         </page>
                     </notebook>
                 </sheet>
