@@ -41,3 +41,8 @@ class SchoolCourse(models.Model):
     location = fields.Char('Location / Details', help="Specific location, e.g. Online or Room 3")
     image_1920 = fields.Image('Image')
     description = fields.Html('Information')
+
+    def _compute_website_url(self):
+        super()._compute_website_url()
+        for course in self:
+            course.website_url = "/course/%s" % course.id
