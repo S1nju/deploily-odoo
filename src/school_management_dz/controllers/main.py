@@ -157,19 +157,17 @@ class SchoolPortal(http.Controller):
 
     @http.route(['/my/students/<model("school.student"):student>/course/<model("school.registration"):registration>'], type='http', auth="user", website=True)
     def portal_my_student_course_detail(self, student, registration, **kw):
-        user = request.env.user
-        partner = user.partner_id
-        parent = request.env['res.partner'].sudo().search([('id', '=', partner.id), ('is_parent', '=', True)], limit=1)
+        parent = request.env.user.partner_id
 
-        if not parent or parent.id not in student.parent_id.ids:
-            return request.render('website.404')
+        if student.parent_id.id != parent.id:
+            return request.render('website.page_404')
             
         if registration.parent_id.id != parent.id or student.id not in registration.student_ids.ids:
-            return request.render('website.404')
+            return request.render('website.page_404')
 
         paid_regs = request.env['school.registration'].sudo().search([
             ('parent_id', '=', parent.id),
-            ('state', 'in', ['paid'])
+            ('state', '=', 'paid')
         ])
 
         if not paid_regs:
