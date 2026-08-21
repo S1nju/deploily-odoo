@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Optional: add custom groups here. For now we use standard groups -->
+        <record id="group_school_manager" model="res.groups">
+            <field name="name">School Manager</field>
+            <field name="category_id" ref="base.module_category_hidden"/>
+        </record>
+        
+        <record id="seq_school_registration" model="ir.sequence">
+            <field name="name">School Registration Sequence</field>
+            <field name="code">school.registration.seq</field>
+            <field name="prefix">REG-%(year)s-</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+</odoo>

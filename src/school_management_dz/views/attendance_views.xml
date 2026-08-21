@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_school_attendance_list" model="ir.ui.view">
+        <field name="name">school.attendance.list</field>
+        <field name="model">school.attendance</field>
+        <field name="arch" type="xml">
+            <list string="Attendance" editable="bottom">
+                <field name="student_id"/>
+                <field name="course_id"/>
+                <field name="date"/>
+                <field name="hours_attended"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_school_attendance_calendar" model="ir.ui.view">
+        <field name="name">school.attendance.calendar</field>
+        <field name="model">school.attendance</field>
+        <field name="arch" type="xml">
+            <calendar string="Attendance Calendar" date_start="date" color="student_id" mode="month">
+                <field name="student_id"/>
+                <field name="course_id"/>
+                <field name="state"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record id="action_student_attendance_calendar" model="ir.actions.act_window">
+        <field name="name">Attendance Calendar</field>
+        <field name="res_model">school.attendance</field>
+        <field name="view_mode">calendar,list,form</field>
+        <field name="domain">[('student_id', '=', active_id)]</field>
+    </record>
+
+    <record id="action_school_attendance_tracker" model="ir.actions.act_window">
+        <field name="name">Attendance Tracker (Students)</field>
+        <field name="res_model">school.student</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('registration_ids.state', '=', 'paid')]</field>
+    </record>
+</odoo>

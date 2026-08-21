@@ -1,0 +1,54 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* school_management
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-21 14:00+0000\n"
+"PO-Revision-Date: 2026-08-21 14:00+0000\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+msgid "School Management"
+msgstr "Gestion Scolaire"
+
+msgid "Current Activity"
+msgstr "Activité Actuelle"
+
+msgid "Participated in Mahara programs before?"
+msgstr "Avez-vous participé aux programmes Mahara auparavant ?"
+
+msgid "Housewife"
+msgstr "Ménagère"
+
+msgid "Employee"
+msgstr "Employé / Journalier"
+
+msgid "Business Owner"
+msgstr "Propriétaire d'entreprise / Association"
+
+msgid "Freelancer"
+msgstr "Artisan / Indépendant"
+
+msgid "Yes"
+msgstr "Oui"
+
+msgid "No"
+msgstr "Non"
+
+msgid "Parent"
+msgstr "Parent"
+
+msgid "Student"
+msgstr "Élève"
+
+msgid "Course"
+msgstr "Cours"
+
+msgid "Student Registrations"
+msgstr "Inscriptions des Élèves"

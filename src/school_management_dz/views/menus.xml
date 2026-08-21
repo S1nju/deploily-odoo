@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_school_management_root" name="School Management" sequence="50" web_icon="school_management,static/description/icon.png"/>
+    
+    <menuitem id="menu_school_operations" name="Operations" parent="menu_school_management_root" sequence="10"/>
+    <menuitem id="menu_school_configuration" name="Configuration" parent="menu_school_management_root" sequence="20"/>
+
+    <menuitem id="menu_school_student" name="Students" parent="menu_school_operations" sequence="10" action="action_school_student"/>
+    <menuitem id="menu_school_course" name="Courses" parent="menu_school_operations" sequence="20" action="action_school_course"/>
+    <menuitem id="menu_school_registration" name="Registrations" parent="menu_school_operations" sequence="30" action="action_school_registration"/>
+    <menuitem id="menu_school_attendance" name="Attendance Tracker" parent="menu_school_operations" sequence="40" action="action_school_attendance_tracker"/>
+    <menuitem id="menu_school_test" name="Assessments" parent="menu_school_operations" sequence="50" action="action_school_test"/>
+
+    <menuitem id="menu_school_service_category" name="Categories" parent="menu_school_configuration" sequence="10" action="action_school_service_category"/>
+</odoo>

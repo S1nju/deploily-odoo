@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_school_test_list" model="ir.ui.view">
+        <field name="name">school.course.test.list</field>
+        <field name="model">school.course.test</field>
+        <field name="arch" type="xml">
+            <list string="Tests">
+                <field name="name"/>
+                <field name="course_id"/>
+            </list>
+        </field>
+    </record>
+    
+    <record id="view_school_test_form" model="ir.ui.view">
+        <field name="name">school.course.test.form</field>
+        <field name="model">school.course.test</field>
+        <field name="arch" type="xml">
+            <form string="Test">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="course_id"/>
+                    </group>
+                    <field name="description"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_school_test" model="ir.actions.act_window">
+        <field name="name">Assessment Tests</field>
+        <field name="res_model">school.course.test</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

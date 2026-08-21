@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="parent_setup_form" name="Parent Setup Form">
+        <t t-call="website.layout">
+            <div class="container mt-4 mb-4">
+                <h2>Parent Information Setup</h2>
+                <form action="/my/parent/setup" method="post">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <div class="form-group mb-3">
+                        <label for="parent_activity">Current Activity *</label>
+                        <select name="parent_activity" class="form-control" required="required">
+                            <option value="housewife">ربة بيت</option>
+                            <option value="employee">موظف / عامل يومي</option>
+                            <option value="business_owner">صاحب مؤسسة / شركة / جمعية</option>
+                            <option value="freelancer">حرفي / عامل حر</option>
+                        </select>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="mahara_participation">Participated in Mahara before? *</label>
+                        <select name="mahara_participation" class="form-control" required="required">
+                            <option value="yes">نعم</option>
+                            <option value="no">لا</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save Information</button>
+                </form>
+            </div>
+        </t>
+    </template>
+
+    <template id="services_catalog" name="Services Catalog">
+        <t t-call="website.layout">
+            <div class="container mt-4">
+                <h2>Our Services</h2>
+                <div class="row">
+                    <t t-foreach="categories" t-as="cat">
+                        <div class="col-md-4 mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title"><t t-esc="cat.name"/></h5>
+                                    <a t-attf-href="/services/#{slug(cat)}" class="btn btn-primary">View Courses</a>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+    
+    <template id="services_category" name="Service Category Details">
+        <t t-call="website.layout">
+            <div class="container mt-4">
+                <h2><t t-esc="category.name"/></h2>
+                <t t-foreach="category.subcategory_ids" t-as="sub">
+                    <h4 class="mt-3"><t t-esc="sub.name"/></h4>
+                    <ul class="list-group">
+                        <t t-foreach="sub.course_ids" t-as="course">
+                            <li class="list-group-item">
+                                <a t-attf-href="/course/#{slug(course)}"><t t-esc="course.name"/></a>
+                            </li>
+                        </t>
+                    </ul>
+                </t>
+            </div>
+        </t>
+    </template>
+    
+    <template id="course_details" name="Course Details">
+        <t t-call="website.layout">
+            <div class="container mt-4">
+                <h2><t t-esc="course.name"/></h2>
+                <p><strong>Tutor:</strong> <t t-esc="course.tutor_id.name"/></p>
+                <p><strong>Starts:</strong> <t t-esc="course.start_date"/></p>
+                <p><strong>Location:</strong> <t t-esc="course.location"/></p>
+                <div class="mt-3">
+                    <t t-raw="course.description"/>
+                </div>
+                <div class="mt-3 alert alert-info">
+                    You can register below. Please ensure your parent profile is completed.
+                </div>
+                <a t-attf-href="/course/#{slug(course)}/register" class="btn btn-success mt-3">Register Now</a>
+            </div>
+        </t>
+    </template>
+    
+    <template id="course_register_form" name="Course Registration Form">
+        <t t-call="website.layout">
+            <div class="container mt-4 mb-4">
+                <h2>Registration: <t t-esc="course.name"/></h2>
+                <form t-attf-action="/course/#{slug(course)}/register" method="post">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    
+                    <h4>Student Information</h4>
+                    <div class="form-group mb-3">
+                        <label for="student_name">Child's Name *</label>
+                        <input type="text" name="student_name" class="form-control" required="required" placeholder="Enter full name of the student..."/>
+                    </div>
+                    
+                    <t t-if="course.test_ids">
+                        <h4 class="mt-4">Assessment Test</h4>
+                        <t t-foreach="course.test_ids" t-as="test">
+                            <div class="alert alert-secondary">
+                                <strong><t t-esc="test.name"/></strong>
+                                <p><t t-esc="test.description"/></p>
+                                <textarea name="test_answer" class="form-control" rows="3" placeholder="Enter answers for the evaluation here..."></textarea>
+                            </div>
+                        </t>
+                    </t>
+                    
+                    <button type="submit" class="btn btn-primary mt-3">Submit Registration</button>
+                </form>
+            </div>
+        </t>
+    </template>
+    
+    <template id="registration_success" name="Registration Success">
+        <t t-call="website.layout">
+            <div class="container mt-4 text-center mb-4">
+                <div class="alert alert-success">
+                    <h2>Registration Successful!</h2>
+                    <p>Your child <strong><t t-esc="student.name"/></strong> has been successfully registered for <strong><t t-esc="course.name"/></strong>.</p>
+                </div>
+                <div class="mt-4">
+                    <h4>Student Badge</h4>
+                    <p>Please download this QR Code. It will be used for attendance tracking.</p>
+                    <img t-attf-src="/report/barcode/?type=QR&amp;value={{student.qr_code}}&amp;width=200&amp;height=200" alt="Student Badge QR" class="img-thumbnail mb-3"/>
+                    <br/>
+                    <a t-attf-href="/report/barcode/?type=QR&amp;value={{student.qr_code}}&amp;width=600&amp;height=600" download="Student_Badge.png" class="btn btn-primary btn-lg">
+                        <i class="fa fa-download"></i> Download Badge
+                    </a>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
