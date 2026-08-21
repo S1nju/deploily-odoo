@@ -48,6 +48,35 @@
             <field name="domain_force">[('registration_id.course_id.tutor_id.user_id', '=', user.id)]</field>
             <field name="groups" eval="[(4, ref('school_management_dz.group_school_tutor'))]"/>
         </record>
+
+        <!-- Record rules for Portal Parents (Restrict to own students/registrations) -->
+        <record id="rule_portal_student" model="ir.rule">
+            <field name="name">Portal Student Access</field>
+            <field name="model_id" ref="model_school_student"/>
+            <field name="domain_force">[('parent_id', '=', user.partner_id.id)]</field>
+            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        </record>
+
+        <record id="rule_portal_registration" model="ir.rule">
+            <field name="name">Portal Registration Access</field>
+            <field name="model_id" ref="model_school_registration"/>
+            <field name="domain_force">[('parent_id', '=', user.partner_id.id)]</field>
+            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        </record>
+
+        <record id="rule_portal_attendance" model="ir.rule">
+            <field name="name">Portal Attendance Access</field>
+            <field name="model_id" ref="model_school_attendance"/>
+            <field name="domain_force">[('student_id.parent_id', '=', user.partner_id.id)]</field>
+            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        </record>
+
+        <record id="rule_portal_challenge" model="ir.rule">
+            <field name="name">Portal Challenge Access</field>
+            <field name="model_id" ref="model_school_student_challenge"/>
+            <field name="domain_force">[('registration_id.parent_id', '=', user.partner_id.id)]</field>
+            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        </record>
         
         <record id="seq_school_registration" model="ir.sequence">
             <field name="name">School Registration Sequence</field>
