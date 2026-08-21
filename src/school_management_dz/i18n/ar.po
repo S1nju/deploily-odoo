@@ -52,3 +52,48 @@ msgstr "الدورة التدريبية"
 
 msgid "Student Registrations"
 msgstr "تسجيلات الطلاب"
+
+msgid "Courses"
+msgstr "الدورات"
+
+msgid "Attendances"
+msgstr "الحضور"
+
+msgid "Students"
+msgstr "الطلاب"
+
+msgid "Registrations"
+msgstr "التسجيلات"
+
+msgid "Competency Tracking"
+msgstr "تتبع الكفاءة / التحديات"
+
+msgid "Assessments / Tests"
+msgstr "التقييمات و الاختبارات"
+
+msgid "Configuration"
+msgstr "الإعدادات"
+
+msgid "Service Categories"
+msgstr "فئات الخدمات"
+
+msgid "Subcategories"
+msgstr "الفئات الفرعية"
+
+msgid "Tutoring Centers"
+msgstr "المراكز التعليمية"
+
+msgid "Payments"
+msgstr "المدفوعات"
+
+msgid "Payments Tracking"
+msgstr "تتبع المدفوعات"
+
+msgid "Is Tutor"
+msgstr "أستاذ؟"
+
+msgid "Associated Center"
+msgstr "المركز المرتبط"
+
+msgid "Tutors"
+msgstr "الأساتذة"
