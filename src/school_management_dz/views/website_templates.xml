@@ -81,7 +81,7 @@
                         <div class="col-md-8">
                             <h2 t-field="course.name"/>
                             <p><strong>Level/Year:</strong> <span t-field="course.subcategory_id.name"/></p>
-                            <p><strong>Tutor:</strong> <span t-field="course.tutor_id.name"/></p>
+                            <p><strong>Tutor:</strong> <span t-esc="course.tutor_id.sudo().name"/></p>
                             <p><strong>Starts:</strong> <span t-field="course.start_date"/></p>
                             <p><strong>Center:</strong> <span t-field="course.center_id.name"/></p>
                             <p t-if="course.location"><strong>Details/Location:</strong> <span t-field="course.location"/></p>
