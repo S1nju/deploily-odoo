@@ -194,12 +194,10 @@
                     <p><strong>Assigned Center:</strong> <t t-esc="course.center_id.name"/></p>
                 </div>
                 <div class="mt-4">
-                    <h4>Student Badge</h4>
-                    <p>Please download this QR Code. It will be used for attendance tracking.</p>
-                    <img t-attf-src="/report/barcode/?barcode_type=QR&amp;value=#{student.qr_code}&amp;width=200&amp;height=200" alt="Student Badge QR" class="img-thumbnail mb-3"/>
-                    <br/>
-                    <a t-attf-href="/report/barcode/?barcode_type=QR&amp;value=#{student.qr_code}&amp;width=600&amp;height=600" download="Student_Badge.png" class="btn btn-primary btn-lg">
-                        <i class="fa fa-download"></i> Download Badge
+                    <h4>Next Steps</h4>
+                    <p>Now that your child is successfully registered, you can track their attendance and academic challenge progress seamlessly from your portal.</p>
+                    <a t-attf-href="/my/students" class="btn btn-primary btn-lg mt-3">
+                        <i class="fa fa-dashboard"></i> Go to Student Tracker Portal
                     </a>
                 </div>
             </div>
@@ -215,8 +213,7 @@
                             <div class="card shadow-sm border-0">
                                 <div class="card-body bg-light text-center">
                                     <h4 class="card-title text-primary"><t t-esc="student.name"/></h4>
-                                    <p class="text-muted mb-3"><i class="fa fa-barcode"/> <t t-esc="student.barcode or 'No Barcode Assigned'"/></p>
-                                    <a t-attf-href="/my/students/#{student.id}" class="btn btn-outline-primary w-100">View Tracking Dashboard</a>
+                                    <a t-attf-href="/my/students/#{student.id}" class="btn btn-outline-primary w-100 mt-3">View Tracking Dashboard</a>
                                 </div>
                             </div>
                         </div>

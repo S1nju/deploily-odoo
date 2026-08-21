@@ -21,7 +21,6 @@
                     </div>
                     <group>
                         <field name="parent_id"/>
-                        <field name="barcode"/>
                     </group>
                     <notebook>
                         <page string="Registrations">
@@ -57,7 +56,6 @@
                 <field name="name"/>
                 <field name="parent_id"/>
                 <field name="center_ids" widget="many2many_tags"/>
-                <field name="barcode"/>
                 <field name="wallet_balance"/>
             </list>
         </field>
