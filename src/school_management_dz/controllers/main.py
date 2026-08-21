@@ -52,7 +52,24 @@ class SchoolPortal(http.Controller):
         student = False
         student_name = "Existing Student"
         
-        if existing_id and existing_id != 'new':
+        if existing_id == 'self':
+            student_name = parent.name
+            student = request.env['school.student'].sudo().search([('parent_id', '=', parent.id), ('name', '=', parent.name)], limit=1)
+            if not student:
+                student_vals = {'name': parent.name, 'parent_id': parent.id}
+                grades_file = kw.get('student_grades_file')
+                if grades_file and hasattr(grades_file, 'read'):
+                    import base64
+                    student_vals['grades_file'] = base64.b64encode(grades_file.read())
+                    student_vals['grades_filename'] = grades_file.filename
+                
+                for key, val in kw.items():
+                    if key.startswith('student_') and key not in ['student_name', 'student_grades_file']:
+                        field_name = key.replace('student_', '')
+                        student_vals[field_name] = val
+                        
+                student = request.env['school.student'].sudo().create(student_vals)
+        elif existing_id and existing_id != 'new':
             student = request.env['school.student'].sudo().browse(int(existing_id))
             student_name = student.name
         else:

@@ -3,7 +3,7 @@
     <template id="parent_setup_form" name="Parent Setup Form">
         <t t-call="website.layout">
             <div class="container mt-4 mb-4">
-                <h2>Parent Information Setup</h2>
+                <h2>Account Information Setup</h2>
                 <form action="/my/parent/setup" method="post">
                     <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                     <div class="form-group mb-3">
@@ -108,8 +108,10 @@
                                 يُعتبر هذا التسجيل أوليًّا في البرنامج، وسيتمُّ التواصل معكم قريبا<br/>
                                 تأكيد التسجيل وضمان المقعد يكون بتسديد اشتراك البرنامج
                             </div>
-                            
-                            <a t-attf-href="/course/#{slug(course)}/register" class="btn btn-success mt-3 w-100">Register Now / سجل الآن</a>
+                            <div class="mt-3 alert alert-info">
+                                You can register below. Please ensure your account profile is completed.
+                            </div>
+                            <a t-attf-href="/course/#{slug(course)}/register" class="btn btn-success mt-3">Register Now / سجل الآن</a>
                         </div>
                     </div>
                 </section>
@@ -133,9 +135,10 @@
                     <t t-set="existing_students" t-value="request.env['school.student'].sudo().search([('parent_id', '=', request.env.user.partner_id.id)])"/>
                     <t t-if="existing_students">
                         <div class="mb-3">
-                            <label><strong>Select Child or Create New</strong> *</label>
+                            <label><strong>Select Student Profile</strong> *</label>
                             <select name="existing_student_id" id="existing_student_id" class="form-control" onchange="if(this.value == 'new'){document.getElementById('new_student_fields').style.display='block';}else{document.getElementById('new_student_fields').style.display='none';}">
-                                <option value="new">-- Register a New Child --</option>
+                                <option value="self">-- Register Myself --</option>
+                                <option value="new">-- Register a New Child / Student --</option>
                                 <t t-foreach="existing_students" t-as="c">
                                     <option t-att-value="c.id"><t t-esc="c.name"/></option>
                                 </t>
@@ -143,12 +146,18 @@
                         </div>
                     </t>
                     <t t-else="">
-                        <input type="hidden" name="existing_student_id" value="new"/>
+                        <div class="mb-3">
+                            <label><strong>Select Student Profile</strong> *</label>
+                            <select name="existing_student_id" id="existing_student_id" class="form-control" onchange="if(this.value == 'new'){document.getElementById('new_student_fields').style.display='block';}else{document.getElementById('new_student_fields').style.display='none';}">
+                                <option value="self">-- Register Myself --</option>
+                                <option value="new" selected="1">-- Register a New Child / Student --</option>
+                            </select>
+                        </div>
                     </t>
                     
-                    <div id="new_student_fields" style="display: block;">
+                    <div id="new_student_fields" style="display: none;">
                         <div class="mb-3">
-                            <label><strong>Child's Full Name</strong> (if new) *</label>
+                            <label><strong>Student's Full Name</strong> (if new) *</label>
                             <input type="text" name="student_name" class="form-control" placeholder="Enter full name of the student..."/>
                         </div>
                         <div class="mb-3">
@@ -183,6 +192,18 @@
                     </t>
                     
                     <button type="submit" class="btn btn-primary mt-3">Submit Registration</button>
+                    
+                    <script type="text/javascript">
+                        document.addEventListener("DOMContentLoaded", function() {
+                            var dropdown = document.getElementById('existing_student_id');
+                            var new_fields = document.getElementById('new_student_fields');
+                            if(dropdown.value == 'new'){
+                                new_fields.style.display = 'block';
+                            } else {
+                                new_fields.style.display = 'none';
+                            }
+                        });
+                    </script>
                 </form>
                 </section>
                 <div class="oe_structure oe_empty"/>
@@ -219,7 +240,7 @@
     <template id="portal_my_students" name="My Children Portal">
         <t t-call="website.layout">
             <div id="wrap" class="container mt-5 mb-5">
-                <h2 class="mb-4">My Children</h2>
+                <h2 class="mb-4">My Profiles / Children</h2>
                 <div class="row">
                     <t t-foreach="students" t-as="student">
                         <div class="col-md-4 mb-4">
@@ -239,7 +260,7 @@
     <template id="portal_my_student_detail" name="Student Tracker Dashboard">
         <t t-call="website.layout">
             <div id="wrap" class="container mt-5 mb-5">
-                <a href="/my/students" class="btn btn-secondary mb-4"><i class="fa fa-arrow-left"/> Back to Children List</a>
+                <a href="/my/students" class="btn btn-secondary mb-4"><i class="fa fa-arrow-left"/> Back to Profiles</a>
                 
                 <h2 class="mb-4">Courses for: <span class="text-primary"><t t-esc="student.name"/></span></h2>
                 
