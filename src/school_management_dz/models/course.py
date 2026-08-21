@@ -39,6 +39,7 @@ class SchoolCourse(models.Model):
     end_date = fields.Datetime('End Date')
     center_id = fields.Many2one('school.center', 'Center Location')
     location = fields.Char('Location / Details', help="Specific location, e.g. Online or Room 3")
+    hourly_price = fields.Float('Hourly Price', default=0.0, help="Price per attended hour")
     image_1920 = fields.Image('Image')
     description = fields.Html('Information')
 

@@ -53,10 +53,12 @@
         <field name="name">school.student.tree</field>
         <field name="model">school.student</field>
         <field name="arch" type="xml">
-            <list string="Students">
+            <list string="Students" decoration-danger="wallet_balance &lt; 0">
                 <field name="name"/>
                 <field name="parent_id"/>
+                <field name="center_ids" widget="many2many_tags"/>
                 <field name="barcode"/>
+                <field name="wallet_balance"/>
             </list>
         </field>
     </record>

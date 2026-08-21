@@ -19,6 +19,7 @@ class SchoolStudent(models.Model):
         'Registrations'
     )
     center_ids = fields.Many2many('school.center', compute='_compute_center_ids', store=True, string='Centers')
+    wallet_balance = fields.Float(related='parent_id.wallet_balance', store=True, string='Parent Wallet')
 
     @api.depends('registration_ids.center_id')
     def _compute_center_ids(self):

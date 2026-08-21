@@ -25,6 +25,7 @@
                             <field name="tutor_id"/>
                             <field name="center_id"/>
                             <field name="location" placeholder="e.g. Online or Room 3"/>
+                            <field name="hourly_price"/>
                         </group>
                         <group>
                             <field name="start_date"/>

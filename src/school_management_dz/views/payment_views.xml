@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_school_payment_list" model="ir.ui.view">
+        <field name="name">school.payment.list</field>
+        <field name="model">school.payment</field>
+        <field name="arch" type="xml">
+            <list string="Payments">
+                <field name="date"/>
+                <field name="parent_id"/>
+                <field name="amount" sum="Total"/>
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_school_payment_form" model="ir.ui.view">
+        <field name="name">school.payment.form</field>
+        <field name="model">school.payment</field>
+        <field name="arch" type="xml">
+            <form string="Payment">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="parent_id"/>
+                            <field name="amount"/>
+                        </group>
+                        <group>
+                            <field name="date"/>
+                            <field name="name"/>
+                        </group>
+                    </group>
+                    <field name="note" placeholder="Additional Notes"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_school_payment" model="ir.actions.act_window">
+        <field name="name">Payments</field>
+        <field name="res_model">school.payment</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

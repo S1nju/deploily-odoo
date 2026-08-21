@@ -10,3 +10,4 @@ access_school_course_test,school.course.test,model_school_course_test,base.group
 access_school_course_schedule,school.course.schedule,model_school_course_schedule,base.group_user,1,1,1,1
 access_school_center,school.center,model_school_center,base.group_user,1,1,1,1
 access_school_course_test_question,school.course.test.question,model_school_course_test_question,base.group_user,1,1,1,1
+access_school_payment,school.payment,model_school_payment,base.group_user,1,1,1,1

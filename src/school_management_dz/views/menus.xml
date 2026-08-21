@@ -10,6 +10,7 @@
     <menuitem id="menu_school_registration" name="Registrations" parent="menu_school_operations" sequence="30" action="action_school_registration"/>
     <menuitem id="menu_school_attendance" name="Attendance Tracker" parent="menu_school_operations" sequence="40" action="action_school_attendance_tracker"/>
     <menuitem id="menu_school_test" name="Assessments" parent="menu_school_operations" sequence="50" action="action_school_test"/>
+    <menuitem id="menu_school_payment" name="Payments" parent="menu_school_operations" sequence="60" action="action_school_payment"/>
 
     <menuitem id="menu_school_service_category" name="Categories" parent="menu_school_configuration" sequence="10" action="action_school_service_category"/>
 </odoo>

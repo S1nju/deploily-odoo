@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <record id="view_res_partner_school_tree" model="ir.ui.view">
+        <field name="name">res.partner.school.tree</field>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <list string="Parents" decoration-danger="wallet_balance &lt; 0">
+                <field name="name"/>
+                <field name="phone"/>
+                <field name="email"/>
+                <field name="parent_activity"/>
+                <field name="wallet_balance"/>
+            </list>
+        </field>
+    </record>
+
     <record id="view_partner_form_inherit_school" model="ir.ui.view">
         <field name="name">res.partner.form.inherit.school</field>
         <field name="model">res.partner</field>
