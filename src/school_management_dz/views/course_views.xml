@@ -7,14 +7,21 @@
             <form string="Course">
                 <sheet>
                     <group>
-                        <field name="name"/>
+                        <field name="image_1920" widget="image" class="oe_avatar"/>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1><field name="name" placeholder="Course Name"/></h1>
+                    </div>
+                    </group>
+                    <group>
                         <field name="category_id"/>
                         <field name="subcategory_id"/>
                     </group>
                     <group>
                         <group>
                             <field name="tutor_id"/>
-                            <field name="location"/>
+                            <field name="center_id"/>
+                            <field name="location" placeholder="e.g. Online or Room 3"/>
                         </group>
                         <group>
                             <field name="start_date"/>
@@ -50,6 +57,21 @@
                 <field name="tutor_id"/>
                 <field name="start_date"/>
             </list>
+        </field>
+    </record>
+
+    <record id="view_school_course_search" model="ir.ui.view">
+        <field name="name">school.course.search</field>
+        <field name="model">school.course</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="tutor_id"/>
+                <field name="center_id"/>
+                <field name="subcategory_id"/>
+                <filter string="Center" name="group_center" context="{'group_by':'center_id'}"/>
+                <filter string="Subcategory" name="group_subcategory" context="{'group_by':'subcategory_id'}"/>
+            </search>
         </field>
     </record>
 
@@ -91,6 +113,38 @@
     <record id="action_school_service_category" model="ir.actions.act_window">
         <field name="name">Categories</field>
         <field name="res_model">school.service.category</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_school_center_tree" model="ir.ui.view">
+        <field name="name">school.center.tree</field>
+        <field name="model">school.center</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="address"/>
+            </list>
+        </field>
+    </record>
+    
+    <record id="view_school_center_form" model="ir.ui.view">
+        <field name="name">school.center.form</field>
+        <field name="model">school.center</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="address"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_school_center" model="ir.actions.act_window">
+        <field name="name">Centers</field>
+        <field name="res_model">school.center</field>
         <field name="view_mode">list,form</field>
     </record>
 </odoo>

@@ -8,3 +8,4 @@ access_res_partner_school,res.partner,base.model_res_partner,base.group_user,1,1
 access_school_attendance,school.attendance,model_school_attendance,base.group_user,1,1,1,1
 access_school_course_test,school.course.test,model_school_course_test,base.group_user,1,1,1,1
 access_school_course_schedule,school.course.schedule,model_school_course_schedule,base.group_user,1,1,1,1
+access_school_center,school.center,model_school_center,base.group_user,1,1,1,1

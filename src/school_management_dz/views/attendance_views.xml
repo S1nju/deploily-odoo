@@ -7,10 +7,26 @@
             <list string="Attendance" editable="bottom">
                 <field name="student_id"/>
                 <field name="course_id"/>
+                <field name="center_id"/>
                 <field name="date"/>
                 <field name="hours_attended"/>
                 <field name="state"/>
             </list>
+        </field>
+    </record>
+
+    <record id="view_school_attendance_search" model="ir.ui.view">
+        <field name="name">school.attendance.search</field>
+        <field name="model">school.attendance</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="student_id"/>
+                <field name="course_id"/>
+                <field name="center_id"/>
+                <filter string="Date" name="group_date" context="{'group_by':'date'}"/>
+                <filter string="Course" name="group_course" context="{'group_by':'course_id'}"/>
+                <filter string="Center" name="group_center" context="{'group_by':'center_id'}"/>
+            </search>
         </field>
     </record>
 

@@ -11,7 +11,6 @@ class SchoolStudent(models.Model):
     image_1920 = fields.Image('Image')
     attendance_ids = fields.One2many('school.attendance', 'student_id', 'Attendance')
     
-    # We will define the relation in registration model as inverse, or just many2many here
     registration_ids = fields.Many2many(
         'school.registration', 
         'registration_student_rel', 
@@ -19,6 +18,12 @@ class SchoolStudent(models.Model):
         'registration_id', 
         'Registrations'
     )
+    center_ids = fields.Many2many('school.center', compute='_compute_center_ids', store=True, string='Centers')
+
+    @api.depends('registration_ids.center_id')
+    def _compute_center_ids(self):
+        for student in self:
+            student.center_ids = student.registration_ids.mapped('center_id')
 
     @api.model_create_multi
     def create(self, vals_list):

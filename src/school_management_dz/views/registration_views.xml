@@ -17,6 +17,7 @@
                     <group>
                         <field name="parent_id"/>
                         <field name="course_id"/>
+                        <field name="center_id" readonly="1"/>
                         <field name="crm_lead_id"/>
                     </group>
                     <notebook>
@@ -37,8 +38,25 @@
                 <field name="name"/>
                 <field name="parent_id"/>
                 <field name="course_id"/>
+                <field name="center_id"/>
                 <field name="state"/>
             </list>
+        </field>
+    </record>
+
+    <record id="view_school_registration_search" model="ir.ui.view">
+        <field name="name">school.registration.search</field>
+        <field name="model">school.registration</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="parent_id"/>
+                <field name="course_id"/>
+                <field name="center_id"/>
+                <filter string="Status" name="group_state" context="{'group_by':'state'}"/>
+                <filter string="Course" name="group_course" context="{'group_by':'course_id'}"/>
+                <filter string="Center" name="group_center" context="{'group_by':'center_id'}"/>
+            </search>
         </field>
     </record>
 
@@ -48,4 +66,3 @@
         <field name="view_mode">list,form</field>
     </record>
 </odoo>
-

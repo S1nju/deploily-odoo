@@ -15,6 +15,13 @@ class SchoolServiceSubcategory(models.Model):
     category_id = fields.Many2one('school.service.category', 'Category', required=True)
     course_ids = fields.One2many('school.course', 'subcategory_id', 'Courses')
 
+class SchoolCenter(models.Model):
+    _name = 'school.center'
+    _description = 'Tutoring Center'
+
+    name = fields.Char('Center Name', required=True)
+    address = fields.Text('Address')
+
 class SchoolCourse(models.Model):
     _name = 'school.course'
     _description = 'School Course'
@@ -30,5 +37,7 @@ class SchoolCourse(models.Model):
     test_ids = fields.One2many('school.course.test', 'course_id', 'Tests/Assessments')
     start_date = fields.Datetime('Start Date')
     end_date = fields.Datetime('End Date')
-    location = fields.Char('Location')
+    center_id = fields.Many2one('school.center', 'Center Location')
+    location = fields.Char('Location / Details', help="Specific location, e.g. Online or Room 3")
+    image_1920 = fields.Image('Image')
     description = fields.Html('Information')

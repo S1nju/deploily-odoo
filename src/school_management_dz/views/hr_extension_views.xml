@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_employee_form_school_center" model="ir.ui.view">
+        <field name="name">hr.employee.form.school.center</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='department_id']" position="after">
+                <field name="center_id" string="Associated Center"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_hr_applicant_form_school_center" model="ir.ui.view">
+        <field name="name">hr.applicant.form.school.center</field>
+        <field name="model">hr.applicant</field>
+        <field name="inherit_id" ref="hr_recruitment.hr_applicant_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='department_id']" position="after">
+                <field name="center_id" string="Associated Center"/>
+            </xpath>
+        </field>
+    </record>
+    
+    <record id="view_employee_filter_school_center" model="ir.ui.view">
+        <field name="name">hr.employee.search.school.center</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='group_department']" position="after">
+                <filter string="Center" name="group_center" context="{'group_by':'center_id'}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hr_applicant_view_search_school_center" model="ir.ui.view">
+        <field name="name">hr.applicant.search.school.center</field>
+        <field name="model">hr.applicant</field>
+        <field name="inherit_id" ref="hr_recruitment.hr_applicant_view_search_bis"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='department']" position="after">
+                <filter string="Center" name="group_center" context="{'group_by':'center_id'}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

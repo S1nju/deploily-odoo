@@ -33,6 +33,22 @@
         </field>
     </record>
 
+    <!-- Search View: Student -->
+    <record id="view_school_student_search" model="ir.ui.view">
+        <field name="name">school.student.search</field>
+        <field name="model">school.student</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="parent_id"/>
+                <field name="center_ids"/>
+                <group expand="0" string="Group By">
+                    <filter string="Center" name="group_center" context="{'group_by':'center_ids'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
     <record id="view_school_student_tree" model="ir.ui.view">
         <field name="name">school.student.tree</field>
         <field name="model">school.student</field>

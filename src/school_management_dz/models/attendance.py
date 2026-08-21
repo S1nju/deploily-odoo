@@ -20,3 +20,4 @@ class SchoolAttendance(models.Model):
         ('absent', 'Absent'),
         ('late', 'Late')
     ], string='Status', default='pending')
+    center_id = fields.Many2one('school.center', related='course_id.center_id', store=True, string='Center')

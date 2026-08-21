@@ -19,6 +19,7 @@
         'views/test_views.xml',
         'views/crm_views.xml',
         'views/menus.xml',
+        'views/hr_extension_views.xml',
         'views/website_templates.xml',
     ],
     'installable': True,

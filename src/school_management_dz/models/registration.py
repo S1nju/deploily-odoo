@@ -15,6 +15,7 @@ class SchoolRegistration(models.Model):
         'Students'
     )
     course_id = fields.Many2one('school.course', 'Course', required=True)
+    center_id = fields.Many2one('school.center', related='course_id.center_id', store=True, string='Center')
     state = fields.Selection([
         ('draft', 'Draft'),
         ('registered', 'Registered'),
