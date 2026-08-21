@@ -154,3 +154,28 @@ class SchoolPortal(http.Controller):
             'student': student,
             'registrations': registrations,
         })
+
+    @http.route(['/my/students/<model("school.student"):student>/course/<model("school.registration"):registration>'], type='http', auth="user", website=True)
+    def portal_my_student_course_detail(self, student, registration, **kw):
+        user = request.env.user
+        partner = user.partner_id
+        parent = request.env['res.partner'].sudo().search([('id', '=', partner.id), ('is_parent', '=', True)], limit=1)
+
+        if not parent or parent.id not in student.parent_id.ids:
+            return request.render('website.404')
+            
+        if registration.parent_id.id != parent.id or student.id not in registration.student_ids.ids:
+            return request.render('website.404')
+
+        paid_regs = request.env['school.registration'].sudo().search([
+            ('parent_id', '=', parent.id),
+            ('state', 'in', ['paid'])
+        ])
+
+        if not paid_regs:
+            return request.render('school_management_dz.portal_blocked_unpaid', {})
+
+        return request.render('school_management_dz.portal_student_course_detail', {
+            'student': student,
+            'registration': registration,
+        })
