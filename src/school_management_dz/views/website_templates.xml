@@ -73,6 +73,19 @@
                 <p><strong>Tutor:</strong> <t t-esc="course.tutor_id.name"/></p>
                 <p><strong>Starts:</strong> <t t-esc="course.start_date"/></p>
                 <p><strong>Location:</strong> <t t-esc="course.location"/></p>
+                
+                <t t-if="course.schedule_ids">
+                    <p><strong>Schedule:</strong></p>
+                    <ul class="list-group mb-3">
+                        <t t-foreach="course.schedule_ids" t-as="sched">
+                            <li class="list-group-item">
+                                <strong><t t-esc="sched.weekday_string"/>:</strong>
+                                <t t-esc="sched.time_string"/>
+                            </li>
+                        </t>
+                    </ul>
+                </t>
+                
                 <div class="mt-3">
                     <t t-raw="course.description"/>
                 </div>

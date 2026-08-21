@@ -18,7 +18,7 @@
         <field name="name">school.attendance.calendar</field>
         <field name="model">school.attendance</field>
         <field name="arch" type="xml">
-            <calendar string="Attendance Calendar" date_start="date" color="student_id" mode="month">
+            <calendar string="Attendance Calendar" date_start="date" color="state" mode="month">
                 <field name="student_id"/>
                 <field name="course_id"/>
                 <field name="state"/>

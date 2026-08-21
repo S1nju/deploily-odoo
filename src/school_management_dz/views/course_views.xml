@@ -21,8 +21,20 @@
                             <field name="end_date"/>
                         </group>
                     </group>
-                    <label for="description"/>
-                    <field name="description"/>
+                    <notebook>
+                        <page string="Information">
+                            <field name="description"/>
+                        </page>
+                        <page string="Schedules">
+                            <field name="schedule_ids">
+                                <list editable="bottom">
+                                    <field name="weekday"/>
+                                    <field name="start_time" widget="float_time"/>
+                                    <field name="end_time" widget="float_time"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
