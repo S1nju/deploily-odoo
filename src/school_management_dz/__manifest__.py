@@ -1,10 +1,9 @@
 {
-    'name': 'School Management dz',
-    'version': '1.0',
-    'category': 'Sales/CRM',
-    'summary': 'Custom School Management system with CRM integration',
-    'description': "A custom module for managing parents, students, courses, registrations, and integrating with CRM pipeline.",
-    'author': 'Your Company',
+    "name": "School Management dz",
+    "summary": "Custom School Management system with CRM integration",
+    "description": "A custom module for managing parents, students, courses, registrations, and integrating with CRM pipeline.",
+    "author": "SARL Transformatek",
+    "website": "https://deploily.cloud",
     'depends': ['base', 'crm', 'website', 'portal', 'hr', 'hr_recruitment', 'hr_dz'],
     'data': [
         'security/security.xml',
@@ -27,5 +26,7 @@
     ],
     'installable': True,
     'application': True,
+    'auto_install': False,
     'license': 'LGPL-3',
 }
+
