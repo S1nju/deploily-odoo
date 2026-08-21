@@ -194,9 +194,17 @@
                     <p><strong>Assigned Center:</strong> <t t-esc="course.center_id.name"/></p>
                 </div>
                 <div class="mt-4">
+                    <h4>Student Badge</h4>
+                    <p>Please download this QR Code. It will be used for attendance tracking.</p>
+                    <img t-attf-src="/report/barcode/?barcode_type=QR&amp;value=#{student.qr_code}&amp;width=200&amp;height=200" alt="Student Badge QR" class="img-thumbnail mb-3"/>
+                    <br/>
+                    <a t-attf-href="/report/barcode/?barcode_type=QR&amp;value=#{student.qr_code}&amp;width=600&amp;height=600" download="Student_Badge.png" class="btn btn-primary btn-lg mb-4">
+                        <i class="fa fa-download"></i> Download Badge
+                    </a>
+                    
                     <h4>Next Steps</h4>
                     <p>Now that your child is successfully registered, you can track their attendance and academic challenge progress seamlessly from your portal.</p>
-                    <a t-attf-href="/my/students" class="btn btn-primary btn-lg mt-3">
+                    <a t-attf-href="/my/students" class="btn btn-secondary mt-3">
                         <i class="fa fa-dashboard"></i> Go to Student Tracker Portal
                     </a>
                 </div>
@@ -230,61 +238,69 @@
                 
                 <h2 class="mb-4">Tracker Dashboard: <span class="text-primary"><t t-esc="student.name"/></span></h2>
                 
-                <div class="card shadow-sm border-0 mb-4">
-                    <div class="card-body bg-light">
-                        <!-- Challenge Tracker -->
-                        <h5 class="text-secondary mt-2"><i class="fa fa-trophy"/> Competency Challenges</h5>
-                        <t t-set="challenges" t-value="request.env['school.student.challenge'].sudo().search([('registration_id.student_ids', 'in', student.ids)])"/>
-                        <t t-if="challenges">
-                            <ul class="list-group mb-4">
-                                <t t-foreach="challenges" t-as="chal">
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <span><t t-esc="chal.name"/> 
-                                        <small class="text-muted ms-2">(<t t-esc="chal.registration_id.course_id.name"/>)</small></span>
-                                        <span t-attf-class="badge rounded-pill #{'bg-success' if chal.state == 'passed' else 'bg-warning text-dark'}">
-                                            <t t-if="chal.state == 'passed'">Passed <i class="fa fa-check"/></t>
-                                            <t t-else="">Ongoing / Try Again</t>
-                                        </span>
-                                    </li>
-                                </t>
-                            </ul>
-                        </t>
-                        <t t-else="">
-                            <p class="text-muted fst-italic">No challenges tracked yet.</p>
-                        </t>
-                        
-                        <!-- Attendance log -->
-                        <h5 class="text-secondary"><i class="fa fa-calendar"/> Recent Attendance</h5>
-                        <t t-set="attendances" t-value="student.attendance_ids"/>
-                        <t t-if="attendances">
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-hover bg-white mb-0">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th>Date</th>
-                                            <th>Course</th>
-                                            <th>Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr t-foreach="attendances" t-as="att">
-                                            <td><t t-esc="att.date"/></td>
-                                            <td><t t-esc="att.course_id.name"/></td>
-                                            <td>
-                                                <span t-attf-class="badge #{'bg-success' if att.state == 'present' else ('bg-danger' if att.state == 'absent' else 'bg-secondary')}">
-                                                    <t t-esc="dict(att._fields['state'].selection).get(att.state)"/>
-                                                </span>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </t>
-                        <t t-else="">
-                            <p class="text-muted fst-italic">No attendance records found.</p>
-                        </t>
+                <t t-if="not registrations">
+                    <div class="alert alert-warning">
+                        No active course registrations found for this student.
                     </div>
-                </div>
+                </t>
+                
+                <t t-foreach="registrations" t-as="reg">
+                    <div class="card shadow-sm border-0 mb-4">
+                        <div class="card-header bg-success text-white">
+                            <h4 class="mb-0 m-0"><i class="fa fa-book"/> Course: <t t-esc="reg.course_id.name"/></h4>
+                        </div>
+                        <div class="card-body bg-light">
+                            <!-- Challenge Tracker for this specific registration -->
+                            <h5 class="text-secondary mt-2"><i class="fa fa-trophy"/> Competency Challenges</h5>
+                            <t t-set="challenges" t-value="request.env['school.student.challenge'].sudo().search([('registration_id', '=', reg.id)])"/>
+                            <t t-if="challenges">
+                                <ul class="list-group mb-4">
+                                    <t t-foreach="challenges" t-as="chal">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span><t t-esc="chal.name"/></span>
+                                            <span t-attf-class="badge rounded-pill #{'bg-success' if chal.state == 'passed' else 'bg-warning text-dark'}">
+                                                <t t-if="chal.state == 'passed'">Passed <i class="fa fa-check"/></t>
+                                                <t t-else="">Ongoing / Try Again</t>
+                                            </span>
+                                        </li>
+                                    </t>
+                                </ul>
+                            </t>
+                            <t t-else="">
+                                <p class="text-muted fst-italic">No challenges tracked yet for this course.</p>
+                            </t>
+                            
+                            <!-- Attendance log for this specific course -->
+                            <h5 class="text-secondary"><i class="fa fa-calendar"/> Recent Attendance</h5>
+                            <t t-set="attendances" t-value="request.env['school.attendance'].sudo().search([('student_id', '=', student.id), ('course_id', '=', reg.course_id.id)], order='date desc')"/>
+                            <t t-if="attendances">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover bg-white mb-0">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr t-foreach="attendances" t-as="att">
+                                                <td><t t-esc="att.date"/></td>
+                                                <td>
+                                                    <span t-attf-class="badge #{'bg-success' if att.state == 'present' else ('bg-danger' if att.state == 'absent' else 'bg-secondary')}">
+                                                        <t t-esc="dict(att._fields['state'].selection).get(att.state)"/>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </t>
+                            <t t-else="">
+                                <p class="text-muted fst-italic">No attendance records found for this course.</p>
+                            </t>
+                        </div>
+                    </div>
+                </t>
             </div>
         </t>
     </template>

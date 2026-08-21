@@ -144,6 +144,13 @@ class SchoolPortal(http.Controller):
         if not paid_regs:
             return request.render('school_management_dz.portal_blocked_unpaid', {})
 
+        registrations = request.env['school.registration'].sudo().search([
+            ('parent_id', '=', parent.id),
+            ('student_ids', 'in', student.ids),
+            ('state', 'in', ['registered', 'paid'])
+        ])
+
         return request.render('school_management_dz.portal_my_student_detail', {
             'student': student,
+            'registrations': registrations,
         })
