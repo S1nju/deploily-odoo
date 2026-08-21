@@ -21,6 +21,7 @@
                     </div>
                     <group>
                         <field name="parent_id"/>
+                        <field name="relationship"/>
                     </group>
                     <notebook>
                         <page string="Registrations">

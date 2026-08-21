@@ -1,5 +1,6 @@
 from odoo import models, fields, api
 from datetime import timedelta
+from odoo.exceptions import ValidationError
 
 class SchoolRegistration(models.Model):
     _name = 'school.registration'
@@ -68,3 +69,17 @@ class SchoolRegistration(models.Model):
                                     })
                         current_date += timedelta(days=1)
         return res
+
+    @api.constrains('student_ids', 'course_id')
+    def _check_unique_student_registration(self):
+        for reg in self:
+            if not reg.course_id or not reg.student_ids:
+                continue
+            for student in reg.student_ids:
+                duplicate = self.env['school.registration'].search([
+                    ('id', '!=', reg.id),
+                    ('course_id', '=', reg.course_id.id),
+                    ('student_ids', 'in', student.id)
+                ], limit=1)
+                if duplicate:
+                    raise ValidationError(f"The student '{student.name}' is already registered for the course '{reg.course_id.name}'.")

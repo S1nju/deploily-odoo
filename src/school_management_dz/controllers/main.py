@@ -56,7 +56,7 @@ class SchoolPortal(http.Controller):
             student_name = parent.name
             student = request.env['school.student'].sudo().search([('parent_id', '=', parent.id), ('name', '=', parent.name)], limit=1)
             if not student:
-                student_vals = {'name': parent.name, 'parent_id': parent.id}
+                student_vals = {'name': parent.name, 'parent_id': parent.id, 'relationship': 'self'}
                 grades_file = kw.get('student_grades_file')
                 if grades_file and hasattr(grades_file, 'read'):
                     import base64

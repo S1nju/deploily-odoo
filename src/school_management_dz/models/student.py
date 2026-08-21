@@ -4,10 +4,21 @@ class SchoolStudent(models.Model):
     _name = 'school.student'
     _description = 'Student'
 
+    _sql_constraints = [
+        ('unique_name_per_parent', 'UNIQUE(name, parent_id)', 'A father cannot have two sons with the same name!')
+    ]
+
     name = fields.Char('Name', required=True)
     parent_id = fields.Many2one('res.partner', 'Parent', required=True)
     qr_code = fields.Char('QR Code', readonly=True)
     image_1920 = fields.Image('Image')
+    relationship = fields.Selection([
+        ('father', 'أب'),
+        ('mother', 'أم'),
+        ('guardian', 'وكيل'),
+        ('family', 'أحد أفراد العائلة'),
+        ('self', 'أنا هو المعني - الطالب (ة)'),
+    ], string='Relationship to Participant')
     attendance_ids = fields.One2many('school.attendance', 'student_id', 'Attendance')
     
     registration_ids = fields.Many2many(

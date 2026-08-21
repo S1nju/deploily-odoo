@@ -161,6 +161,16 @@
                             <input type="text" name="student_name" class="form-control" placeholder="Enter full name of the student..."/>
                         </div>
                         <div class="mb-3">
+                            <label><strong>ماهي علاقتكم بالمشارك ؟</strong> *</label>
+                            <select name="student_relationship" class="form-control">
+                                <option value="father">أب</option>
+                                <option value="mother">أم</option>
+                                <option value="guardian">وكيل</option>
+                                <option value="family">أحد أفراد العائلة</option>
+                                <option value="self">أنا هو المعني - الطالب (ة)</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
                             <label><strong>Previous Year's Grades (Optional Upload)</strong></label>
                             <input type="file" name="student_grades_file" class="form-control" accept="image/*,application/pdf"/>
                         </div>
