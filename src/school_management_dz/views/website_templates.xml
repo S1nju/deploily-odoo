@@ -137,9 +137,9 @@
                 <div class="mt-4">
                     <h4>Student Badge</h4>
                     <p>Please download this QR Code. It will be used for attendance tracking.</p>
-                    <img t-attf-src="/report/barcode/?type=QR&amp;value={{student.qr_code}}&amp;width=200&amp;height=200" alt="Student Badge QR" class="img-thumbnail mb-3"/>
+                    <img t-attf-src="/report/barcode/?barcode_type=QR&amp;value=#{student.qr_code}&amp;width=200&amp;height=200" alt="Student Badge QR" class="img-thumbnail mb-3"/>
                     <br/>
-                    <a t-attf-href="/report/barcode/?type=QR&amp;value={{student.qr_code}}&amp;width=600&amp;height=600" download="Student_Badge.png" class="btn btn-primary btn-lg">
+                    <a t-attf-href="/report/barcode/?barcode_type=QR&amp;value=#{student.qr_code}&amp;width=600&amp;height=600" download="Student_Badge.png" class="btn btn-primary btn-lg">
                         <i class="fa fa-download"></i> Download Badge
                     </a>
                 </div>

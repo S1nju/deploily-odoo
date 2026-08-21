@@ -45,12 +45,19 @@ class SchoolRegistration(models.Model):
                     current_date = start
                     while current_date <= end:
                         if current_date.weekday() in valid_weekdays:
+                            existing = Attendance.search([
+                                ('student_id', 'in', reg.student_ids.ids),
+                                ('course_id', '=', course.id),
+                                ('date', '=', current_date)
+                            ])
+                            existing_student_ids = existing.mapped('student_id.id')
                             for student in reg.student_ids:
-                                Attendance.sudo().create({
-                                    'student_id': student.id,
-                                    'course_id': course.id,
-                                    'date': current_date,
-                                    'state': 'pending'
-                                })
+                                if student.id not in existing_student_ids:
+                                    Attendance.sudo().create({
+                                        'student_id': student.id,
+                                        'course_id': course.id,
+                                        'date': current_date,
+                                        'state': 'pending'
+                                    })
                         current_date += timedelta(days=1)
         return res
