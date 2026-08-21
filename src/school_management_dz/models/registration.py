@@ -22,6 +22,7 @@ class SchoolRegistration(models.Model):
         ('paid', 'Paid')
     ], string='Status', default='draft')
     crm_lead_id = fields.Many2one('crm.lead', 'CRM Lead', readonly=True)
+    test_answers = fields.Text('Evaluation Test Answers', readonly=True)
 
     @api.model_create_multi
     def create(self, vals_list):

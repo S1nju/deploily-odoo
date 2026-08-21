@@ -88,6 +88,7 @@ class SchoolPortal(http.Controller):
             'course_id': course.id,
             'student_ids': [(4, student.id)],
             'crm_lead_id': lead.id,
+            'test_answers': formatted_answers,
         })
         
         return request.render('school_management_dz.registration_success', {

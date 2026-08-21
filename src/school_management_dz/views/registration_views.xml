@@ -24,6 +24,9 @@
                         <page string="Students">
                             <field name="student_ids" domain="[('parent_id', '=', parent_id)]"/>
                         </page>
+                        <page string="Test Answers">
+                            <field name="test_answers" widget="text"/>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
