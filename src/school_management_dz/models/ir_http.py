@@ -7,11 +7,16 @@ class IrHttp(models.AbstractModel):
     @classmethod
     def _dispatch(cls, endpoint):
         res = super()._dispatch(endpoint)
-        if request and request.session.uid and request.httprequest.path not in ['/my/parent/setup', '/web/logout', '/web/login']:
-            # Avoid locking out backend users
-            user = request.env.user
-            if user.has_group('base.group_portal') and not user.has_group('base.group_user'):
-                partner = user.partner_id
-                if not partner.parent_activity or not partner.mahara_participation:
-                    return request.redirect('/my/parent/setup')
+        if request and request.session.uid:
+            path = request.httprequest.path
+            
+            # Avoid intercepting static assets, web APIs, and the setup page itself
+            if not path.startswith(('/web/', '/website/', '/my/parent/setup')):
+                # Ensure they are normal portal users (not internal staff)
+                user = request.env.user
+                if user.has_group('base.group_portal') and not user.has_group('base.group_user'):
+                    partner = user.partner_id
+                    # If they are missing mandatory data, redirect them
+                    if not partner.parent_activity or not partner.mahara_participation:
+                        return request.redirect('/my/parent/setup')
         return res
