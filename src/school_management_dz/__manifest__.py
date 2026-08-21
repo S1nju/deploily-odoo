@@ -5,7 +5,7 @@
     'summary': 'Custom School Management system with CRM integration',
     'description': "A custom module for managing parents, students, courses, registrations, and integrating with CRM pipeline.",
     'author': 'Your Company',
-    'depends': ['base', 'crm', 'website', 'portal', 'hr', 'hr_recruitment'],
+    'depends': ['base', 'crm', 'website', 'portal', 'hr', 'hr_recruitment', 'hr_dz'],
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
