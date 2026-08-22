@@ -24,7 +24,7 @@
                         <group>
                             <field name="tutor_id"/>
                             <field name="center_id"/>
-                            <field name="room_id"/>
+                            <field name="room_id" domain="[('center_id', '=', center_id)]"/>
                             <field name="location" placeholder="e.g. Online link"/>
                             <field name="hourly_price"/>
                         </group>

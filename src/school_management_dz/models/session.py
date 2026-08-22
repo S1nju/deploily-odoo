@@ -1,4 +1,5 @@
-from odoo import models, fields
+from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 
 class SchoolCourseSession(models.Model):
     _name = 'school.course.session'
@@ -12,6 +13,20 @@ class SchoolCourseSession(models.Model):
     start_datetime = fields.Datetime('Start Time', required=True, default=fields.Datetime.now)
     end_datetime = fields.Datetime('End Time', required=True, default=fields.Datetime.now)
     room_id = fields.Many2one('school.room', 'Classroom')
+    center_id = fields.Many2one('school.center', related='course_id.center_id', store=True)
+    
+    @api.constrains('start_datetime', 'end_datetime', 'room_id')
+    def _check_room_overlap(self):
+        for session in self:
+            if session.room_id and session.start_datetime and session.end_datetime:
+                overlapping = self.search([
+                    ('id', '!=', session.id),
+                    ('room_id', '=', session.room_id.id),
+                    ('start_datetime', '<', session.end_datetime),
+                    ('end_datetime', '>', session.start_datetime)
+                ], limit=1)
+                if overlapping:
+                    raise ValidationError(f"Room '{session.room_id.name}' is already booked for another session ({overlapping.name}) during this time period.")
     
     test_ids = fields.Many2many('school.course.test', string='Tests Conducted')
     

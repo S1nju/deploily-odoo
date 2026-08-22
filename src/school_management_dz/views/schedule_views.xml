@@ -81,9 +81,10 @@
                     <group>
                         <group string="Schedule &amp; Location">
                             <field name="course_id"/>
+                            <field name="center_id" invisible="1"/>
                             <field name="start_datetime"/>
                             <field name="end_datetime"/>
-                            <field name="room_id"/>
+                            <field name="room_id" domain="[('center_id', '=', center_id)]"/>
                         </group>
                         <group string="General Evaluation (Internal)">
                             <field name="door_opened_on_time"/>
