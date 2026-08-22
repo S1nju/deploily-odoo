@@ -50,14 +50,31 @@ class SchoolStudent(models.Model):
     total_sessions_count = fields.Integer('Total Scheduled Sessions', compute='_compute_attendance_stats')
     attended_sessions_count = fields.Integer('Attended Sessions', compute='_compute_attendance_stats')
     absent_sessions_count = fields.Integer('Absent Sessions', compute='_compute_attendance_stats')
+    course_hours_summary = fields.Html('Hours per Course', compute='_compute_attendance_stats')
     
-    @api.depends('attendance_ids.hours_attended', 'attendance_ids.state')
+    @api.depends('attendance_ids.hours_attended', 'attendance_ids.state', 'attendance_ids.course_id')
     def _compute_attendance_stats(self):
         for student in self:
             student.total_hours_attended = sum(att.hours_attended for att in student.attendance_ids)
             student.total_sessions_count = len(student.attendance_ids)
             student.attended_sessions_count = len(student.attendance_ids.filtered(lambda a: a.state in ['present', 'late']))
             student.absent_sessions_count = len(student.attendance_ids.filtered(lambda a: a.state == 'absent'))
+            
+            # Compute hours grouped by course
+            summary_html = "<ul>"
+            course_hours = {}
+            for att in student.attendance_ids:
+                if getattr(att, 'course_id', None):
+                    course_name = att.course_id.name
+                    course_hours[course_name] = course_hours.get(course_name, 0.0) + (att.hours_attended or 0.0)
+            
+            if course_hours:
+                for course, hours in course_hours.items():
+                    summary_html += f"<li><b>{course}:</b> {hours} Hours</li>"
+            else:
+                summary_html += "<li>No sessions attended yet.</li>"
+            summary_html += "</ul>"
+            student.course_hours_summary = summary_html
             
     grades_file = fields.Binary('Previous Grades File')
     grades_filename = fields.Char('Grades Filename')

@@ -46,6 +46,7 @@
                                     <field name="attended_sessions_count"/>
                                     <field name="absent_sessions_count"/>
                                     <field name="total_hours_attended"/>
+                                    <field name="course_hours_summary" widget="html"/>
                                 </group>
                             </group>
                             <field name="attendance_ids" readonly="1">
