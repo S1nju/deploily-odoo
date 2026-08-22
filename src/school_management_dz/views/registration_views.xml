@@ -29,6 +29,9 @@
                                 <field name="grades_filename" invisible="1"/>
                                 <field name="grades_file" filename="grades_filename" widget="binary"/>
                             </group>
+                            <group>
+                                <field name="student_info" invisible="not student_info"/>
+                            </group>
                         </page>
                         <page string="Test Answers">
                             <field name="test_answers" widget="text"/>

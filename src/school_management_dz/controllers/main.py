@@ -78,6 +78,7 @@ class SchoolPortal(http.Controller):
         
         if existing_id == 'self':
             student_name = parent.name
+            student_vals = {}
             student = request.env['school.student'].sudo().search([('parent_id', '=', parent.id), ('name', '=', parent.name)], limit=1)
             if not student:
                 student_vals = {'name': parent.name, 'parent_id': parent.id, 'relationship': 'self'}
@@ -96,6 +97,7 @@ class SchoolPortal(http.Controller):
         elif existing_id and existing_id != 'new':
             student = request.env['school.student'].sudo().browse(int(existing_id))
             student_name = student.name
+            student_vals = {}
         else:
             fname = kw.get('student_custom_first_name', '')
             lname = kw.get('student_custom_last_name', '')
@@ -145,12 +147,19 @@ class SchoolPortal(http.Controller):
             
         lead = request.env['crm.lead'].sudo().create(lead_vals)
         
+        # Format student info if any
+        student_info_str = ""
+        if student_vals:
+            lines = [f"{k}: {v}" for k, v in student_vals.items() if k not in ('grades_file', 'grades_filename')]
+            student_info_str = "\n".join(lines)
+            
         request.env['school.registration'].sudo().create({
             'parent_id': parent.id,
             'course_id': course.id,
             'student_ids': [(4, student.id)],
             'crm_lead_id': lead.id,
             'test_answers': formatted_answers,
+            'student_info': student_info_str,
         })
         
         return request.render('school_management_dz.registration_success', {

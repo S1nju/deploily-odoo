@@ -24,6 +24,7 @@ class SchoolRegistration(models.Model):
     ], string='Status', default='draft')
     crm_lead_id = fields.Many2one('crm.lead', 'CRM Lead', readonly=True)
     test_answers = fields.Text('Evaluation Test Answers', readonly=True)
+    student_info = fields.Text('New Student Info', readonly=True)
     challenge_ids = fields.One2many('school.student.challenge', 'registration_id', 'Competency Challenges')
     
     # helper for UI access to student's uploaded grades
