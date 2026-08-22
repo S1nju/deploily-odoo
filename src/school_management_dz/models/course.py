@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import models, fields, api
 
 class SchoolServiceCategory(models.Model):
     _name = 'school.service.category'
@@ -45,23 +45,34 @@ class SchoolCourse(models.Model):
     image_1920 = fields.Image('Image')
     description = fields.Html('Information')
 
-    def _compute_website_url(self):
-        super()._compute_website_url()
-        for course in self:
-            course.website_url = "/course/%s" % course.id
+    @api.model_create_multi
+    def create(self, vals_list):
+        records = super().create(vals_list)
+        records._sync_sessions()
+        return records
 
-    def action_generate_sessions(self):
+    def write(self, vals):
+        res = super().write(vals)
+        # Only sync if fields that affect schedule were changed
+        if any(f in vals for f in ['start_date', 'end_date', 'schedule_ids', 'room_id']):
+            self._sync_sessions()
+        return res
+
+    def _sync_sessions(self):
         from datetime import timedelta
         for course in self:
             if not course.start_date or not course.end_date:
                 continue
                 
             current_date = course.start_date
+            # Fetch existing sessions to prevent exact duplicates
+            existing_sessions = self.env['school.course.session'].search([
+                ('course_id', '=', course.id)
+            ])
+            existing_starts = [sess.start_datetime for sess in existing_sessions]
+            
             while current_date <= course.end_date:
-                # current_date.weekday() returns 0 for Monday, 6 for Sunday
                 wd = str(current_date.weekday())
-                
-                # Find matching schedules for this weekday
                 schedules = course.schedule_ids.filtered(lambda s: s.weekday == wd)
                 
                 for sched in schedules:
@@ -73,14 +84,15 @@ class SchoolCourse(models.Model):
                     sess_start = current_date.replace(hour=start_h, minute=start_m, second=0, microsecond=0)
                     sess_end = current_date.replace(hour=end_h, minute=end_m, second=0, microsecond=0)
                     
-                    # Create Session
-                    self.env['school.course.session'].create({
-                        'name': f"{course.name} - {sess_start.strftime('%Y-%m-%d')}",
-                        'course_id': course.id,
-                        'room_id': course.room_id.id,
-                        'start_datetime': sess_start,
-                        'end_datetime': sess_end,
-                        'date': sess_start.date(),
-                    })
+                    # Only create if exactly this session start doesn't already exist
+                    if sess_start not in existing_starts:
+                        self.env['school.course.session'].create({
+                            'name': f"{course.name} - {sess_start.strftime('%Y-%m-%d')}",
+                            'course_id': course.id,
+                            'room_id': course.room_id.id,
+                            'start_datetime': sess_start,
+                            'end_datetime': sess_end,
+                            'date': sess_start.date(),
+                        })
                     
                 current_date += timedelta(days=1)

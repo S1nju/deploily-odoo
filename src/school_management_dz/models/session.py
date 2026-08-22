@@ -6,7 +6,7 @@ class SchoolCourseSession(models.Model):
     _order = 'date desc, id desc'
     
     name = fields.Char('Session Title', required=True)
-    course_id = fields.Many2one('school.course', 'Course', required=True)
+    course_id = fields.Many2one('school.course', 'Course', required=True, ondelete='cascade')
     date = fields.Date('Date', default=fields.Date.context_today)
     
     start_datetime = fields.Datetime('Start Time', required=True, default=fields.Datetime.now)

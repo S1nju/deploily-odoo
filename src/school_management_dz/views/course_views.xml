@@ -5,9 +5,6 @@
         <field name="model">school.course</field>
         <field name="arch" type="xml">
             <form string="Course">
-                <header>
-                    <button name="action_generate_sessions" string="Generate Sessions" type="object" class="oe_highlight"/>
-                </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <field name="is_published" widget="website_redirect_button"/>
