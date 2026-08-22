@@ -350,11 +350,15 @@
                         <t t-set="attendances" t-value="request.env['school.attendance'].sudo().search([('student_id', '=', student.id), ('course_id', '=', registration.course_id.id)], order='date desc')"/>
                         <t t-if="attendances">
                             <div class="table-responsive">
-                                <table class="table table-bordered table-hover bg-white mb-0">
+                                <table class="table table-bordered table-hover bg-white mb-0 text-center" dir="rtl">
                                     <thead class="table-light">
                                         <tr>
-                                            <th>Date</th>
-                                            <th>Status</th>
+                                            <th>التاريخ (Date)</th>
+                                            <th>الحالة (Status)</th>
+                                            <th>الحضور في الوقت</th>
+                                            <th>التركيز في الحصة</th>
+                                            <th>التفاعل مع الأستاذ</th>
+                                            <th>التمارين المنزلية</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -364,6 +368,30 @@
                                                 <span t-attf-class="badge #{'bg-success' if att.state == 'present' else ('bg-danger' if att.state == 'absent' else 'bg-secondary')}">
                                                     <t t-esc="dict(att._fields['state'].selection).get(att.state)"/>
                                                 </span>
+                                            </td>
+                                            <td>
+                                                <t t-if="att.evaluation_punctuality">
+                                                    <t t-esc="dict(att._fields['evaluation_punctuality'].selection).get(att.evaluation_punctuality)"/>
+                                                </t>
+                                                <t t-else="">-</t>
+                                            </td>
+                                            <td>
+                                                <t t-if="att.evaluation_focus">
+                                                    <t t-esc="dict(att._fields['evaluation_focus'].selection).get(att.evaluation_focus)"/>
+                                                </t>
+                                                <t t-else="">-</t>
+                                            </td>
+                                            <td>
+                                                <t t-if="att.evaluation_interaction">
+                                                    <t t-esc="dict(att._fields['evaluation_interaction'].selection).get(att.evaluation_interaction)"/>
+                                                </t>
+                                                <t t-else="">-</t>
+                                            </td>
+                                            <td>
+                                                <t t-if="att.evaluation_homework">
+                                                    <t t-esc="dict(att._fields['evaluation_homework'].selection).get(att.evaluation_homework)"/>
+                                                </t>
+                                                <t t-else="">-</t>
                                             </td>
                                         </tr>
                                     </tbody>

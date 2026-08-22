@@ -11,7 +11,37 @@
                 <field name="date"/>
                 <field name="hours_attended"/>
                 <field name="state"/>
+                <field name="evaluation_punctuality" optional="hide"/>
+                <field name="evaluation_focus" optional="hide"/>
+                <field name="evaluation_interaction" optional="hide"/>
+                <field name="evaluation_homework" optional="hide"/>
             </list>
+        </field>
+    </record>
+
+    <record id="view_school_attendance_form" model="ir.ui.view">
+        <field name="name">school.attendance.form</field>
+        <field name="model">school.attendance</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group string="Attendance Info">
+                            <field name="student_id"/>
+                            <field name="course_id"/>
+                            <field name="date"/>
+                            <field name="hours_attended"/>
+                            <field name="state"/>
+                        </group>
+                        <group string="Child Evaluation (Parent Visible)">
+                            <field name="evaluation_punctuality"/>
+                            <field name="evaluation_focus"/>
+                            <field name="evaluation_interaction"/>
+                            <field name="evaluation_homework"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
         </field>
     </record>
 

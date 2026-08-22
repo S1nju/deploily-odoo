@@ -21,3 +21,20 @@ class SchoolAttendance(models.Model):
         ('late', 'Late')
     ], string='Status', default='pending')
     center_id = fields.Many2one('school.center', related='course_id.center_id', store=True, string='Center')
+    
+    # Session Internal Evaluations for Student
+    evaluation_punctuality = fields.Selection([
+        ('excellent', 'ممتاز'), ('good', 'جيد'), ('average', 'متوسط'), ('weak', 'ضعيف')
+    ], string='حرص التلميذ على الحضور في الوقت')
+    
+    evaluation_focus = fields.Selection([
+        ('excellent', 'ممتاز'), ('good', 'جيد'), ('average', 'متوسط'), ('weak', 'ضعيف')
+    ], string='اهتمام وتركيز التلميذ في الحصة')
+    
+    evaluation_interaction = fields.Selection([
+        ('excellent', 'ممتاز'), ('good', 'جيد'), ('average', 'متوسط'), ('weak', 'ضعيف')
+    ], string='تفاعل التلميذ مع الاستاذ')
+    
+    evaluation_homework = fields.Selection([
+        ('excellent', 'ممتاز'), ('good', 'جيد'), ('average', 'متوسط'), ('weak', 'ضعيف')
+    ], string='حرص التلميذ على إنجاز التمارين المنزلية')

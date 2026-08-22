@@ -8,4 +8,38 @@ class SchoolCourseSession(models.Model):
     name = fields.Char('Session Title', required=True)
     course_id = fields.Many2one('school.course', 'Course', required=True)
     date = fields.Date('Date', default=fields.Date.context_today, required=True)
-    report = fields.Html('Session Report / Summary')
+    
+    # Internal Tutor Report Fields
+    door_opened_on_time = fields.Boolean('هل تم فتح الباب في الوقت ؟', default=False)
+    room_tidy = fields.Boolean('هل وجدت القاعة مرتبة ؟', default=False)
+    
+    class_type = fields.Selection([
+        ('review', 'مراجعة الدروس السابقة'),
+        ('exercises', 'حل التمارين'),
+        ('exam_prep', 'التحضير للامتحان'),
+    ], string='ماهو نوع الحصة ؟')
+    
+    # Challenges
+    ch_time = fields.Boolean('صعوبة إدارة الوقت')
+    ch_resources = fields.Boolean('وسائل / تجهيزات / موارد ناقصة')
+    ch_tech = fields.Boolean('مشاكل تقنية')
+    ch_subject = fields.Boolean('صعوبات في الموضوع')
+    ch_levels = fields.Boolean('تفاوت مستويات الطلاب')
+    ch_crowd = fields.Boolean('عدد كبير من الطلاب')
+    ch_interaction = fields.Boolean('عدم تفاعل التلاميذ')
+    ch_discipline = fields.Boolean('قلة انضباط التلاميذ')
+    ch_late = fields.Boolean('تأخر التلاميذ في دخول القسم')
+    ch_focus = fields.Boolean('قلة تركيز الطلاب')
+    ch_prep = fields.Boolean('عدم التحضير المسبق من قبل الطلاب')
+    ch_none = fields.Boolean('لا توجد')
+    ch_other = fields.Char('أخرى (مجال مفتوح للكتابة)')
+    
+    execution_percentage = fields.Selection([
+        ('25', '25 %'),
+        ('50', '50 %'),
+        ('75', '75 %'),
+        ('100', '100 %'),
+    ], string='نسبة تنفيذ النقاط والأنشطة المخططة للحصة')
+
+    # Parent Visible Field
+    report = fields.Html('Public Summary (Visible to Parents)')
