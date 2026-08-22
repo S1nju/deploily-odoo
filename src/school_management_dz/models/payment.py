@@ -6,7 +6,7 @@ class SchoolPayment(models.Model):
     _order = 'date desc, id desc'
     
     name = fields.Char('Reference / Receipt', default='New')
-    parent_id = fields.Many2one('res.partner', 'Parent', required=True)
+    parent_id = fields.Many2one('res.partner', 'Parent', required=True, ondelete='cascade')
     amount = fields.Float('Amount', required=True)
     date = fields.Date('Date', default=fields.Date.context_today, required=True)
     note = fields.Text('Notes')

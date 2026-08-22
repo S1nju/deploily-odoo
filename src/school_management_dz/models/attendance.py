@@ -5,7 +5,7 @@ class SchoolAttendance(models.Model):
     _description = 'Student Attendance'
 
     name = fields.Char(compute='_compute_name', store=True)
-    student_id = fields.Many2one('school.student', 'Student', required=True)
+    student_id = fields.Many2one('school.student', 'Student', required=True, ondelete='cascade')
 
     @api.depends('course_id', 'session_id')
     def _compute_name(self):
@@ -15,8 +15,8 @@ class SchoolAttendance(models.Model):
             else:
                 record.name = f"{record.course_id.name}" if record.course_id else "Attendance"
                 
-    course_id = fields.Many2one('school.course', 'Course', required=True)
-    session_id = fields.Many2one('school.course.session', 'Session')
+    course_id = fields.Many2one('school.course', 'Course', required=True, ondelete='cascade')
+    session_id = fields.Many2one('school.course.session', 'Session', ondelete='cascade')
     date = fields.Date('Date', required=True, default=fields.Date.today)
     hours_attended = fields.Float('Hours Attended')
     state = fields.Selection([

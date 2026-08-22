@@ -7,7 +7,7 @@ class SchoolRegistration(models.Model):
     _description = 'Course Registration'
     
     name = fields.Char('Reference', default='New', readonly=True)
-    parent_id = fields.Many2one('res.partner', 'Parent', required=True)
+    parent_id = fields.Many2one('res.partner', 'Parent', required=True, ondelete='cascade')
     student_ids = fields.Many2many(
         'school.student', 
         'registration_student_rel', 
@@ -15,7 +15,7 @@ class SchoolRegistration(models.Model):
         'student_id', 
         'Students'
     )
-    course_id = fields.Many2one('school.course', 'Course', required=True)
+    course_id = fields.Many2one('school.course', 'Course', required=True, ondelete='cascade')
     center_id = fields.Many2one('school.center', related='course_id.center_id', store=True, string='Center')
     state = fields.Selection([
         ('draft', 'Draft'),

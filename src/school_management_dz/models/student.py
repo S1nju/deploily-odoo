@@ -9,7 +9,7 @@ class SchoolStudent(models.Model):
     ]
 
     name = fields.Char('Name', required=True)
-    parent_id = fields.Many2one('res.partner', 'Parent', required=True)
+    parent_id = fields.Many2one('res.partner', 'Parent', required=True, ondelete='cascade')
     qr_code = fields.Char('QR Code')
     image_1920 = fields.Image('Image')
     
