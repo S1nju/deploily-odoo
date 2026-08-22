@@ -6,7 +6,7 @@ access_school_service_category,school.service.category.admin,model_school_servic
 access_school_attendance,school.attendance.admin,model_school_attendance,,1,1,1,1
 access_school_course_test,school.course.test.admin,model_school_course_test,,1,1,1,1
 access_school_course_test_question,school.course.test.question.admin,model_school_course_test_question,,1,1,1,1
-access_school_payment,school.payment.admin,model_school_payment,,1,1,1,1
+
 access_school_student_challenge,school.student.challenge.user,model_school_student_challenge,,1,1,1,1
 access_school_course_session,school.course.session.admin,model_school_course_session,,1,1,1,1
 access_school_room,school.room.admin,model_school_room,,1,1,1,1
@@ -21,7 +21,7 @@ access_school_course_test,school.course.test,model_school_course_test,base.group
 access_school_course_schedule,school.course.schedule,model_school_course_schedule,base.group_user,1,1,1,1
 access_school_center,school.center,model_school_center,base.group_user,1,1,1,1
 access_school_course_test_question,school.course.test.question,model_school_course_test_question,base.group_user,1,1,1,1
-access_school_payment,school.payment,model_school_payment,base.group_user,1,1,1,1
+
 access_school_student_challenge,school.student.challenge,model_school_student_challenge,base.group_user,1,1,1,1
 
 access_school_category_public,school.service.category,model_school_service_category,base.group_public,1,0,0,0
