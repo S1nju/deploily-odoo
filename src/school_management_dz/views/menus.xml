@@ -20,6 +20,7 @@
     <menuitem id="menu_school_student" name="Students" parent="menu_school_students_top" sequence="10" action="action_school_student"/>
     <menuitem id="menu_school_attendance" name="Attendance Tracker" parent="menu_school_students_top" sequence="20" action="action_school_attendance_tracker"/>
     <menuitem id="menu_school_registration" name="Registrations" parent="menu_school_students_top" sequence="30" action="action_school_registration"/>
+    <menuitem id="menu_school_scanner" name="Barcode Scanner" parent="menu_school_students_top" sequence="40" action="action_open_scanner"/>
 
     <!-- Courses submenu -->
     <menuitem id="menu_school_course" name="Courses" parent="menu_school_courses_top" sequence="10" action="action_school_course"/>

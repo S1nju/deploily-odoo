@@ -18,7 +18,7 @@ class SchoolAttendance(models.Model):
     course_id = fields.Many2one('school.course', 'Course', required=True, ondelete='cascade')
     session_id = fields.Many2one('school.course.session', 'Session', ondelete='cascade')
     date = fields.Date('Date', required=True, default=fields.Date.today)
-    hours_attended = fields.Float('Hours Attended', compute='_compute_hours_attended', store=True, readonly=False)
+    hours_attended = fields.Float('Hours Attended', compute='_compute_hours_attended')
 
     @api.depends('state', 'session_id.start_datetime', 'session_id.end_datetime')
     def _compute_hours_attended(self):

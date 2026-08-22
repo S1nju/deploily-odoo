@@ -131,10 +131,10 @@
                                     <field name="student_id"/>
                                     <field name="state"/>
                                     <field name="hours_attended"/>
-                                    <field name="evaluation_punctuality" optional="hide"/>
-                                    <field name="evaluation_focus" optional="hide"/>
-                                    <field name="evaluation_interaction" optional="hide"/>
-                                    <field name="evaluation_homework" optional="hide"/>
+                                    <field name="evaluation_punctuality" optional="show"/>
+                                    <field name="evaluation_focus" optional="show"/>
+                                    <field name="evaluation_interaction" optional="show"/>
+                                    <field name="evaluation_homework" optional="show"/>
                                 </list>
                             </field>
                         </page>
