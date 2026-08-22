@@ -35,6 +35,7 @@
                             <field name="qr_code" string="Barcode Identifier"/>
                         </group>
                     </group>
+                    <notebook>
                         <page string="Registrations">
                             <field name="registration_ids"/>
                         </page>
