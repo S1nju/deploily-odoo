@@ -20,8 +20,13 @@
                         </h1>
                     </div>
                     <group>
-                        <field name="parent_id"/>
-                        <field name="relationship"/>
+                        <group>
+                            <field name="parent_id"/>
+                            <field name="relationship"/>
+                        </group>
+                        <group>
+                            <field name="qr_code" string="Barcode Identifier"/>
+                        </group>
                     </group>
                     <notebook>
                         <page string="Registrations">

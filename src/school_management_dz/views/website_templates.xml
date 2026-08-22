@@ -435,7 +435,10 @@
                             </select>
                         </div>
                         <div class="form-group mb-4">
-                            <input type="text" id="barcode_input" class="form-control form-control-lg text-center" placeholder="Click here and scan barcode... (or type and press Enter)" autofocus="1"/>
+                            <div class="input-group input-group-lg">
+                                <input type="text" id="barcode_input" class="form-control text-center" placeholder="Click here and scan barcode... (or type and click Mark)" autofocus="1"/>
+                                <button class="btn btn-success" type="button" id="btn_submit_barcode">Mark Attendance</button>
+                            </div>
                         </div>
                         <div id="scanner_feedback" class="alert d-none mt-3"></div>
                     </div>
@@ -447,43 +450,53 @@
                     var input = document.getElementById('barcode_input');
                     var feedback = document.getElementById('scanner_feedback');
                     var course_select = document.getElementById('scanner_course');
+                    var btn_submit = document.getElementById('btn_submit_barcode');
                     
+                    function processScan() {
+                        var code = input.value.trim();
+                        if(code === '') return;
+                        
+                        var course_id = course_select.value;
+                        
+                        fetch('/school/attendance/scan_process', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                jsonrpc: "2.0",
+                                method: "call",
+                                params: {
+                                    barcode: code,
+                                    course_id: course_id
+                                }
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            input.value = '';
+                            input.focus();
+                            feedback.classList.remove('d-none', 'alert-success', 'alert-danger');
+                            if (data.result &amp;&amp; data.result.success) {
+                                feedback.classList.add('alert-success');
+                                feedback.innerText = data.result.success;
+                            } else {
+                                feedback.classList.add('alert-danger');
+                                feedback.innerText = (data.result &amp;&amp; data.result.error) ? data.result.error : 'Scan Failed.';
+                            }
+                        });
+                    }
+
                     input.addEventListener("keydown", function(e) {
                         if (e.key === 'Enter') {
                             e.preventDefault();
-                            var code = input.value.trim();
-                            if(code === '') return;
-                            
-                            var course_id = course_select.value;
-                            
-                            fetch('/school/attendance/scan_process', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                },
-                                body: JSON.stringify({
-                                    jsonrpc: "2.0",
-                                    method: "call",
-                                    params: {
-                                        barcode: code,
-                                        course_id: course_id
-                                    }
-                                })
-                            })
-                            .then(response => response.json())
-                            .then(data => {
-                                input.value = '';
-                                input.focus();
-                                feedback.classList.remove('d-none', 'alert-success', 'alert-danger');
-                                if (data.result &amp;&amp; data.result.success) {
-                                    feedback.classList.add('alert-success');
-                                    feedback.innerText = data.result.success;
-                                } else {
-                                    feedback.classList.add('alert-danger');
-                                    feedback.innerText = (data.result &amp;&amp; data.result.error) ? data.result.error : 'Scan Failed.';
-                                }
-                            });
+                            processScan();
                         }
+                    });
+                    
+                    btn_submit.addEventListener("click", function(e) {
+                        e.preventDefault();
+                        processScan();
                     });
                 });
             </script>
