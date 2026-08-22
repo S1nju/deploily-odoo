@@ -4,7 +4,7 @@
     "description": "A custom module for managing parents, students, courses, registrations, and integrating with CRM pipeline.",
     "author": "SARL Transformatek",
     "website": "https://deploily.cloud",
-    'depends': ['base', 'crm', 'website', 'portal', 'hr', 'hr_recruitment', 'hr_dz', 'account', 'l10n_dz_info'],
+    'depends': ['base', 'crm', 'website', 'portal', 'hr', 'hr_recruitment', 'hr_dz', 'account', 'product', 'l10n_dz_info'],
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',

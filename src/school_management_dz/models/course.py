@@ -42,21 +42,54 @@ class SchoolCourse(models.Model):
     room_id = fields.Many2one('school.room', 'Classroom / Room')
     location = fields.Char('Location Details', help="Extra location details")
     hourly_price = fields.Float('Hourly Price', default=0.0, help="Price per attended hour")
+    total_hours = fields.Float('Total Hours', compute='_compute_totals', store=True)
+    total_price = fields.Float('Total Price (DZD)', compute='_compute_totals', store=True)
+    product_id = fields.Many2one('product.product', string='Linked Product', readonly=True)
     image_1920 = fields.Image('Image')
     description = fields.Html('Information')
+
+    @api.depends('session_ids.start_datetime', 'session_ids.end_datetime', 'hourly_price')
+    def _compute_totals(self):
+        for course in self:
+            hours = 0.0
+            for session in course.session_ids:
+                if session.start_datetime and session.end_datetime:
+                    diff = session.end_datetime - session.start_datetime
+                    hours += diff.total_seconds() / 3600.0
+            course.total_hours = hours
+            course.total_price = hours * course.hourly_price
 
     @api.model_create_multi
     def create(self, vals_list):
         records = super().create(vals_list)
         records._sync_sessions()
+        for course in records:
+            course._sync_product()
         return records
 
     def write(self, vals):
         res = super().write(vals)
         # Only sync if fields that affect schedule were changed
-        if any(f in vals for f in ['start_date', 'end_date', 'schedule_ids', 'room_id']):
+        if any(f in vals for f in ['start_date', 'end_date', 'schedule_ids', 'room_id', 'hourly_price', 'name']):
             self._sync_sessions()
+            for course in self:
+                course._sync_product()
         return res
+
+    def _sync_product(self):
+        for course in self:
+            if not course.product_id:
+                prod = self.env['product.product'].sudo().create({
+                    'name': course.name,
+                    'type': 'service',
+                    'list_price': course.hourly_price, # Base price for 1 hour. Invoice Qty = Total Hours
+                })
+                course.product_id = prod.id
+            else:
+                course.product_id.sudo().write({
+                    'name': course.name,
+                    'list_price': course.hourly_price,
+                })
 
     def _sync_sessions(self):
         from datetime import timedelta

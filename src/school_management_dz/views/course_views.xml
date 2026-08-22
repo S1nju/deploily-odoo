@@ -27,6 +27,9 @@
                             <field name="room_id" domain="[('center_id', '=', center_id)]"/>
                             <field name="location" placeholder="e.g. Online link"/>
                             <field name="hourly_price"/>
+                            <field name="total_hours" readonly="1"/>
+                            <field name="total_price" readonly="1"/>
+                            <field name="product_id" invisible="not product_id"/>
                         </group>
                         <group>
                             <field name="start_date"/>

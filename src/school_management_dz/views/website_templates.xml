@@ -189,6 +189,11 @@
                             <p t-if="course.room_id"><strong>Room:</strong> <span t-field="course.room_id.name"/></p>
                             <p t-if="course.location"><strong>Details/Location:</strong> <span t-field="course.location"/></p>
                             
+                            <h4 class="text-primary mt-3 mb-2 font-weight-bold">
+                                Total Price: <t t-esc="course.total_price"/> DZD
+                            </h4>
+                            <p class="text-muted mb-4">(Based on <t t-esc="course.total_hours"/> hours / <t t-esc="course.hourly_price"/> DZD per hour)</p>
+                            
                             <t t-if="course.schedule_ids">
                                 <p><strong>Schedule:</strong></p>
                                 <ul class="list-group mb-3">
