@@ -26,7 +26,8 @@
                             <field name="custom_first_name"/>
                             <field name="custom_last_name"/>
                             <field name="father_name"/>
-                            <field name="wilaya_name"/>
+                            <field name="state_id" placeholder="الولاية..."/>
+                            <field name="commune_id" placeholder="البلدية..."/>
                             <field name="neighborhood_name"/>
                         </group>
                         <group string="Activity &amp; Participation">

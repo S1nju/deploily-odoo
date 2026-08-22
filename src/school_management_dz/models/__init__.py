@@ -8,7 +8,7 @@ from . import test
 from . import attendance
 from . import hr_extension
 from . import ir_http
-from . import payment
+    
 from . import challenge
 from . import session
 from . import room

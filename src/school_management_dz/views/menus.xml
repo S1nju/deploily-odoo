@@ -13,8 +13,7 @@
     <menuitem id="menu_school_students_top" name="Students" parent="menu_school_management_root" sequence="10"/>
     <menuitem id="menu_school_courses_top" name="Courses" parent="menu_school_management_root" sequence="20"/>
     <menuitem id="menu_school_payments_top" name="Payments" parent="menu_school_management_root" sequence="30" action="action_school_payment"/>
-    <menuitem id="menu_school_scanner_top" name="Barcode Scanner" parent="menu_school_management_root" sequence="35" action="action_open_scanner"/>
-    
+
     <menuitem id="menu_school_configuration" name="Configuration" parent="menu_school_management_root" sequence="40"/>
 
     <!-- Students submenu -->

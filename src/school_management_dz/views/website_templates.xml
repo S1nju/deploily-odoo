@@ -55,13 +55,27 @@
                     
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="wilaya_name">الولاية (Wilaya) *</label>
-                            <input type="text" name="wilaya_name" class="form-control" required="required" t-att-value="partner.wilaya_name or ''"/>
+                            <label for="state_id">الولاية (Wilaya) *</label>
+                            <select name="state_id" id="state_select" class="form-control" required="required">
+                                <option value="">Select Wilaya...</option>
+                                <t t-foreach="states" t-as="st">
+                                    <option t-att-value="st.id" t-att-selected="'selected' if partner.state_id.id == st.id else None"><t t-esc="st.name"/></option>
+                                </t>
+                            </select>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="neighborhood_name">الحي (Neighborhood) *</label>
-                            <input type="text" name="neighborhood_name" class="form-control" required="required" t-att-value="partner.neighborhood_name or ''"/>
+                            <label for="commune_id">البلدية (Commune) *</label>
+                            <select name="commune_id" id="commune_select" class="form-control" required="required">
+                                <option value="">Select Commune...</option>
+                                <t t-foreach="communes" t-as="com">
+                                    <option t-att-value="com.id" t-att-data-state="com.state_id.id" t-att-selected="'selected' if partner.commune_id.id == com.id else None"><t t-esc="com.name"/></option>
+                                </t>
+                            </select>
                         </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="neighborhood_name">الحي (Neighborhood) *</label>
+                        <input type="text" name="neighborhood_name" class="form-control" required="required" t-att-value="partner.neighborhood_name or ''"/>
                     </div>
 
                     <div class="form-group mb-3">
@@ -81,6 +95,36 @@
                         </select>
                     </div>
                     <button type="submit" class="btn btn-primary btn-lg mt-3">Save Information / حفظ المعلومات</button>
+                    
+                    <script type="text/javascript">
+                        document.addEventListener("DOMContentLoaded", function() {
+                            var stateSelect = document.getElementById('state_select');
+                            var communeSelect = document.getElementById('commune_select');
+                            var allCommuneOptions = Array.from(communeSelect.options);
+                            
+                            function filterCommunes() {
+                                var selectedState = stateSelect.value;
+                                communeSelect.innerHTML = '';
+                                communeSelect.appendChild(allCommuneOptions[0]); // Keep the placeholder
+                                
+                                allCommuneOptions.forEach(function(opt) {
+                                    if(opt.getAttribute('data-state') === selectedState) {
+                                        communeSelect.appendChild(opt);
+                                    }
+                                });
+                            }
+                            
+                            stateSelect.addEventListener('change', function() {
+                                filterCommunes();
+                                communeSelect.value = '';
+                            });
+                            
+                            // initial filter preserving selection
+                            var initialCommune = communeSelect.value;
+                            filterCommunes();
+                            communeSelect.value = initialCommune;
+                        });
+                    </script>
                 </form>
             </div>
         </t>

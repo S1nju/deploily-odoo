@@ -28,9 +28,12 @@ class SchoolPortal(http.Controller):
                 'is_telegram': 'on' in post.get('is_telegram', ''),
                 'is_viber': 'on' in post.get('is_viber', ''),
                 
-                'wilaya_name': post.get('wilaya_name'),
                 'neighborhood_name': post.get('neighborhood_name'),
             }
+            if post.get('state_id'):
+                update_vals['state_id'] = int(post.get('state_id'))
+            if post.get('commune_id'):
+                update_vals['commune_id'] = int(post.get('commune_id'))
             if full_name:
                 update_vals['name'] = full_name
                 
@@ -39,6 +42,8 @@ class SchoolPortal(http.Controller):
         
         return request.render('school_management_dz.parent_setup_form', {
             'partner': partner,
+            'states': request.env['res.country.state'].sudo().search([('country_id.code', '=', 'DZ')]),
+            'communes': request.env['res.country.state.commune'].sudo().search([]),
         })
 
     @http.route(['/services'], type='http', auth='public', website=True)
