@@ -25,6 +25,8 @@
     <!-- Courses submenu -->
     <menuitem id="menu_school_course" name="Courses" parent="menu_school_courses_top" sequence="10" action="action_school_course"/>
     <menuitem id="menu_school_test" name="Assessments" parent="menu_school_courses_top" sequence="20" action="action_school_test"/>
+    <menuitem id="menu_school_session" name="Schedule &amp; Sessions" parent="menu_school_courses_top" sequence="30" action="action_school_course_session_calendar"/>
+    <menuitem id="menu_school_room" name="Rooms / Classes" parent="menu_school_courses_top" sequence="40" action="action_school_room"/>
 
     <!-- Configuration submenu -->
     <menuitem id="menu_school_service_category" name="Categories" parent="menu_school_configuration" sequence="10" action="action_school_service_category"/>

@@ -7,7 +7,21 @@ class SchoolCourseSession(models.Model):
     
     name = fields.Char('Session Title', required=True)
     course_id = fields.Many2one('school.course', 'Course', required=True)
-    date = fields.Date('Date', default=fields.Date.context_today, required=True)
+    date = fields.Date('Date', default=fields.Date.context_today)
+    
+    start_datetime = fields.Datetime('Start Time', required=True, default=fields.Datetime.now)
+    end_datetime = fields.Datetime('End Time', required=True, default=fields.Datetime.now)
+    room_id = fields.Many2one('school.room', 'Classroom')
+    
+    test_ids = fields.Many2many('school.course.test', string='Tests Conducted')
+    
+    def action_open_scanner_for_session(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_url',
+            'url': f'/school/attendance/scanner?session_id={self.id}',
+            'target': 'new',
+        }
     
     # Internal Tutor Report Fields
     door_opened_on_time = fields.Boolean('هل تم فتح الباب في الوقت ؟', default=False)

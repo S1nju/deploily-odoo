@@ -20,6 +20,7 @@
         'views/test_views.xml',
         'views/payment_views.xml',
         'views/crm_views.xml',
+        'views/schedule_views.xml',
         'views/menus.xml',
         'views/hr_extension_views.xml',
         'views/website_templates.xml',

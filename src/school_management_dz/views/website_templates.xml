@@ -521,17 +521,29 @@
         <t t-call="website.layout">
             <div id="wrap" class="container mt-5 mb-5 text-center">
                 <h2><i class="fa fa-barcode"></i> Scan Barcode to Mark Attendance</h2>
+                
+                <h4 t-if="session" class="text-primary mt-3">
+                    Session: <t t-esc="session.name"/> (<t t-esc="session.course_id.name"/>)
+                </h4>
+                
                 <div class="row justify-content-center mt-4">
                     <div class="col-md-6">
-                        <div class="form-group mb-4">
-                            <label><strong>Select Course:</strong></label>
-                            <select id="scanner_course" class="form-control form-control-lg">
-                                <t t-foreach="courses" t-as="c">
-                                    <option t-att-value="c.id"><t t-esc="c.name"/></option>
-                                </t>
-                            </select>
-                        </div>
-                        <div class="form-group mb-4">
+                        <t t-if="not session">
+                            <div class="form-group mb-4">
+                                <label><strong>Select Course:</strong></label>
+                                <select id="scanner_course" class="form-control form-control-lg">
+                                    <t t-foreach="courses" t-as="c">
+                                        <option t-att-value="c.id"><t t-esc="c.name"/></option>
+                                    </t>
+                                </select>
+                            </div>
+                        </t>
+                        <t t-else="">
+                            <input type="hidden" id="scanner_course" t-att-value="session.course_id.id"/>
+                            <input type="hidden" id="scanner_session_id" t-att-value="session.id"/>
+                        </t>
+                        
+                        <div class="form-group mb-4 mt-3">
                             <div class="input-group input-group-lg">
                                 <input type="text" id="barcode_input" class="form-control text-center" placeholder="Click here and scan barcode... (or type and click Mark)" autofocus="1"/>
                                 <button class="btn btn-success" type="button" id="btn_submit_barcode">Mark Attendance</button>
@@ -553,7 +565,17 @@
                         var code = input.value.trim();
                         if(code === '') return;
                         
-                        var course_id = course_select.value;
+                        var course_id = course_select ? course_select.value : null;
+                        var session_input = document.getElementById('scanner_session_id');
+                        var session_id = session_input ? session_input.value : null;
+                        
+                        var params = {
+                            barcode: code,
+                            course_id: course_id
+                        };
+                        if (session_id) {
+                            params['session_id'] = session_id;
+                        }
                         
                         fetch('/school/attendance/scan_process', {
                             method: 'POST',
@@ -563,10 +585,7 @@
                             body: JSON.stringify({
                                 jsonrpc: "2.0",
                                 method: "call",
-                                params: {
-                                    barcode: code,
-                                    course_id: course_id
-                                }
+                                params: params
                             })
                         })
                         .then(response => response.json())

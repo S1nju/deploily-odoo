@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Room Views -->
+    <record id="view_school_room_tree" model="ir.ui.view">
+        <field name="name">school.room.tree</field>
+        <field name="model">school.room</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="center_id"/>
+                <field name="capacity"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_school_room_form" model="ir.ui.view">
+        <field name="name">school.room.form</field>
+        <field name="model">school.room</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="E.g. Room A"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="center_id"/>
+                        <field name="capacity"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_school_room" model="ir.actions.act_window">
+        <field name="name">Rooms / Classes</field>
+        <field name="res_model">school.room</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Session Views including Calendar -->
+    <record id="view_school_course_session_calendar" model="ir.ui.view">
+        <field name="name">school.course.session.calendar</field>
+        <field name="model">school.course.session</field>
+        <field name="arch" type="xml">
+            <calendar string="Sessions Schedule" date_start="start_datetime" date_stop="end_datetime" color="course_id" event_open_popup="True" mode="week">
+                <field name="name"/>
+                <field name="course_id"/>
+                <field name="room_id"/>
+            </calendar>
+        </field>
+    </record>
+    
+    <record id="view_school_course_session_tree" model="ir.ui.view">
+        <field name="name">school.course.session.tree</field>
+        <field name="model">school.course.session</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="course_id"/>
+                <field name="start_datetime"/>
+                <field name="end_datetime"/>
+                <field name="room_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_school_course_session_form" model="ir.ui.view">
+        <field name="name">school.course.session.form</field>
+        <field name="model">school.course.session</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_scanner_for_session" type="object" class="oe_stat_button" icon="fa-barcode" string="Scan Students"/>
+                    </div>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="E.g., Lesson 4 - Math"/></h1>
+                    </div>
+                    <group>
+                        <group string="Schedule &amp; Location">
+                            <field name="course_id"/>
+                            <field name="start_datetime"/>
+                            <field name="end_datetime"/>
+                            <field name="room_id"/>
+                        </group>
+                        <group string="General Evaluation (Internal)">
+                            <field name="door_opened_on_time"/>
+                            <field name="room_tidy"/>
+                        </group>
+                        <group>
+                            <field name="class_type"/>
+                            <field name="execution_percentage"/>
+                            <field name="test_ids" widget="many2many_tags" placeholder="Add related tests here..."/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Challenges Faced (Internal)">
+                            <group>
+                                <group>
+                                    <field name="ch_time"/>
+                                    <field name="ch_resources"/>
+                                    <field name="ch_tech"/>
+                                </group>
+                                <group>
+                                    <field name="ch_subject"/>
+                                    <field name="ch_levels"/>
+                                    <field name="ch_crowd"/>
+                                </group>
+                                <group>
+                                    <field name="ch_interaction"/>
+                                    <field name="ch_discipline"/>
+                                    <field name="ch_late"/>
+                                </group>
+                                <group>
+                                    <field name="ch_focus"/>
+                                    <field name="ch_prep"/>
+                                    <field name="ch_none"/>
+                                </group>
+                            </group>
+                            <group>
+                                <field name="ch_other" placeholder="أخرى..."/>
+                            </group>
+                        </page>
+                        <page string="Public Report Content">
+                            <field name="report" placeholder="Write the report that parents will see here..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_school_course_session_search" model="ir.ui.view">
+        <field name="name">school.course.session.search</field>
+        <field name="model">school.course.session</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="course_id"/>
+                <field name="room_id"/>
+                <filter name="my_sessions" string="My Sessions" domain="[('course_id.tutor_id.user_id', '=', uid)]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_school_course_session_calendar" model="ir.actions.act_window">
+        <field name="name">Sessions Schedule</field>
+        <field name="res_model">school.course.session</field>
+        <field name="view_mode">calendar,list,form</field>
+        <field name="context">{'search_default_my_sessions': 1}</field>
+    </record>
+</odoo>

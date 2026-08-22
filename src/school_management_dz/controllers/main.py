@@ -226,29 +226,43 @@ class SchoolPortal(http.Controller):
     @http.route(['/school/attendance/scanner'], type='http', auth="user", website=True)
     def scanner_view(self, **kw):
         user = request.env.user
+        session_id = kw.get('session_id')
+        session = None
         courses = request.env['school.course'].sudo().search([])
-        if user.has_group('school_management_dz.group_school_tutor'):
+        
+        if session_id:
+            session = request.env['school.course.session'].sudo().browse(int(session_id))
+            courses = session.course_id
+        elif user.has_group('school_management_dz.group_school_tutor'):
             courses = request.env['school.course'].sudo().search([('tutor_id.user_id', '=', user.id)])
             
         return request.render('school_management_dz.attendance_scanner', {
             'courses': courses,
+            'session': session,
         })
         
     @http.route(['/school/attendance/scan_process'], type='json', auth="user")
-    def scanner_process(self, barcode, course_id, **kw):
+    def scanner_process(self, barcode, course_id, session_id=None, **kw):
         from odoo import fields
         # find student 
         student = request.env['school.student'].sudo().search([('qr_code', '=', barcode)], limit=1)
         if not student:
             return {'error': 'Student not found.'}
             
-        # check if already present today
         today = fields.Date.context_today(request.env.user)
-        att = request.env['school.attendance'].sudo().search([
-            ('student_id', '=', student.id),
-            ('course_id', '=', int(course_id)),
-            ('date', '=', today)
-        ], limit=1)
+        domain = [('student_id', '=', student.id)]
+        
+        if session_id:
+            domain.append(('session_id', '=', int(session_id)))
+            session = request.env['school.course.session'].sudo().browse(int(session_id))
+            course_id = session.course_id.id
+            date = session.date or today
+        else:
+            domain.append(('course_id', '=', int(course_id)))
+            domain.append(('date', '=', today))
+            date = today
+            
+        att = request.env['school.attendance'].sudo().search(domain, limit=1)
         
         if att:
             if att.state == 'present':
@@ -260,7 +274,8 @@ class SchoolPortal(http.Controller):
         request.env['school.attendance'].sudo().create({
             'student_id': student.id,
             'course_id': int(course_id),
-            'date': today,
+            'session_id': int(session_id) if session_id else False,
+            'date': date,
             'state': 'present',
         })
         return {'success': f'{student.name} marked Present successfully!'}

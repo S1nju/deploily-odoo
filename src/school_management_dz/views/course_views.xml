@@ -48,61 +48,11 @@
                         <page string="Sessions / Reports">
                             <field name="session_ids">
                                 <list>
-                                    <field name="date"/>
+                                    <field name="start_datetime" string="Start"/>
+                                    <field name="end_datetime" string="End"/>
+                                    <field name="room_id"/>
                                     <field name="name"/>
                                 </list>
-                                <form>
-                                    <sheet>
-                                        <div class="oe_title">
-                                            <h1><field name="name" placeholder="E.g., Lesson 4 - Math"/></h1>
-                                        </div>
-                                        <group>
-                                            <group string="Basic Information">
-                                                <field name="date"/>
-                                            </group>
-                                            <group string="General Evaluation (Internal)">
-                                                <field name="door_opened_on_time"/>
-                                                <field name="room_tidy"/>
-                                            </group>
-                                            <group>
-                                                <field name="class_type"/>
-                                                <field name="execution_percentage"/>
-                                            </group>
-                                        </group>
-                                        <notebook>
-                                            <page string="Challenges Faced (Internal)">
-                                                <group>
-                                                    <group>
-                                                        <field name="ch_time"/>
-                                                        <field name="ch_resources"/>
-                                                        <field name="ch_tech"/>
-                                                    </group>
-                                                    <group>
-                                                        <field name="ch_subject"/>
-                                                        <field name="ch_levels"/>
-                                                        <field name="ch_crowd"/>
-                                                    </group>
-                                                    <group>
-                                                        <field name="ch_interaction"/>
-                                                        <field name="ch_discipline"/>
-                                                        <field name="ch_late"/>
-                                                    </group>
-                                                    <group>
-                                                        <field name="ch_focus"/>
-                                                        <field name="ch_prep"/>
-                                                        <field name="ch_none"/>
-                                                    </group>
-                                                </group>
-                                                <group>
-                                                    <field name="ch_other" placeholder="أخرى..."/>
-                                                </group>
-                                            </page>
-                                            <page string="Public Report Content">
-                                                <field name="report" placeholder="Write the report that parents will see here..."/>
-                                            </page>
-                                        </notebook>
-                                    </sheet>
-                                </form>
                             </field>
                         </page>
                     </notebook>
