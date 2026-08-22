@@ -18,12 +18,12 @@ class SchoolAttendance(models.Model):
     course_id = fields.Many2one('school.course', 'Course', required=True, ondelete='cascade')
     session_id = fields.Many2one('school.course.session', 'Session', ondelete='cascade')
     date = fields.Date('Date', required=True, default=fields.Date.today)
-    hours_attended = fields.Float('Hours Attended', compute='_compute_hours_attended')
+    hours_attended = fields.Float('Hours Attended', default=0.0)
 
-    @api.depends('state', 'session_id.start_datetime', 'session_id.end_datetime')
-    def _compute_hours_attended(self):
+    @api.onchange('state', 'session_id')
+    def _onchange_state(self):
         for att in self:
-            if att.state == 'present' and att.session_id and att.session_id.start_datetime and att.session_id.end_datetime:
+            if att.state in ['present', 'late'] and att.session_id and att.session_id.start_datetime and att.session_id.end_datetime:
                 diff = att.session_id.end_datetime - att.session_id.start_datetime
                 att.hours_attended = diff.total_seconds() / 3600.0
             else:
