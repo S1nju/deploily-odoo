@@ -35,9 +35,27 @@
                             <field name="qr_code" string="Barcode Identifier"/>
                         </group>
                     </group>
-                    <notebook>
                         <page string="Registrations">
                             <field name="registration_ids"/>
+                        </page>
+                        <page string="Session Tracking">
+                            <group>
+                                <group string="Attendance Summary">
+                                    <field name="total_sessions_count"/>
+                                    <field name="attended_sessions_count"/>
+                                    <field name="absent_sessions_count"/>
+                                    <field name="total_hours_attended"/>
+                                </group>
+                            </group>
+                            <field name="attendance_ids" readonly="1">
+                                <list decoration-success="state == 'present'" decoration-danger="state == 'absent'" decoration-warning="state == 'late'">
+                                    <field name="course_id"/>
+                                    <field name="session_id"/>
+                                    <field name="date"/>
+                                    <field name="state"/>
+                                    <field name="hours_attended"/>
+                                </list>
+                            </field>
                         </page>
                     </notebook>
                 </sheet>

@@ -46,6 +46,19 @@ class SchoolStudent(models.Model):
     center_ids = fields.Many2many('school.center', compute='_compute_center_ids', store=True, string='Centers')
     wallet_balance = fields.Float(related='parent_id.wallet_balance', string='Parent Wallet')
     
+    total_hours_attended = fields.Float('Total Hours Attended', compute='_compute_attendance_stats')
+    total_sessions_count = fields.Integer('Total Scheduled Sessions', compute='_compute_attendance_stats')
+    attended_sessions_count = fields.Integer('Attended Sessions', compute='_compute_attendance_stats')
+    absent_sessions_count = fields.Integer('Absent Sessions', compute='_compute_attendance_stats')
+    
+    @api.depends('attendance_ids.hours_attended', 'attendance_ids.state')
+    def _compute_attendance_stats(self):
+        for student in self:
+            student.total_hours_attended = sum(att.hours_attended for att in student.attendance_ids)
+            student.total_sessions_count = len(student.attendance_ids)
+            student.attended_sessions_count = len(student.attendance_ids.filtered(lambda a: a.state in ['present', 'late']))
+            student.absent_sessions_count = len(student.attendance_ids.filtered(lambda a: a.state == 'absent'))
+            
     grades_file = fields.Binary('Previous Grades File')
     grades_filename = fields.Char('Grades Filename')
 
