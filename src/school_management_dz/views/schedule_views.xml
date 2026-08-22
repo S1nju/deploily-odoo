@@ -124,6 +124,20 @@
                                 <field name="ch_other" placeholder="أخرى..."/>
                             </group>
                         </page>
+                        <page string="Student Attendances">
+                            <button name="action_load_attendances" type="object" string="Load Missing Registered Students" class="btn btn-secondary mb-3"/>
+                            <field name="attendance_ids" context="{'default_course_id': course_id, 'default_date': date}">
+                                <list editable="bottom" decoration-success="state == 'present'" decoration-danger="state == 'absent'" decoration-warning="state == 'late'">
+                                    <field name="student_id"/>
+                                    <field name="state"/>
+                                    <field name="hours_attended"/>
+                                    <field name="evaluation_punctuality" optional="hide"/>
+                                    <field name="evaluation_focus" optional="hide"/>
+                                    <field name="evaluation_interaction" optional="hide"/>
+                                    <field name="evaluation_homework" optional="hide"/>
+                                </list>
+                            </field>
+                        </page>
                         <page string="Public Report Content">
                             <field name="report" placeholder="Write the report that parents will see here..."/>
                         </page>

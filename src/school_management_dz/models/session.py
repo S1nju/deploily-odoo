@@ -38,6 +38,29 @@ class SchoolCourseSession(models.Model):
             'target': 'new',
         }
     
+    attendance_ids = fields.One2many('school.attendance', 'session_id', string='Attendances')
+
+    def action_load_attendances(self):
+        for session in self:
+            paid_regs = self.env['school.registration'].search([
+                ('course_id', '=', session.course_id.id),
+                ('state', 'in', ['registered', 'paid'])
+            ])
+            for reg in paid_regs:
+                for student in reg.student_ids:
+                    existing = self.env['school.attendance'].search([
+                        ('session_id', '=', session.id),
+                        ('student_id', '=', student.id)
+                    ], limit=1)
+                    if not existing:
+                        self.env['school.attendance'].create({
+                            'student_id': student.id,
+                            'course_id': session.course_id.id,
+                            'session_id': session.id,
+                            'date': session.date or session.start_datetime.date(),
+                            'state': 'pending'
+                        })
+    
     # Internal Tutor Report Fields
     door_opened_on_time = fields.Boolean('هل تم فتح الباب في الوقت ؟', default=False)
     room_tidy = fields.Boolean('هل وجدت القاعة مرتبة ؟', default=False)
