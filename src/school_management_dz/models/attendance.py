@@ -26,7 +26,7 @@ class SchoolAttendance(models.Model):
             if att.state == 'present' and att.session_id and att.session_id.start_datetime and att.session_id.end_datetime:
                 diff = att.session_id.end_datetime - att.session_id.start_datetime
                 att.hours_attended = diff.total_seconds() / 3600.0
-            elif att.state != 'present':
+            else:
                 att.hours_attended = 0.0
     state = fields.Selection([
         ('pending', 'Pending'),
