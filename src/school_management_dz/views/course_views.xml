@@ -5,6 +5,9 @@
         <field name="model">school.course</field>
         <field name="arch" type="xml">
             <form string="Course">
+                <header>
+                    <button name="action_generate_sessions" string="Generate Sessions" type="object" class="oe_highlight"/>
+                </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <field name="is_published" widget="website_redirect_button"/>
@@ -24,7 +27,8 @@
                         <group>
                             <field name="tutor_id"/>
                             <field name="center_id"/>
-                            <field name="location" placeholder="e.g. Online or Room 3"/>
+                            <field name="room_id"/>
+                            <field name="location" placeholder="e.g. Online link"/>
                             <field name="hourly_price"/>
                         </group>
                         <group>

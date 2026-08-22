@@ -142,6 +142,7 @@
                             <p><strong>Tutor:</strong> <span t-esc="course.tutor_id.sudo().name"/></p>
                             <p><strong>Starts:</strong> <span t-field="course.start_date"/></p>
                             <p><strong>Center:</strong> <span t-field="course.center_id.name"/></p>
+                            <p t-if="course.room_id"><strong>Room:</strong> <span t-field="course.room_id.name"/></p>
                             <p t-if="course.location"><strong>Details/Location:</strong> <span t-field="course.location"/></p>
                             
                             <t t-if="course.schedule_ids">
