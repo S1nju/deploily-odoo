@@ -30,13 +30,35 @@ class SchoolCourseSession(models.Model):
     
     test_ids = fields.Many2many('school.course.test', string='Tests Conducted')
     
-    def action_open_scanner_for_session(self):
-        self.ensure_one()
-        return {
-            'type': 'ir.actions.act_url',
-            'url': f'/school/attendance/scanner?session_id={self.id}',
-            'target': 'new',
-        }
+    barcode_input = fields.Char('Scan Barcode', store=False)
+    scan_result = fields.Char('Last Scan Result', store=False, readonly=True)
+    
+    @api.onchange('barcode_input')
+    def _onchange_barcode_input(self):
+        if not self.barcode_input:
+            return
+            
+        barcode = self.barcode_input
+        self.barcode_input = False
+        
+        student = self.env['school.student'].search([('qr_code', '=', barcode)], limit=1)
+        if not student:
+            self.scan_result = f'❌ Error: Barcode {barcode} not found in database.'
+            return
+            
+        for att in self.attendance_ids:
+            if att.student_id.id == student.id:
+                att.state = 'present'
+                self.scan_result = f'✅ {student.name} marked Present!'
+                return
+                
+        self.attendance_ids = [(0, 0, {
+            'student_id': student.id,
+            'course_id': self.course_id.id,
+            'date': self.date or (self.start_datetime.date() if self.start_datetime else fields.Date.context_today(self)),
+            'state': 'present'
+        })]
+        self.scan_result = f'✅ {student.name} added to session and marked Present!'
     
     attendance_ids = fields.One2many('school.attendance', 'session_id', string='Attendances')
 
