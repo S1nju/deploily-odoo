@@ -49,6 +49,13 @@
             <field name="groups" eval="[(4, ref('school_management_dz.group_school_tutor'))]"/>
         </record>
 
+        <record id="rule_tutor_session" model="ir.rule">
+            <field name="name">Tutor Session Access</field>
+            <field name="model_id" ref="model_school_course_session"/>
+            <field name="domain_force">[('course_id.tutor_id.user_id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('school_management_dz.group_school_tutor'))]"/>
+        </record>
+
         <!-- Record rules for Portal Parents (Restrict to own students/registrations) -->
         <record id="rule_portal_student" model="ir.rule">
             <field name="name">Portal Student Access</field>

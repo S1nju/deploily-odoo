@@ -231,10 +231,10 @@
                 </div>
                 <div class="mt-4">
                     <h4>Student Badge</h4>
-                    <p>Please download this QR Code. It will be used for attendance tracking.</p>
-                    <img t-attf-src="/report/barcode/?barcode_type=QR&amp;value=#{student.qr_code}&amp;width=200&amp;height=200" alt="Student Badge QR" class="img-thumbnail mb-3"/>
+                    <p>Please download this Code. It will be used for attendance tracking.</p>
+                    <img t-attf-src="/report/barcode/?barcode_type=Code128&amp;value=#{student.qr_code}&amp;width=400&amp;height=100" alt="Student Badge Barcode" class="img-thumbnail mb-3"/>
                     <br/>
-                    <a t-attf-href="/report/barcode/?barcode_type=QR&amp;value=#{student.qr_code}&amp;width=600&amp;height=600" download="Student_Badge.png" class="btn btn-primary btn-lg mb-4">
+                    <a t-attf-href="/report/barcode/?barcode_type=Code128&amp;value=#{student.qr_code}&amp;width=600&amp;height=150" download="Student_Badge.png" class="btn btn-primary btn-lg mb-4">
                         <i class="fa fa-download"></i> Download Badge
                     </a>
                     
@@ -250,6 +250,10 @@
     <template id="portal_my_students" name="My Children Portal">
         <t t-call="website.layout">
             <div id="wrap" class="container mt-5 mb-5">
+                <div class="alert alert-info d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="m-0">Wallet Balance / رصيد المحفظة</h4>
+                    <h4 class="m-0 font-weight-bold"><t t-esc="request.env.user.partner_id.wallet_balance"/> DZD</h4>
+                </div>
                 <h2 class="mb-4">My Profiles / Children</h2>
                 <div class="row">
                     <t t-foreach="students" t-as="student">
@@ -326,6 +330,21 @@
                             <p class="text-muted fst-italic">No challenges tracked yet for this course.</p>
                         </t>
                         
+                        <!-- Session Reports -->
+                        <h5 class="text-secondary mt-4"><i class="fa fa-file-text-o"/> Class Session Reports</h5>
+                        <t t-set="sessions" t-value="request.env['school.course.session'].sudo().search([('course_id', '=', registration.course_id.id)], order='date desc')"/>
+                        <t t-if="sessions">
+                            <div t-foreach="sessions" t-as="sess" class="mb-3 border p-3 rounded bg-white">
+                                <strong><t t-esc="sess.date"/> - <t t-esc="sess.name"/></strong>
+                                <div class="mt-2 text-muted">
+                                    <t t-raw="sess.report"/>
+                                </div>
+                            </div>
+                        </t>
+                        <t t-else="">
+                            <p class="text-muted fst-italic">No session reports available yet.</p>
+                        </t>
+                        
                         <!-- Attendance log -->
                         <h5 class="text-secondary"><i class="fa fa-calendar"/> Recent Attendance</h5>
                         <t t-set="attendances" t-value="request.env['school.attendance'].sudo().search([('student_id', '=', student.id), ('course_id', '=', registration.course_id.id)], order='date desc')"/>
@@ -370,6 +389,76 @@
                     <a href="/services" class="btn btn-primary btn-lg mt-4 px-5">Browse Courses</a>
                 </div>
             </div>
+        </t>
+    </template>
+    
+    <template id="attendance_scanner" name="Attendance Barcode Scanner">
+        <t t-call="website.layout">
+            <div id="wrap" class="container mt-5 mb-5 text-center">
+                <h2><i class="fa fa-barcode"></i> Scan Barcode to Mark Attendance</h2>
+                <div class="row justify-content-center mt-4">
+                    <div class="col-md-6">
+                        <div class="form-group mb-4">
+                            <label><strong>Select Course:</strong></label>
+                            <select id="scanner_course" class="form-control form-control-lg">
+                                <t t-foreach="courses" t-as="c">
+                                    <option t-att-value="c.id"><t t-esc="c.name"/></option>
+                                </t>
+                            </select>
+                        </div>
+                        <div class="form-group mb-4">
+                            <input type="text" id="barcode_input" class="form-control form-control-lg text-center" placeholder="Click here and scan barcode... (or type and press Enter)" autofocus="1"/>
+                        </div>
+                        <div id="scanner_feedback" class="alert d-none mt-3"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <script type="text/javascript">
+                document.addEventListener("DOMContentLoaded", function() {
+                    var input = document.getElementById('barcode_input');
+                    var feedback = document.getElementById('scanner_feedback');
+                    var course_select = document.getElementById('scanner_course');
+                    
+                    input.addEventListener("keydown", function(e) {
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                            var code = input.value.trim();
+                            if(code === '') return;
+                            
+                            var course_id = course_select.value;
+                            
+                            fetch('/school/attendance/scan_process', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({
+                                    jsonrpc: "2.0",
+                                    method: "call",
+                                    params: {
+                                        barcode: code,
+                                        course_id: course_id
+                                    }
+                                })
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                input.value = '';
+                                input.focus();
+                                feedback.classList.remove('d-none', 'alert-success', 'alert-danger');
+                                if (data.result &amp;&amp; data.result.success) {
+                                    feedback.classList.add('alert-success');
+                                    feedback.innerText = data.result.success;
+                                } else {
+                                    feedback.classList.add('alert-danger');
+                                    feedback.innerText = (data.result &amp;&amp; data.result.error) ? data.result.error : 'Scan Failed.';
+                                }
+                            });
+                        }
+                    });
+                });
+            </script>
         </t>
     </template>
 </odoo>

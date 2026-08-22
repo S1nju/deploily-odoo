@@ -45,6 +45,25 @@
                                 </list>
                             </field>
                         </page>
+                        <page string="Sessions / Reports">
+                            <field name="session_ids">
+                                <list>
+                                    <field name="date"/>
+                                    <field name="name"/>
+                                </list>
+                                <form>
+                                    <group>
+                                        <field name="name"/>
+                                        <field name="date"/>
+                                    </group>
+                                    <notebook>
+                                        <page string="Report Content">
+                                            <field name="report"/>
+                                        </page>
+                                    </notebook>
+                                </form>
+                            </field>
+                        </page>
                     </notebook>
                 </sheet>
             </form>

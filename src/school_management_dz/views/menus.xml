@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- Action to open barcode scanner in new tab -->
+    <record id="action_open_scanner" model="ir.actions.act_url">
+        <field name="name">Open Barcode Scanner</field>
+        <field name="url">/school/attendance/scanner</field>
+        <field name="target">new</field>
+    </record>
+
     <menuitem id="menu_school_management_root" name="School Management" sequence="50" web_icon="school_management,static/description/icon.png"/>
     
     <!-- Top-level Menus -->

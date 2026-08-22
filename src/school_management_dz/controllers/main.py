@@ -194,3 +194,45 @@ class SchoolPortal(http.Controller):
             'student': student,
             'registration': registration,
         })
+
+    @http.route(['/school/attendance/scanner'], type='http', auth="user", website=True)
+    def scanner_view(self, **kw):
+        user = request.env.user
+        courses = request.env['school.course'].sudo().search([])
+        if user.has_group('school_management_dz.group_school_tutor'):
+            courses = request.env['school.course'].sudo().search([('tutor_id.user_id', '=', user.id)])
+            
+        return request.render('school_management_dz.attendance_scanner', {
+            'courses': courses,
+        })
+        
+    @http.route(['/school/attendance/scan_process'], type='json', auth="user")
+    def scanner_process(self, barcode, course_id, **kw):
+        from odoo import fields
+        # find student 
+        student = request.env['school.student'].sudo().search([('qr_code', '=', barcode)], limit=1)
+        if not student:
+            return {'error': 'Student not found.'}
+            
+        # check if already present today
+        today = fields.Date.context_today(request.env.user)
+        att = request.env['school.attendance'].sudo().search([
+            ('student_id', '=', student.id),
+            ('course_id', '=', int(course_id)),
+            ('date', '=', today)
+        ], limit=1)
+        
+        if att:
+            if att.state == 'present':
+                return {'success': f'{student.name} is already marked Present.'}
+            else:
+                att.sudo().write({'state': 'present'})
+                return {'success': f'{student.name} updated to Present.'}
+                
+        request.env['school.attendance'].sudo().create({
+            'student_id': student.id,
+            'course_id': int(course_id),
+            'date': today,
+            'state': 'present',
+        })
+        return {'success': f'{student.name} marked Present successfully!'}

@@ -32,3 +32,7 @@ access_school_student_portal,school.student,model_school_student,base.group_port
 access_school_registration_portal,school.registration,model_school_registration,base.group_portal,1,0,0,0
 access_school_attendance_portal,school.attendance,model_school_attendance,base.group_portal,1,0,0,0
 access_school_student_challenge_portal,school.student.challenge,model_school_student_challenge,base.group_portal,1,0,0,0
+
+access_school_course_session,school.course.session,model_school_course_session,base.group_user,1,1,1,1
+access_school_course_session_public,school.course.session,model_school_course_session,base.group_public,1,0,0,0
+access_school_course_session_portal,school.course.session,model_school_course_session,base.group_portal,1,0,0,0

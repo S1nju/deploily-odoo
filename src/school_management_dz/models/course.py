@@ -35,6 +35,7 @@ class SchoolCourse(models.Model):
     recruitment_id = fields.Many2one('hr.applicant', 'Recruitment Link')
     schedule_ids = fields.One2many('school.course.schedule', 'course_id', 'Schedules')
     test_ids = fields.One2many('school.course.test', 'course_id', 'Tests/Assessments')
+    session_ids = fields.One2many('school.course.session', 'course_id', string='Sessions')
     start_date = fields.Datetime('Start Date')
     end_date = fields.Datetime('End Date')
     center_id = fields.Many2one('school.center', 'Center Location')
