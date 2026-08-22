@@ -6,23 +6,81 @@
                 <h2>Account Information Setup</h2>
                 <form action="/my/parent/setup" method="post">
                     <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="custom_first_name">الاسم (First Name) *</label>
+                            <input type="text" name="custom_first_name" class="form-control" required="required" t-att-value="partner.custom_first_name or ''"/>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="custom_last_name">اللقب (Last Name) *</label>
+                            <input type="text" name="custom_last_name" class="form-control" required="required" t-att-value="partner.custom_last_name or ''"/>
+                        </div>
+                    </div>
+                    
                     <div class="form-group mb-3">
-                        <label for="parent_activity">Current Activity *</label>
+                        <label for="father_name">اسم الأب (Father's Name)</label>
+                        <input type="text" name="father_name" class="form-control" t-att-value="partner.father_name or ''"/>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="phone">رقم الهاتف 01 (Phone 1) *</label>
+                            <input type="text" name="phone" class="form-control" required="required" t-att-value="partner.phone or partner.mobile or ''"/>
+                            <div class="mt-2">
+                                <strong>به:</strong>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" name="is_whatsapp" id="is_whatsapp" t-att-checked="'checked' if partner.is_whatsapp else None"/>
+                                    <label class="form-check-label" for="is_whatsapp">واتساب</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" name="is_telegram" id="is_telegram" t-att-checked="'checked' if partner.is_telegram else None"/>
+                                    <label class="form-check-label" for="is_telegram">تيليغرام</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" name="is_viber" id="is_viber" t-att-checked="'checked' if partner.is_viber else None"/>
+                                    <label class="form-check-label" for="is_viber">فايبر</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="mobile">رقم الهاتف 02 (Phone 2)</label>
+                            <input type="text" name="mobile" class="form-control" t-att-value="partner.mobile or ''"/>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group mb-3">
+                        <label for="email">البريد الإلكتروني (Email)</label>
+                        <input type="email" name="email" class="form-control" t-att-value="partner.email or ''"/>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="wilaya_name">الولاية (Wilaya) *</label>
+                            <input type="text" name="wilaya_name" class="form-control" required="required" t-att-value="partner.wilaya_name or ''"/>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="neighborhood_name">الحي (Neighborhood) *</label>
+                            <input type="text" name="neighborhood_name" class="form-control" required="required" t-att-value="partner.neighborhood_name or ''"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="parent_activity">ما هو نشاط ولي الأمر حاليا ؟ *</label>
                         <select name="parent_activity" class="form-control" required="required">
-                            <option value="housewife">ربة بيت</option>
-                            <option value="employee">موظف / عامل يومي</option>
-                            <option value="business_owner">صاحب مؤسسة / شركة / جمعية</option>
-                            <option value="freelancer">حرفي / عامل حر</option>
+                            <option value="employee" t-att-selected="'selected' if partner.parent_activity == 'employee' else None">موظف / عامل يومي</option>
+                            <option value="freelancer" t-att-selected="'selected' if partner.parent_activity == 'freelancer' else None">حرفي / عامل حر</option>
+                            <option value="business_owner" t-att-selected="'selected' if partner.parent_activity == 'business_owner' else None">صاحب مؤسسة / شركة / جمعية</option>
+                            <option value="housewife" t-att-selected="'selected' if partner.parent_activity == 'housewife' else None">ربة بيت</option>
                         </select>
                     </div>
                     <div class="form-group mb-3">
-                        <label for="mahara_participation">Participated in Mahara before? *</label>
+                        <label for="mahara_participation">هل شارك المعني من قبل في برامج مهارة ؟ *</label>
                         <select name="mahara_participation" class="form-control" required="required">
-                            <option value="yes">نعم</option>
-                            <option value="no">لا</option>
+                            <option value="yes" t-att-selected="'selected' if partner.mahara_participation == 'yes' else None">نعم</option>
+                            <option value="no" t-att-selected="'selected' if partner.mahara_participation == 'no' else None">لا</option>
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-primary">Save Information</button>
+                    <button type="submit" class="btn btn-primary btn-lg mt-3">Save Information / حفظ المعلومات</button>
                 </form>
             </div>
         </t>

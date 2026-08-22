@@ -7,10 +7,34 @@ class SchoolPortal(http.Controller):
     def parent_setup(self, **post):
         partner = request.env.user.partner_id
         if request.httprequest.method == 'POST':
-            partner.sudo().write({
+            # Create Full Name string if both are provided
+            fname = post.get('custom_first_name', '')
+            lname = post.get('custom_last_name', '')
+            full_name = f"{fname} {lname}".strip()
+            
+            update_vals = {
                 'parent_activity': post.get('parent_activity'),
                 'mahara_participation': post.get('mahara_participation'),
-            })
+                
+                'custom_first_name': fname,
+                'custom_last_name': lname,
+                'father_name': post.get('father_name'),
+                
+                'phone': post.get('phone'),
+                'mobile': post.get('mobile'),
+                'email': post.get('email'),
+                
+                'is_whatsapp': 'on' in post.get('is_whatsapp', ''),
+                'is_telegram': 'on' in post.get('is_telegram', ''),
+                'is_viber': 'on' in post.get('is_viber', ''),
+                
+                'wilaya_name': post.get('wilaya_name'),
+                'neighborhood_name': post.get('neighborhood_name'),
+            }
+            if full_name:
+                update_vals['name'] = full_name
+                
+            partner.sudo().write(update_vals)
             return request.redirect('/services')
         
         return request.render('school_management_dz.parent_setup_form', {

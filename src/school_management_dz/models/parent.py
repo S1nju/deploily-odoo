@@ -14,6 +14,18 @@ class ResPartner(models.Model):
         ('yes', 'نعم'),
         ('no', 'لا')
     ], string='Participated in Mahara programs before?')
+
+    # New Registration Fields
+    custom_first_name = fields.Char('الاسم')
+    custom_last_name = fields.Char('اللقب')
+    father_name = fields.Char('اسم الأب')
+    
+    is_whatsapp = fields.Boolean('واتساب')
+    is_telegram = fields.Boolean('تيليغرام')
+    is_viber = fields.Boolean('فايبر')
+    
+    wilaya_name = fields.Char('الولاية')
+    neighborhood_name = fields.Char('الحي')
     
     student_ids = fields.One2many('school.student', 'parent_id', string='Sons / Students')
     
