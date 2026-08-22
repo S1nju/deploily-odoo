@@ -44,31 +44,24 @@ class SchoolRegistration(models.Model):
         if vals.get('state') == 'paid':
             for reg in self:
                 course = reg.course_id
-                start = course.start_date.date() if course.start_date else fields.Date.today()
-                end = course.end_date.date() if course.end_date else start + timedelta(days=30)
-                
-                schedules = course.schedule_ids
-                if schedules:
-                    valid_weekdays = [int(s.weekday) for s in schedules]
+                sessions = course.session_ids
+                if sessions:
                     Attendance = self.env['school.attendance']
-                    current_date = start
-                    while current_date <= end:
-                        if current_date.weekday() in valid_weekdays:
-                            existing = Attendance.search([
-                                ('student_id', 'in', reg.student_ids.ids),
-                                ('course_id', '=', course.id),
-                                ('date', '=', current_date)
-                            ])
-                            existing_student_ids = existing.mapped('student_id.id')
-                            for student in reg.student_ids:
-                                if student.id not in existing_student_ids:
-                                    Attendance.sudo().create({
-                                        'student_id': student.id,
-                                        'course_id': course.id,
-                                        'date': current_date,
-                                        'state': 'pending'
-                                    })
-                        current_date += timedelta(days=1)
+                    for session in sessions:
+                        existing = Attendance.search([
+                            ('student_id', 'in', reg.student_ids.ids),
+                            ('session_id', '=', session.id)
+                        ])
+                        existing_student_ids = existing.mapped('student_id.id')
+                        for student in reg.student_ids:
+                            if student.id not in existing_student_ids:
+                                Attendance.sudo().create({
+                                    'student_id': student.id,
+                                    'course_id': course.id,
+                                    'session_id': session.id,
+                                    'date': session.start_datetime.date() if session.start_datetime else fields.Date.today(),
+                                    'state': 'pending'
+                                })
         return res
 
     @api.constrains('student_ids', 'course_id')
