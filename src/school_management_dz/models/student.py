@@ -44,7 +44,7 @@ class SchoolStudent(models.Model):
         'Registrations'
     )
     center_ids = fields.Many2many('school.center', compute='_compute_center_ids', store=True, string='Centers')
-    wallet_balance = fields.Float(related='parent_id.wallet_balance', store=True, string='Parent Wallet')
+    wallet_balance = fields.Float(related='parent_id.wallet_balance', string='Parent Wallet')
     
     grades_file = fields.Binary('Previous Grades File')
     grades_filename = fields.Char('Grades Filename')
