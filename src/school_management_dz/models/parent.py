@@ -34,12 +34,14 @@ class ResPartner(models.Model):
         store=True
     )
     
-    wallet_balance = fields.Float('Wallet Balance', compute='_compute_wallet_balance')
+    wallet_balance = fields.Float('Wallet Balance', compute='_compute_wallet_balance', store=False)
 
     def _compute_wallet_balance(self):
         for parent in self:
-            # debit = what we owe them (e.g. prepaid), credit = what they owe us
-            # Wallet balance: positive if they have money in their virtual wallet to use
+            # sum all confirmed but unpaid invoices (amount_residual) -> what they owe us
+            # sum all payments (or outbound/inbound prepaid)
+            # An easier way: just rely on the partner's native credit/debit
+            # debit = what we owe them, credit = what they owe us
             parent.wallet_balance = parent.debit - parent.credit
 
     @api.depends('parent_activity', 'mahara_participation')
