@@ -14,7 +14,7 @@ class IrHttp(models.AbstractModel):
             if not path.startswith(('/web/', '/website/', '/my/parent/setup')):
                 # Ensure they are normal portal users (not internal staff)
                 user = request.env.user
-                if user.has_group('base.group_portal') and not user.has_group('base.group_user'):
+                if user and user.has_group('base.group_portal') and not user.has_group('base.group_user'):
                     partner = user.partner_id
                     # If they are missing mandatory data, redirect them
                     if not partner.parent_activity or not partner.mahara_participation:
