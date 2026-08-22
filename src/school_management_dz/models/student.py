@@ -10,8 +10,23 @@ class SchoolStudent(models.Model):
 
     name = fields.Char('Name', required=True)
     parent_id = fields.Many2one('res.partner', 'Parent', required=True)
-    qr_code = fields.Char('QR Code', readonly=True)
+    qr_code = fields.Char('QR Code')
     image_1920 = fields.Image('Image')
+    
+    # Detailed Form Fields
+    custom_first_name = fields.Char('الاسم')
+    custom_last_name = fields.Char('اللقب')
+    father_name = fields.Char('اسم الأب')
+    birth_date = fields.Date('تاريخ الميلاد')
+    quranic_school = fields.Char('المدرسة القرآنية')
+    neighborhood = fields.Char('الحي')
+    family_status = fields.Selection([
+        ('both', 'الأب والأم معاً'),
+        ('mother', 'الأم فقط'),
+        ('father', 'الأب فقط'),
+        ('guardian', 'وصي قانوني / أحد أفراد العائلة'),
+    ], string='الوضع العائلي / إقامة التلميذ')
+    
     relationship = fields.Selection([
         ('father', 'أب'),
         ('mother', 'أم'),

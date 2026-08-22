@@ -214,20 +214,59 @@
                     </t>
                     
                     <div id="new_student_fields" style="display: none;">
-                        <div class="mb-3">
-                            <label><strong>Student's Full Name</strong> (if new) *</label>
-                            <input type="text" name="student_name" class="form-control" placeholder="Enter full name of the student..."/>
+                        <h5 class="mt-4 mb-3 border-bottom pb-2">معلومات تسجيل الأبناء (Student Info)</h5>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label><strong>الاسم (First Name)</strong> *</label>
+                                <input type="text" name="student_custom_first_name" class="form-control" placeholder="Enter first name..."/>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label><strong>اللقب (Last Name)</strong> *</label>
+                                <input type="text" name="student_custom_last_name" class="form-control" placeholder="Enter last name..."/>
+                            </div>
                         </div>
+                        
                         <div class="mb-3">
-                            <label><strong>ماهي علاقتكم بالمشارك ؟</strong> *</label>
+                            <label><strong>اسم الأب (Father's Name)</strong></label>
+                            <input type="text" name="student_father_name" class="form-control" t-att-value="request.env.user.partner_id.custom_first_name or request.env.user.partner_id.father_name or ''"/>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label><strong>تاريخ الميلاد (Date of Birth)</strong> *</label>
+                            <input type="date" name="student_birth_date" class="form-control"/>
+                        </div>
+
+                        <div class="mb-3">
+                            <label><strong>علاقة الولي بالمشارك (Relationship)</strong> *</label>
                             <select name="student_relationship" class="form-control">
-                                <option value="father">أب</option>
-                                <option value="mother">أم</option>
-                                <option value="guardian">وكيل</option>
-                                <option value="family">أحد أفراد العائلة</option>
-                                <option value="self">أنا هو المعني - الطالب (ة)</option>
+                                <option value="father">أب (Father)</option>
+                                <option value="mother">أم (Mother)</option>
+                                <option value="guardian">وكيل (Guardian)</option>
+                                <option value="family">أحد أفراد العائلة (Family Member)</option>
+                                <option value="self">أنا هو المعني - الطالب (ة) (Self)</option>
                             </select>
                         </div>
+                        
+                        <div class="mb-3">
+                            <label><strong>المدرسة القرآنية التي تدرس فيها (إن وجدت)</strong></label>
+                            <input type="text" name="student_quranic_school" class="form-control" placeholder="Quranic School..."/>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label><strong>حي السكن (Neighborhood)</strong> *</label>
+                            <input type="text" name="student_neighborhood" class="form-control" t-att-value="request.env.user.partner_id.neighborhood_name or ''" placeholder="Neighborhood..."/>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label><strong>الوضع العائلي / إقامة التلميذ (مع من يقيم بصفة دائمة؟)</strong> *</label>
+                            <select name="student_family_status" class="form-control">
+                                <option value="both">الأب والأم معاً (Both Father and Mother)</option>
+                                <option value="mother">الأم فقط (Mother Only)</option>
+                                <option value="father">الأب فقط (Father Only)</option>
+                                <option value="guardian">وصي قانوني / أحد أفراد العائلة (Legal Guardian)</option>
+                            </select>
+                        </div>
+                        
                         <div class="mb-3">
                             <label><strong>Previous Year's Grades (Optional Upload)</strong></label>
                             <input type="file" name="student_grades_file" class="form-control" accept="image/*,application/pdf"/>

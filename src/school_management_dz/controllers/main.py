@@ -97,7 +97,11 @@ class SchoolPortal(http.Controller):
             student = request.env['school.student'].sudo().browse(int(existing_id))
             student_name = student.name
         else:
-            student_name = kw.get('student_name', 'New Student')
+            fname = kw.get('student_custom_first_name', '')
+            lname = kw.get('student_custom_last_name', '')
+            full_name = f"{fname} {lname}".strip() or kw.get('student_name', 'New Student')
+            student_name = full_name
+            
             # Build student fields for a new record
             student_vals = {
                 'name': student_name,

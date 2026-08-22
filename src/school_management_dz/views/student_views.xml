@@ -23,6 +23,13 @@
                         <group>
                             <field name="parent_id"/>
                             <field name="relationship"/>
+                            <field name="family_status"/>
+                            <field name="custom_first_name"/>
+                            <field name="custom_last_name"/>
+                            <field name="father_name"/>
+                            <field name="birth_date"/>
+                            <field name="quranic_school"/>
+                            <field name="neighborhood"/>
                         </group>
                         <group>
                             <field name="qr_code" string="Barcode Identifier"/>
